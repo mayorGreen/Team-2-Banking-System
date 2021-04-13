@@ -29,6 +29,11 @@ public class IDandPass {
         this.username = username;
     }
 
+    public void listUsers()
+    {
+        System.out.println(username+" "+password);
+    }
+
     public HashMap getLoginInfo() {
         return loginInfo;
     }

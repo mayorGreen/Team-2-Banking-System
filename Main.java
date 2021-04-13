@@ -12,8 +12,8 @@ import java.util.List;
 class Main {
     public static void main(String[] args) {
         getCustomers();
-        //IDandPass idAndPasswords = new IDandPass(); // initialize id and passwords --- this can be replaced for simply acct numbers instead
-        //LoginPage loginPage = new LoginPage(idAndPasswords.getLoginInfo()); // generate login page
+        IDandPass idAndPasswords = new IDandPass(); // initialize id and passwords --- this can be replaced for simply acct numbers instead
+        LoginPage loginPage = new LoginPage(idAndPasswords.getLoginInfo()); // generate login page
 
 
     }
@@ -22,6 +22,7 @@ class Main {
     static void getCustomers() {
         String file = "Database Files/customer.csv";
         List<Customer> customers = new ArrayList<>();
+        List<IDandPass> ids = new ArrayList<>();
         IDandPass idandpass = new IDandPass();
 
         //Reads Customers file
@@ -37,13 +38,29 @@ class Main {
                     Customer customer = new Customer(line);
                     customers.add(customer);
                     customer.listCustomers();
-                    idandpass = new IDandPass(customer.getUserName(), customer.getPassword());
+                    ids.add(new IDandPass(customer.getUserName(), customer.getPassword()));
 
                 }
                 lineSkip++;
             }
+
+            //debugging prints to show that ids and customers are being imported to their arrayLists
             customers.get(0).listCustomers();
-            LoginPage loginPage = new LoginPage(idandpass.getLoginInfo());
+            ids.get(4).listUsers();
+
+            /*
+            //If you uncomment this and run it it should help you understand what is happening.
+            //with this code we are creating a new instance for every single login that we are writing.
+            for(int i = 0; i<ids.size(); i++)
+            {
+                LoginPage loginPage = new LoginPage(ids.get(i).getLoginInfo());
+            }
+
+             */
+
+            //this code works to allow a single login based on the position defined in the arrayList
+            LoginPage loginPage = new LoginPage(ids.get(1).getLoginInfo());
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
