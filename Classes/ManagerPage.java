@@ -47,9 +47,9 @@ public class ManagerPage extends JFrame implements ActionListener {
 	JPanel panel8 = new JPanel(); // debit account page
 	JPanel panel9 = new JPanel(); // account transfer page
 	JPanel panel10 = new JPanel(); // confirmation page
-    JPanel panel11 = new JPanel(); // short term loan page
-    JPanel panel12 = new JPanel(); // long term loan page
-    JPanel panel13 = new JPanel(); // loan payment page
+    	JPanel panel11 = new JPanel(); // short term loan page
+    	JPanel panel12 = new JPanel(); // long term loan page
+    	JPanel panel13 = new JPanel(); // loan payment page
 
 	JPanel[] panels = {panel1,panel2,panel3,panel4,panel5,panel6,panel7,panel8,panel9,panel10,panel11,panel12,panel13};
 
@@ -127,11 +127,11 @@ public class ManagerPage extends JFrame implements ActionListener {
 	// panel 10 -- transaction complete, return to panel 2
 	JLabel confirmationLabel = new JLabel("Transction Complete");
 
-    // panel 11 -- short term loan page
+    	// panel 11 -- short term loan page
 
-    // panel 12 -- long term loan page
+   	// panel 12 -- long term loan page
 
-    // panel 13 -- loan payment page
+    `	// panel 13 -- loan payment page
 	
 
 	// common button positions and dimensions
@@ -147,8 +147,8 @@ public class ManagerPage extends JFrame implements ActionListener {
 						submitStopButton,checkDepositButton,
 						creditSubmitButton,checkDepositSubmitButton,
 						debitSubmitButton,transferSubmitButton,
-                        shortTermLoanButton,longTermLoanButton,
-                        loanPaymentButton};
+                        			shortTermLoanButton,longTermLoanButton,
+                        			loanPaymentButton};
 
 	
 	CardLayout cl = new CardLayout();
@@ -225,9 +225,9 @@ public class ManagerPage extends JFrame implements ActionListener {
 		creditAccountButton.setBounds(600,125,250,80);
 		debitAccountButton.setBounds(600,225,250,80);
 		transferCashButton.setBounds(600,325,250,80);
-        shortTermLoanButton.setBounds(125,425,250,80);
-        longTermLoanButton.setBounds(125,535,250,80);
-        loanPaymentButton.setBounds(600,425,250,80);
+       		shortTermLoanButton.setBounds(125,425,250,80);
+        	longTermLoanButton.setBounds(125,535,250,80);
+        	loanPaymentButton.setBounds(600,425,250,80);
 
 		// add elements to panel 2
 		panel2.add(stopPaymentButton);
@@ -236,9 +236,9 @@ public class ManagerPage extends JFrame implements ActionListener {
 		panel2.add(creditAccountButton);
 		panel2.add(debitAccountButton);
 		panel2.add(transferCashButton);
-        panel2.add(shortTermLoanButton);
-        panel2.add(longTermLoanButton);
-        panel2.add(loanPaymentButton);
+        	panel2.add(shortTermLoanButton);
+        	panel2.add(longTermLoanButton);
+        	panel2.add(loanPaymentButton);
 		panel2.add(exitButton);
 		
 		// define panel 3 elements
