@@ -395,6 +395,9 @@ public class ManagerPage extends JFrame implements ActionListener {
 		
 
 		// define panel 11 elements
+		amountBorrowedLabel.setFont(labelFont);
+		interestRateLabel.setFont(labelFont);
+		paymentPlanLabel.setFont(labelFont);
 		
 		// add elements to panel 11
 		panel11.add(amountBorrowedLabel);
