@@ -7,7 +7,7 @@ import java.awt.Font;
 import java.awt.Color;
 import java.awt.Rectangle;
 
-public class TellerPage extends JFrame implements ActionListener {
+public class ManagerPage extends JFrame implements ActionListener {
 
 	String[] listTestData = {"Transaction 1   -    $20.23", 
 							"Transaction 2   -    $122.30", 
@@ -47,8 +47,11 @@ public class TellerPage extends JFrame implements ActionListener {
 	JPanel panel8 = new JPanel(); // debit account page
 	JPanel panel9 = new JPanel(); // account transfer page
 	JPanel panel10 = new JPanel(); // confirmation page
+    JPanel panel11 = new JPanel(); // short term loan page
+    JPanel panel12 = new JPanel(); // long term loan page
+    JPanel panel13 = new JPanel(); // loan payment page
 
-	JPanel[] panels = {panel1,panel2,panel3,panel4,panel5,panel6,panel7,panel8,panel9,panel10};
+	JPanel[] panels = {panel1,panel2,panel3,panel4,panel5,panel6,panel7,panel8,panel9,panel10,panel11,panel12,panel13};
 
 	JLabel bankNameLabel = new JLabel("Bank Name here");
 	JButton backButton = new JButton("Back"); // sends teller back to option panel 2
@@ -67,6 +70,9 @@ public class TellerPage extends JFrame implements ActionListener {
 	JButton creditAccountButton = new JButton("Credit Account");
 	JButton debitAccountButton = new JButton("Debit Account");
 	JButton transferCashButton = new JButton("Transfer Cash");
+    JButton shortTermLoanButton = new JButton("Short Term Loan");
+    JButton longTermLoanButton = new JButton("Long Term Loan");
+    JButton loanPaymentButton = new JButton("LoanPayment");
 
 	// panel 3 elements -- stop payment
 	JLabel stopPaymentLabel = new JLabel("Stop Payment");
@@ -120,6 +126,12 @@ public class TellerPage extends JFrame implements ActionListener {
 
 	// panel 10 -- transaction complete, return to panel 2
 	JLabel confirmationLabel = new JLabel("Transction Complete");
+
+    // panel 11 -- short term loan page
+
+    // panel 12 -- long term loan page
+
+    // panel 13 -- loan payment page
 	
 
 	// common button positions and dimensions
@@ -134,14 +146,16 @@ public class TellerPage extends JFrame implements ActionListener {
 						debitAccountButton,transferCashButton,
 						submitStopButton,checkDepositButton,
 						creditSubmitButton,checkDepositSubmitButton,
-						debitSubmitButton,transferSubmitButton};
+						debitSubmitButton,transferSubmitButton,
+                        shortTermLoanButton,longTermLoanButton,
+                        loanPaymentButton};
 
 	
 	CardLayout cl = new CardLayout();
 	Font labelFont = new Font("Arial", Font.PLAIN, 28); // default label font
 	Font buttonFont = new Font("Arial", Font.PLAIN, 26); // default button font
 
-    TellerPage(String userID){
+    ManagerPage(String userID){
 
 		panelContainer.setLayout(cl);
 
@@ -205,12 +219,15 @@ public class TellerPage extends JFrame implements ActionListener {
 
 
 		// define panel 2 elements
-		stopPaymentButton.setBounds(125,150,250,80);
-		balanceInquiryButton.setBounds(125,250,250,80);
-		debitsInquiryButton.setBounds(125,350,250,80);
-		creditAccountButton.setBounds(600,150,250,80);
-		debitAccountButton.setBounds(600,250,250,80);
-		transferCashButton.setBounds(600,350,250,80);
+		stopPaymentButton.setBounds(125,125,250,80);
+		balanceInquiryButton.setBounds(125,225,250,80);
+		debitsInquiryButton.setBounds(125,325,250,80);
+		creditAccountButton.setBounds(600,125,250,80);
+		debitAccountButton.setBounds(600,225,250,80);
+		transferCashButton.setBounds(600,325,250,80);
+        shortTermLoanButton.setBounds(125,425,250,80);
+        longTermLoanButton.setBounds(125,535,250,80);
+        loanPaymentButton.setBounds(600,425,250,80);
 
 		// add elements to panel 2
 		panel2.add(stopPaymentButton);
@@ -219,6 +236,9 @@ public class TellerPage extends JFrame implements ActionListener {
 		panel2.add(creditAccountButton);
 		panel2.add(debitAccountButton);
 		panel2.add(transferCashButton);
+        panel2.add(shortTermLoanButton);
+        panel2.add(longTermLoanButton);
+        panel2.add(loanPaymentButton);
 		panel2.add(exitButton);
 		
 		// define panel 3 elements
@@ -368,12 +388,12 @@ public class TellerPage extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		// logout button pressed
-		if(e.getSource() == logoutButton) {
-			mainFrame.dispose();
-			IDandPass idAndPasswords = new IDandPass();
-			new LoginPage(idAndPasswords.getLoginInfo());
-		}
-		
+        if(e.getSource() == logoutButton) {
+            mainFrame.dispose();
+            IDandPass idAndPasswords = new IDandPass();
+            new LoginPage(idAndPasswords.getLoginInfo());
+        }
+
 		// checks account number, if valid, move to panel 2 options screen
 		if(e.getSource() == acctNumLookupButton) {
 			panel2.add(bankNameLabel);
@@ -494,6 +514,7 @@ public class TellerPage extends JFrame implements ActionListener {
 			panel10.add(backButton);
 			cl.show(panelContainer, "10");
 		}
+
 
 	} // end actionPerformed
     

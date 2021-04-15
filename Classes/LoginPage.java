@@ -112,6 +112,46 @@ public class LoginPage extends JFrame implements ActionListener{
                 messageLabel.setText("Incorrect Username");
             }
         }
+
+        if(e.getSource() == loginButton && tellerButton.isSelected()){
+            String userID = userIDField.getText();
+            String password = String.valueOf(userPassField.getPassword());
+
+            if(loginInfo.containsKey(userID)){
+                if(loginInfo.get(userID).equals(password)){
+                    messageLabel.setForeground(Color.green);
+                    messageLabel.setText("Login Successful");
+                    frame.dispose();
+                    TellerPage tellerPage = new TellerPage(userID);
+                } else {
+                    messageLabel.setForeground(Color.red);
+                    messageLabel.setText("Incorrect Password");
+                }
+            } else {
+                messageLabel.setForeground(Color.red);
+                messageLabel.setText("Incorrect Username");
+            }
+        }
+
+        if(e.getSource() == loginButton && managerButton.isSelected()){
+            String userID = userIDField.getText();
+            String password = String.valueOf(userPassField.getPassword());
+
+            if(loginInfo.containsKey(userID)){
+                if(loginInfo.get(userID).equals(password)){
+                    messageLabel.setForeground(Color.green);
+                    messageLabel.setText("Login Successful");
+                    frame.dispose();
+                    ManagerPage managerPage = new ManagerPage(userID);
+                } else {
+                    messageLabel.setForeground(Color.red);
+                    messageLabel.setText("Incorrect Password");
+                }
+            } else {
+                messageLabel.setForeground(Color.red);
+                messageLabel.setText("Incorrect Username");
+            }
+        }
         if(e.getSource() == endButton) {
             frame.dispose();
             System.exit(0);

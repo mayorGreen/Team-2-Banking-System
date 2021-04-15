@@ -33,7 +33,7 @@ class Main {
             int lineSkip = 0;
 
             //iterates through the list to assign them to customer
-            while ((line = br.readLine()) != null) {
+            /*while ((line = br.readLine()) != null) {
                 if (lineSkip != 0) {
                     Customer customer = new Customer(line);
                     customers.add(customer);
@@ -42,11 +42,11 @@ class Main {
 
                 }
                 lineSkip++;
-            }
+            }*/
 
             //debugging prints to show that ids and customers are being imported to their arrayLists
-            customers.get(0).listCustomers();
-            ids.get(4).listUsers();
+            //customers.get(0).listCustomers();
+            //ids.get(4).listUsers();
 
             /*
             //If you uncomment this and run it it should help you understand what is happening.
@@ -59,7 +59,7 @@ class Main {
              */
 
             //this code works to allow a single login based on the position defined in the arrayList
-            LoginPage loginPage = new LoginPage(ids.get(1).getLoginInfo());
+            //LoginPage loginPage = new LoginPage(ids.get(1).getLoginInfo());
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
