@@ -143,7 +143,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 	JLabel loanTermSelectLabel = new JLabel("Select Loan Term:");
 	JRadioButton fifteenButton = new JRadioButton("15yr");
 	JRadioButton thirtyButton = new JRadioButton("30yr");
-	//ButtonGroup loanButtons = new ButtonGroup(fifteenButton ,thirtyButton);
+	ButtonGroup loanButtons = new ButtonGroup();
 	JLabel longInterestRateLabel = new JLabel("InterestRate");
 	JLabel longPaymentPlanLabel = new JLabel("Monthly Payment Plan:");
 
@@ -152,7 +152,11 @@ public class ManagerPage extends JFrame implements ActionListener {
 	JTextField longPaymentPlanField = new JTextField();
 
 	JButton longLoanSubmitButton = new JButton("Submit");
+
     // panel 13 -- loan payment page
+	JScrollPane loanListWindow = new JScrollPane();
+	JLabel loanPaymentAmtLabel = new JLabel();
+	JButton loanCompletePaymentButton = new JButton("Submit");
 	
 
 	// common button positions and dimensions
@@ -178,6 +182,9 @@ public class ManagerPage extends JFrame implements ActionListener {
 	Font buttonFont = new Font("Arial", Font.PLAIN, 26); // default button font
 
     ManagerPage(String userID){
+
+		loanButtons.add(fifteenButton);
+		loanButtons.add(thirtyButton);
 
 		panelContainer.setLayout(cl);
 
@@ -395,6 +402,13 @@ public class ManagerPage extends JFrame implements ActionListener {
 		
 
 		// define panel 11 elements
+		amountBorrowedLabel.setFont(labelFont);
+		interestRateLabel.setFont(labelFont);
+		paymentPlanLabel.setFont(labelFont);
+
+		amountBorrowedLabel.setHorizontalAlignment(JLabel.TRAILING);
+		interestRateLabel.setHorizontalAlignment(JLabel.TRAILING);
+		paymentPlanLabel.setHorizontalAlignment(JLabel.TRAILING);
 		
 		// add elements to panel 11
 		panel11.add(amountBorrowedLabel);
@@ -406,10 +420,35 @@ public class ManagerPage extends JFrame implements ActionListener {
 		panel11.add(shortLoanSubmitButton);
 
 		// define panel 12 elements
+		longAmountBorrowedLabel.setFont(labelFont);
+		loanTermSelectLabel.setFont(labelFont);
+		longInterestRateLabel.setFont(labelFont);
+		longPaymentPlanLabel.setFont(labelFont);
+
+		longAmountBorrowedLabel.setHorizontalAlignment(JLabel.TRAILING);
+		loanTermSelectLabel.setHorizontalAlignment(JLabel.TRAILING);
+		longInterestRateLabel.setHorizontalAlignment(JLabel.TRAILING);
+		longPaymentPlanLabel.setHorizontalAlignment(JLabel.TRAILING);
 
 		// add elements to panel 12
+		panel12.add(longAmountBorrowedLabel);
+		panel12.add(loanTermSelectLabel);
+		panel12.add(fifteenButton);
+		panel12.add(thirtyButton);
+		panel12.add(longInterestRateLabel);
+		panel12.add(longPaymentPlanLabel);
+		panel12.add(longAmountBorrowedField);
+		panel12.add(longInterestRateField);
+		panel12.add(longPaymentPlanField);
 
 
+		// define panel 13 elements
+
+		// add elements to panel 13
+		panel13.add(loanListWindow);
+		panel13.add(loanPaymentAmtLabel);
+		panel13.add(loanCompletePaymentButton);
+	
 		
 		// add panels to container
 		int i = 1;
@@ -496,6 +535,21 @@ public class ManagerPage extends JFrame implements ActionListener {
 			cl.show(panelContainer, "9");
 		}
 
+		if(e.getSource() == shortTermLoanButton){
+			panel11.add(backButton);
+			cl.show(panelContainer, "11");
+		}
+
+		if(e.getSource() == longTermLoanButton){
+			panel12.add(backButton);
+			cl.show(panelContainer, "12");
+		}
+
+		if(e.getSource() == loanPaymentButton){
+			panel13.add(backButton);
+			cl.show(panelContainer, "13");
+		}
+
 		// panel 3 buttons (stop payment)
 		if(e.getSource() == submitStopButton) {
 			// ADD STOP PAYMENT METHOD CALL HERE LATER
@@ -553,6 +607,26 @@ public class ManagerPage extends JFrame implements ActionListener {
 			panel10.add(backButton);
 			cl.show(panelContainer, "10");
 		}
+
+		// panel 11 button (short term loan page)
+		if(e.getSource() == shortLoanSubmitButton) {
+			panel10.add(backButton);
+			cl.show(panelContainer, "10");
+		}
+		// panel 12 button (long term loan page)
+		if(e.getSource() == longLoanSubmitButton) {
+			panel10.add(backButton);
+			cl.show(panelContainer, "13");
+		}
+
+		// panel 13 button (loan payment page) 
+		if(e.getSource() == loanCompletePaymentButton) {
+			// reduce amount owed from SELECTED loan
+			// maybe add a confirmation prompt here?
+			panel10.add(backButton);
+			cl.show(panelContainer, "10");
+		}
+
 
 
 	} // end actionPerformed
