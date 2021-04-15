@@ -129,7 +129,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 
     // panel 11 -- short term loan page
 	JLabel amountBorrowedLabel = new JLabel("Amount Borrowed:");
-	JLabel interestRateLabel = new Jabel("Interest Rate:");
+	JLabel interestRateLabel = new JLabel("Interest Rate:");
 	JLabel paymentPlanLabel = new JLabel("Monthly Payment Plan:");
 
 	JTextField amountBorrowedField = new JTextField();
@@ -143,8 +143,8 @@ public class ManagerPage extends JFrame implements ActionListener {
 	JLabel loanTermSelectLabel = new JLabel("Select Loan Term:");
 	JRadioButton fifteenButton = new JRadioButton("15yr");
 	JRadioButton thirtyButton = new JRadioButton("30yr");
-	ButtonGroup loanButtons = new ButtonGroup(fifteenButton,thirtyButton);
-	JLabel longInterestRateLabel = new Jlabel("InterestRate");
+	//ButtonGroup loanButtons = new ButtonGroup(fifteenButton ,thirtyButton);
+	JLabel longInterestRateLabel = new JLabel("InterestRate");
 	JLabel longPaymentPlanLabel = new JLabel("Monthly Payment Plan:");
 
 	JTextField longAmountBorrowedField = new JTextField();
