@@ -128,9 +128,30 @@ public class ManagerPage extends JFrame implements ActionListener {
 	JLabel confirmationLabel = new JLabel("Transction Complete");
 
     // panel 11 -- short term loan page
+	JLabel amountBorrowedLabel = new JLabel("Amount Borrowed:");
+	JLabel interestRateLabel = new Jabel("Interest Rate:");
+	JLabel paymentPlanLabel = new JLabel("Monthly Payment Plan:");
+
+	JTextField amountBorrowedField = new JTextField();
+	JTextField interestRateField = new JTextField();
+	JTextField paymentPlanField = new JTextField();
+
+	JButton shortLoanSubmitButton = new JButton("Submit");
 
     // panel 12 -- long term loan page
+	JLabel longAmountBorrowedLabel = new JLabel("Amount Borrowed");
+	JLabel loanTermSelectLabel = new JLabel("Select Loan Term:");
+	JRadioButton fifteenButton = new JRadioButton("15yr");
+	JRadioButton thirtyButton = new JRadioButton("30yr");
+	ButtonGroup loanButtons = new ButtonGroup(fifteenButton,thirtyButton);
+	JLabel longInterestRateLabel = new Jlabel("InterestRate");
+	JLabel longPaymentPlanLabel = new JLabel("Monthly Payment Plan:");
 
+	JTextField longAmountBorrowedField = new JTextField();
+	JTextField longInterestRateField = new JTextField();
+	JTextField longPaymentPlanField = new JTextField();
+
+	JButton longLoanSubmitButton = new JButton("Submit");
     // panel 13 -- loan payment page
 	
 
@@ -148,7 +169,8 @@ public class ManagerPage extends JFrame implements ActionListener {
 						creditSubmitButton,checkDepositSubmitButton,
 						debitSubmitButton,transferSubmitButton,
                         shortTermLoanButton,longTermLoanButton,
-                        loanPaymentButton};
+                        loanPaymentButton,shortLoanSubmitButton,
+						longLoanSubmitButton};
 
 	
 	CardLayout cl = new CardLayout();
@@ -370,6 +392,23 @@ public class ManagerPage extends JFrame implements ActionListener {
 		
 		// add elements to panel 10
 		panel10.add(confirmationLabel);
+		
+
+		// define panel 11 elements
+		
+		// add elements to panel 11
+		panel11.add(amountBorrowedLabel);
+		panel11.add(interestRateLabel);
+		panel11.add(paymentPlanLabel);
+		panel11.add(amountBorrowedField);
+		panel11.add(interestRateField);
+		panel11.add(paymentPlanField);
+		panel11.add(shortLoanSubmitButton);
+
+		// define panel 12 elements
+
+		// add elements to panel 12
+
 
 		
 		// add panels to container
