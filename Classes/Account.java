@@ -1,4 +1,6 @@
 package Classes;
 
-public class Account {
+public class Account
+{
+
 }
