@@ -14,7 +14,24 @@ class Main {
         getCustomers();
         IDandPass idAndPasswords = new IDandPass(); // initialize id and passwords --- this can be replaced for simply acct numbers instead
         LoginPage loginPage = new LoginPage(idAndPasswords.getLoginInfo()); // generate login page
+        Parser p1 = new Parser("./Database Files/cds.csv");
+        Parser p2 = new Parser("./Database Files/checking.csv");
+        Parser p3 = new Parser("./Database Files/customer.csv");
+        Parser p4 = new Parser("./Database Files/loans.csv");
+        Parser p5 = new Parser("./Database Files/savings.csv");
+        List<List<String>> cds = p1.getRecords();
+        List<List<String>> checkingAccounts = p2.getRecords();
+        List<List<String>> customers = p3.getRecords();
+        List<List<String>> loans = p4.getRecords();
+        List<List<String>> savingsAccounts = p5.getRecords();
 
+        // create the customer objects and add them to customerList
+        List<Customer> customerList = new ArrayList<>();
+        for(int i=1; i<customers.size(); i++) {
+            // start at i=1, create new anonymous customer obj, add to array
+            customerList.add(new Customer(customers.get(i)));
+        }
+    
 
     }
 
