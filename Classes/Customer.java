@@ -1,7 +1,8 @@
 package Classes;
+import java.io.Serializable;
 import java.util.List;
 
-public class Customer {
+public class Customer implements Serializable{
 
     private String ssn;
     private String streetAddress;
@@ -19,6 +20,16 @@ public class Customer {
         zip = cust.get(4);
         firstName = cust.get(5);
         lastName = cust.get(6);
+    }
+
+    public Customer(String ssn, String streetAddress, String city, String state, String zip, String firstName, String lastName){
+        this.ssn = ssn;
+        this.streetAddress = streetAddress;
+        this.city = city;
+        this.state = state;
+        this.zip = zip;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     
@@ -39,6 +50,13 @@ public class Customer {
         return zip;
     }
 
+    @Override
+    public String toString() {
+        return  "CustID: " + ssn + " Street Address: " + streetAddress + " City: " + city
+        + " State: " + state + " Zip Code: " + zip + " First Name: " + firstName + " Last Name: " + lastName;
+
+
+    }
 
 
 }
