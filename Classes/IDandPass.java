@@ -11,7 +11,6 @@ public class IDandPass {
         loginInfo.put("person2", "password2");
         loginInfo.put("person3", "password3");
         loginInfo.put("a", "a");
-        loginInfo.put(username, String.valueOf(password));
     }
 
     public IDandPass(String username, int password)
@@ -27,6 +26,11 @@ public class IDandPass {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void setLoginInfo(String username, int password)
+    {
+        loginInfo.put(username, String.valueOf(password));
     }
 
     public void listUsers()

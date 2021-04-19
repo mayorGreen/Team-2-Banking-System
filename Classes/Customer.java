@@ -1,17 +1,27 @@
 package Classes;
 
-
 public class Customer {
 
-    private String username;
-    private String password;
-
-    public Customer(){
-        return;
+    //customer username getter
+    public String getUserName() {
+        return userName;
     }
 
-    public String getUserName(){return username;}
-    public String getPassword(){return password;}
-    public void listCustomers(){return;}
+    public void loginPage()
+    {
+        ids.listUsers();
+        LoginPage loginPage = new LoginPage(ids.getLoginInfo());
+    }
+
+    public void listIDandPass()
+    {
+       ids.listUsers();
+    }
+
+    //prints all customers
+    public void listCustomers()
+    {
+        System.out.println(ssn+" "+ street + " "+ city +" "+ state+" "+ zip+" "+ firstName +" " +lastName+" "+password+" "+userName);
+    }
 
 }

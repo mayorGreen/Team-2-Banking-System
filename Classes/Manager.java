@@ -10,7 +10,7 @@ public class Manager {
 
     //Constructor
     public Manager(String userid) {
-        userid = getUserName();
+        //userid = getUserName();
     }
 
 }
