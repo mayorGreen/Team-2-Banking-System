@@ -105,11 +105,6 @@ class Main{
         } else {
             loanList = Parser.readObjectRecords("loansObj.txt");
         }
-        
-
-
-
-        // TODO: create lists of all accts
 
 
         System.out.println(customerList.get(0).toString()); // print first cust

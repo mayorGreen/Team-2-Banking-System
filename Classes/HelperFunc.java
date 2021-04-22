@@ -22,6 +22,25 @@ public class HelperFunc {
         }
     }
 
+
+    // update functions for saving changed data call these after every change in data
+    // TODO: Make these thread safe later
+    public static void updateCustomers(List<Customer> custList){
+        Parser.writeObjectRecords(custList, "customerObj.txt");
+    }
+    public static void updateChecking(List<Checking> checkingList){
+        Parser.writeObjectRecords(checkingList, "checkingAccObj.txt");
+    }
+    public static void updateSavings(List<SavingsAccount> savingsList){
+        Parser.writeObjectRecords(savingsList, "savingsAccObj.txt");
+    }
+    public static void updateCD(List<CD> cdList){
+        Parser.writeObjectRecords(cdList, "cdsObj.txt");
+    }
+    public static void updateLoans(List<Loans> loanList){
+        Parser.writeObjectRecords(loanList, "loansObj.txt");
+    }
+
     // returns an index location of the checking account with the given account number
     // returns -1 if account does not exist
     public static int getChecking(List<Checking> checkingList, int accountNumber){
@@ -58,6 +77,9 @@ public class HelperFunc {
     }
     public static void creditAccount(String custID, SavingsAccount account, double amount) {
         account.creditAccount(amount);
+    }
+    public static void stopCheck(int accountNumber, int checkNumber){
+        // stops check
     }
 
 }
