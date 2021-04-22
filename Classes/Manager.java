@@ -1,5 +1,6 @@
 package Classes;
 
+// Manager class
 public class Manager {
     String username;
     String password;
@@ -9,6 +10,7 @@ public class Manager {
         this.password = password;
     }
 
+    // getters
     public String getUsername() {
         return username;
     }
@@ -16,6 +18,7 @@ public class Manager {
         return password;
     }
 
+    // setters
     public void setUsername(String username) {
         this.username = username;
     }

@@ -6,19 +6,20 @@ import java.util.Date;
 import java.text.SimpleDateFormat;  
 import java.util.List;
 
+// Checking account class
 public class Checking extends Account
 {
-    boolean goldDiamondAccount;
-    double interestRate;
+    boolean goldDiamondAccount; // raised if account balance > $1000.00
+    double interestRate; // interest rate for account, only goldDiamond accounts accrue interest
     ArrayList<Check> checksList = new ArrayList<>(); // list of checks tied to this account
-    int nextCheckNumber;
-    boolean hasBackupAccount;
-    int backupAccountNumber;
-    int numOfOverdrafts;
-    Date dateCreated;
-    Date todaysDate;
+    int nextCheckNumber; // next check number associated with account
+    boolean hasBackupAccount; // raised if account has backup account associated for overdrdaft protection
+    int backupAccountNumber; // account number of backup account
+    int numOfOverdrafts; // number of overdrafts logged on account
+    Date dateCreated; // date account created
+    Date todaysDate; // today's date --- needed for interest purposed on GD account
 
-
+    // generic constructor
     public Checking(){
         super();
         goldDiamondAccount = false;
@@ -29,6 +30,7 @@ public class Checking extends Account
         dateCreated = new Date();
     }
 
+    // Constructor
     public Checking(List<String> acct){
         super();
         goldDiamondAccount = false;
@@ -50,8 +52,10 @@ public class Checking extends Account
             e.printStackTrace();
         }
 
-    }
+    } // end Constructor
 
+    // withdraw method, charges account a fee if it is not GD. calls balanceCheck
+    // if withdraw is greater
     @Override
     void withdrawAmt(double amt) {
         balance -= Math.abs(amt);
@@ -60,9 +64,11 @@ public class Checking extends Account
         if(balance < 0) {
             numOfOverdrafts++;
             balance -= 20.0;
-        }
+        } // TODO check for overdraft protection, pull data from the file using helper method
+          // then update both files, it's gonna be a bit messsy but should work
     }
 
+    // deposit method, charges account a fee if it is not GD. calls balanceCheck
     @Override
     void depositAmt(double amt) {
         balance += Math.abs(amt);
@@ -70,13 +76,13 @@ public class Checking extends Account
         balanceCheck();
     }
 
-
+    // credit account method, ignores transaction fee
     @Override
     void creditAccount(double amt) {
         super.creditAccount(amt);
         balanceCheck();
     }
-
+    // debit account method, ignores transaction fee
     @Override
     void debitAccount(double amt) {
         super.debitAccount(amt);
@@ -87,6 +93,7 @@ public class Checking extends Account
         }
     }
 
+    // this method checks the current balance and verifes what type of account the account should be
     void balanceCheck(){
         if(balance < 1000.00){
             goldDiamondAccount = false;

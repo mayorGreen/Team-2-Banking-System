@@ -1,5 +1,6 @@
 package Classes;
 
+// Teller class
 public class Teller {
     private String username;
     private String password;
@@ -10,6 +11,7 @@ public class Teller {
         this.password = password;
     }
 
+    // getters
     public String getUsername() {
         return username;
     }
@@ -17,6 +19,7 @@ public class Teller {
         return password;
     }
     
+    // setters
     public void setUsername(String username) {
         this.username = username;
     }

@@ -2,12 +2,15 @@ package Classes;
 
 import java.util.List;
 
+// some helper functions vital for system functionality
 public class HelperFunc {
 
+    // creates a new customer object
     public static Customer createCustomer(String ssn, String streetAddress, String city, String state, String zip, String firstName, String lastName) {
         return new Customer(ssn,streetAddress,city,state,zip,firstName,lastName);
     }
 
+    // creates a new customer object and inserts it into given customer list
     public static void createCustomerAndAdd(List<Customer> custList, String ssn, String streetAddress, String city, String state, String zip, String firstName, String lastName){
         Customer workingCustomer = new Customer(ssn,streetAddress,city,state,zip,firstName,lastName);
         custList.add(workingCustomer);
@@ -68,8 +71,6 @@ public class HelperFunc {
     }
 
 
-
-
     // These functions can be used by teller and manager
 
     public static void creditAccount(String custID, Checking account, double amount) {
@@ -82,4 +83,4 @@ public class HelperFunc {
         // stops check
     }
 
-}
+} // end HelperFunc

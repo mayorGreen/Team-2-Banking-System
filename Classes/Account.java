@@ -2,7 +2,8 @@ package Classes;
 
 import java.io.Serializable;
 
-// parent class for bank accounts
+// parent class for bank accounts. Bare accounts cannot be instantiated, therefore
+// the class is declared as abstract
 public abstract class Account implements Serializable{
     int accountNumber;
     String accountCustID;
@@ -39,6 +40,16 @@ public abstract class Account implements Serializable{
         loanPenalty = bool;
     }
 
+    // getters
+    public int getAccountNumber() {
+        return accountNumber;
+    }
+    public double getAccountBalance() {
+        return balance;
+    }
+    public String getAccountCustID() {
+        return accountCustID;
+    }
 
     // account functions
     void creditAccount(double amt) {
@@ -55,15 +66,4 @@ public abstract class Account implements Serializable{
 
     abstract void depositAmt(double amt);
 
-
-    public int getAccountNumber() {
-        return accountNumber;
-    }
-    public double getAccountBalance() {
-        return balance;
-    }
-    public String getAccountCustID() {
-        return accountCustID;
-    }
-
-}
+} // End Account

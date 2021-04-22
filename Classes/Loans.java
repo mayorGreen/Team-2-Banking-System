@@ -4,19 +4,22 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
+// TODO implement credit card
+// TODO implement compounding interest methods
+// class for loans. extends account
 public class Loans extends Account
 {
 
-    int loanID;
-    double interestRate;
-    Date dueDate;
+    int loanID; // unique loan id
+    double interestRate; // interest rate on loan
+    Date dueDate; // payment due date
     Date paymentNotificationDate;
-    double amountDue;
-    String type;
-    boolean missedPayment;
+    double amountDue; // amount due for this month
+    String type; // type of loan
+    boolean missedPayment; // raised if a payment is missed on the account
     Date lastPaymentDate;
 
+    // Constructor
     public Loans(List<String> list) {
         loanID = Integer.parseInt(list.get(0));
         accountCustID = list.get(1);
@@ -53,4 +56,4 @@ public class Loans extends Account
         
     }
 
-}
+} // end Loans

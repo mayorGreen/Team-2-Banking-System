@@ -5,9 +5,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+// savings account class. extends account
 public class SavingsAccount extends Account{
-    protected double interestRate;
-    protected Date dateCreated;
+
+    protected double interestRate; // interest rate
+    protected Date dateCreated; // date account created
     Date todaysDate;
     // TODO: implement a method to update the time for all accounts upon load
     // generic constructor
@@ -31,7 +33,7 @@ public class SavingsAccount extends Account{
         }
 
     }
-
+    // setters
     public void setInterestRate(double interestRate) {
         this.interestRate = interestRate;
     }
@@ -39,6 +41,7 @@ public class SavingsAccount extends Account{
         this.dateCreated = dateCreated;
     }
 
+    // getters
     public double getInterestRate() {
         return interestRate;
     }
@@ -51,21 +54,23 @@ public class SavingsAccount extends Account{
     }
     
     @Override
+    void withdrawAmt(double amt) {
+        if (amt <= balance) {
+            balance -= amt;
+        } else {
+            System.out.println("Insufficient Funds in savings account");
+        }
+    }
+
+    @Override
+    void depositAmt(double amt) {
+        balance += amt;
+    }
+
+    @Override
     public String toString() {
         return "Account Number: " + accountNumber + " CustID: " + accountCustID + " Balance: " 
         + balance + " Current Interest Rate: " + interestRate + " Date Account Opened: " + dateCreated;
     }
 
-    @Override
-    void withdrawAmt(double amt) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    void depositAmt(double amt) {
-        // TODO Auto-generated method stub
-        
-    }
-
-}
+} // end SavingsAccount
