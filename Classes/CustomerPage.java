@@ -5,6 +5,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
 import java.awt.event.*;
 import java.awt.CardLayout;
 import java.awt.Font;
@@ -25,7 +27,6 @@ public class CustomerPage extends JFrame implements ActionListener {
 
     CardLayout cl = new CardLayout();
 
-    JLabel hellonew = new JLabel("you made it");
     JLabel welcomeLabel = new JLabel("Hello");
 
     
@@ -155,30 +156,30 @@ public class CustomerPage extends JFrame implements ActionListener {
         welcomeLabel.setBounds(0,0,mainFrame.getWidth(),100); // position 0
         welcomeLabel.setFont(buttonFont);
         welcomeLabel.setText("Hello " + userID);
-        welcomeLabel.setHorizontalAlignment(JLabel.CENTER);
-        welcomeLabel.setHorizontalTextPosition(JLabel.CENTER);
+        welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        welcomeLabel.setHorizontalTextPosition(SwingConstants.CENTER);
 
         accountLabel.setBounds(0,0,mainFrame.getWidth(),100); // position 0
         accountLabel.setFont(buttonFont);
-        accountLabel.setHorizontalAlignment(JLabel.CENTER);
-        accountLabel.setHorizontalTextPosition(JLabel.CENTER);
+        accountLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        accountLabel.setHorizontalTextPosition(SwingConstants.CENTER);
 
         selectAmount.setBounds(0,0,mainFrame.getWidth(),100); // position 0
         selectAmount.setFont(buttonFont);
-        selectAmount.setHorizontalAlignment(JLabel.CENTER);
-        selectAmount.setHorizontalTextPosition(JLabel.CENTER);
+        selectAmount.setHorizontalAlignment(SwingConstants.CENTER);
+        selectAmount.setHorizontalTextPosition(SwingConstants.CENTER);
 
         
 
         // define panel 3 elements
-        balanceAmount.setHorizontalAlignment(JLabel.CENTER);
-        balanceAmount.setHorizontalTextPosition(JLabel.CENTER);
+        balanceAmount.setHorizontalAlignment(SwingConstants.CENTER);
+        balanceAmount.setHorizontalTextPosition(SwingConstants.CENTER);
         balanceAmount.setFont(buttonFont);
         balanceAmount.setBounds(400,250,200,50);
         balanceInquiryLabel.setBounds(0,0,mainFrame.getWidth(),100); // position 0
         balanceInquiryLabel.setFont(buttonFont);
-        balanceInquiryLabel.setHorizontalAlignment(JLabel.CENTER);
-        balanceInquiryLabel.setHorizontalTextPosition(JLabel.CENTER);
+        balanceInquiryLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        balanceInquiryLabel.setHorizontalTextPosition(SwingConstants.CENTER);
 
 
 
@@ -194,19 +195,19 @@ public class CustomerPage extends JFrame implements ActionListener {
         depositSubmitButton.setFont(buttonFont);
         insertFundsLabel.setBounds(0,0,mainFrame.getWidth(),300);
         insertFundsLabel.setFont(buttonFont);
-        insertFundsLabel.setHorizontalAlignment(JLabel.CENTER);
-        insertFundsLabel.setHorizontalTextPosition(JLabel.CENTER);
+        insertFundsLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        insertFundsLabel.setHorizontalTextPosition(SwingConstants.CENTER);
         depositAmtLabel.setBounds(400,250,200,100);
-        depositAmtLabel.setHorizontalAlignment(JLabel.CENTER);
-        depositAmtLabel.setHorizontalTextPosition(JLabel.CENTER);
+        depositAmtLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        depositAmtLabel.setHorizontalTextPosition(SwingConstants.CENTER);
         depositAmtLabel.setFont(buttonFont);
 
 
         // define panel 6 elements
         enterAmtLabel.setBounds(0,0,mainFrame.getWidth(),100);
         enterAmtLabel.setFont(buttonFont);
-        enterAmtLabel.setHorizontalAlignment(JLabel.CENTER);
-        enterAmtLabel.setHorizontalTextPosition(JLabel.CENTER);
+        enterAmtLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        enterAmtLabel.setHorizontalTextPosition(SwingConstants.CENTER);
 
         enterAmt.setBounds(400,300,200,50);
         enterAmt.setEditable(false);
@@ -226,8 +227,8 @@ public class CustomerPage extends JFrame implements ActionListener {
         // define panel 7 elements
         confirmationLabel.setBounds(0,0,mainFrame.getWidth(),500);
         confirmationLabel.setFont(new Font("Arial", Font.PLAIN, 36));
-        confirmationLabel.setHorizontalAlignment(JLabel.CENTER);
-        confirmationLabel.setHorizontalTextPosition(JLabel.CENTER);
+        confirmationLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        confirmationLabel.setHorizontalTextPosition(SwingConstants.CENTER);
 
 
         // add elements to panel 1
@@ -351,6 +352,7 @@ public class CustomerPage extends JFrame implements ActionListener {
             // return money
             depositAmtLabel.setText("$0.00");
             panel1.add(backButton);
+            panel1.add(endButton);
             cl.show(panelContainer, "1");
         }
         
