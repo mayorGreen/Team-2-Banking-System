@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Customer implements Serializable{
 
+    // TODO: make pin number from last 4 ssn
     private String ssn;
     private String streetAddress;
     private String city;
