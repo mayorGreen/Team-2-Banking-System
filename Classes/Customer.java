@@ -2,8 +2,10 @@ package Classes;
 import java.io.Serializable;
 import java.util.List;
 
+// main class for customer objects, contains customer information
 public class Customer implements Serializable{
 
+    // TODO: make pin number from last 4 ssn
     private String ssn;
     private String streetAddress;
     private String city;
@@ -33,7 +35,7 @@ public class Customer implements Serializable{
     }
 
     
-    
+    // getters
     public String getFirstName() {
         return firstName;
     }public String getCity() {
@@ -58,5 +60,4 @@ public class Customer implements Serializable{
 
     }
 
-
-}
+} // end Customer

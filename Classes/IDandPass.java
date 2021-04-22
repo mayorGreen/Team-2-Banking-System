@@ -7,6 +7,7 @@ public class IDandPass {
     public String username;
 
     public IDandPass(){
+        // TODO: pass in customer list, set unique values for login stuff
         loginInfo.put("person1", "password");
         loginInfo.put("person2", "password2");
         loginInfo.put("person3", "password3");

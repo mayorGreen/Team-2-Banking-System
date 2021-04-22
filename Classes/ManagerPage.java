@@ -7,6 +7,9 @@ import java.awt.Font;
 import java.awt.Color;
 import java.awt.Rectangle;
 
+// TODO add preliminary lookup pages, change so looks up customer id, returns a list of accounts, manager selects account, continues
+// TODO add 'create new account' to first page, add radio button group for checking, savings, etc (loans may not be neccessary as its on the next screen)
+
 public class ManagerPage extends JFrame implements ActionListener {
 
 	String[] listTestData = {"Transaction 1   -    $20.23", 
@@ -53,7 +56,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 
 	JPanel[] panels = {panel1,panel2,panel3,panel4,panel5,panel6,panel7,panel8,panel9,panel10,panel11,panel12,panel13};
 
-	JLabel bankNameLabel = new JLabel("Bank Name here");
+	JLabel bankNameLabel = new JLabel("My Bank");
 	JButton backButton = new JButton("Back"); // sends teller back to option panel 2
 	JButton exitButton = new JButton("Exit"); // sends teller back to account lookup
 	JButton logoutButton = new JButton("Logout"); // logs teller out
@@ -144,7 +147,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 	JRadioButton fifteenButton = new JRadioButton("15yr");
 	JRadioButton thirtyButton = new JRadioButton("30yr");
 	ButtonGroup loanButtons = new ButtonGroup();
-	JLabel longInterestRateLabel = new JLabel("InterestRate");
+	JLabel longInterestRateLabel = new JLabel("Interest Rate:");
 	JLabel longPaymentPlanLabel = new JLabel("Monthly Payment Plan:");
 
 	JTextField longAmountBorrowedField = new JTextField();
@@ -154,8 +157,9 @@ public class ManagerPage extends JFrame implements ActionListener {
 	JButton longLoanSubmitButton = new JButton("Submit");
 
     // panel 13 -- loan payment page
-	JScrollPane loanListWindow = new JScrollPane();
-	JLabel loanPaymentAmtLabel = new JLabel();
+	JScrollPane loanListWindow = new JScrollPane(); // TODO use this later?
+	JLabel loanPaymentAmtLabel = new JLabel("Enter Payment Amount");
+	JTextField loanPaymentAmtField = new JTextField();
 	JButton loanCompletePaymentButton = new JButton("Submit");
 	
 
@@ -174,7 +178,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 						debitSubmitButton,transferSubmitButton,
                         shortTermLoanButton,longTermLoanButton,
                         loanPaymentButton,shortLoanSubmitButton,
-						longLoanSubmitButton};
+						longLoanSubmitButton,loanCompletePaymentButton};
 
 	
 	CardLayout cl = new CardLayout();
@@ -200,12 +204,18 @@ public class ManagerPage extends JFrame implements ActionListener {
 		mainFrame.setResizable(false);
 		mainFrame.setVisible(true);
 
-		// set button fonts
+		// set button fonts, action listeners
 		for(JButton button : buttons){
 			button.setFont(buttonFont);
 			button.setFocusable(false);
 			button.addActionListener(this);
 		}
+
+		// set button fonts, action listeners for JRadioButtons
+		fifteenButton.addActionListener(this);
+		fifteenButton.setFont(new Font("Arial", Font.PLAIN, 22));
+		thirtyButton.addActionListener(this);
+		thirtyButton.setFont(new Font("Arial", Font.PLAIN, 22));
 
 
 		// define utility elements
@@ -216,7 +226,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 		bankNameLabel.setBounds(header);
 		bankNameLabel.setFocusable(true);
 		bankNameLabel.setFont(labelFont);
-		bankNameLabel.setHorizontalAlignment(JLabel.CENTER);
+		bankNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		acctNumLookupField.setForeground(Color.gray);
 		acctNumLookupField.setText("Enter Account Number");
 		acctNumLookupField.addFocusListener(new FocusListener() {
@@ -274,11 +284,11 @@ public class ManagerPage extends JFrame implements ActionListener {
 		stopPaymentLabel.setFont(labelFont);
 		stopPaymentLabel.setBounds(header);
 		stopPaymentLabel.setFocusable(true);
-		stopPaymentLabel.setHorizontalAlignment(JLabel.CENTER);
+		stopPaymentLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
 		stopCheckNumLabel.setFont(labelFont);
 		stopCheckNumLabel.setBounds(200,250,175,50);
-		stopCheckNumLabel.setHorizontalAlignment(JLabel.TRAILING);
+		stopCheckNumLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 
 		checkNumField.setBounds(center);
 		submitStopButton.setBounds(bottomRight);
@@ -292,10 +302,10 @@ public class ManagerPage extends JFrame implements ActionListener {
 		// define panel 4 elements
 		balanceInquiryLabel.setFont(labelFont);
 		balanceInquiryLabel.setBounds(header);
-		balanceInquiryLabel.setHorizontalAlignment(JLabel.CENTER);
+		balanceInquiryLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		balanceAmountLabel.setBounds(center);
 		balanceAmountLabel.setFont(labelFont);
-		balanceAmountLabel.setHorizontalAlignment(JLabel.CENTER);
+		balanceAmountLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		// add elements to panel 4
 		panel4.add(balanceInquiryLabel);
@@ -304,7 +314,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 		// define panel 5 elements
 		debitListLabel.setFont(labelFont);
 		debitListLabel.setBounds(header);
-		debitListLabel.setHorizontalAlignment(JLabel.CENTER);
+		debitListLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		debitList.setListData(listTestData);
 		scrollPane.setBounds(100,125,800,300);
 
@@ -315,7 +325,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 		// define panel 6 elements
 		creditAcctLabel.setFont(labelFont);
 		creditAcctLabel.setBounds(header);
-		creditAcctLabel.setHorizontalAlignment(JLabel.CENTER);
+		creditAcctLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		creditAmountField.setBounds(center);
 		checkDepositButton.setBounds(350,350,300,50);
 		creditSubmitButton.setBounds(bottomRight);
@@ -330,9 +340,9 @@ public class ManagerPage extends JFrame implements ActionListener {
 		checkAmtLabel.setFont(labelFont);
 		checkNumLabel.setFont(labelFont);
 		checkDepositLabel.setFont(labelFont);
-		checkAmtLabel.setHorizontalAlignment(JLabel.TRAILING);
-		checkNumLabel.setHorizontalAlignment(JLabel.TRAILING);
-		checkDepositLabel.setHorizontalAlignment(JLabel.CENTER);
+		checkAmtLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		checkNumLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		checkDepositLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
 		checkDepositLabel.setBounds(header);
 		checkAmountField.setBounds(400,225,200,50);
@@ -353,7 +363,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 		debitSubmitButton.setBounds(bottomRight);
 		debitAmountLabel.setBounds(100,250,275,50);
 		debitAmountLabel.setFont(labelFont);
-		debitAmountLabel.setHorizontalAlignment(JLabel.TRAILING);
+		debitAmountLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 		debitAmountField.setBounds(center);
 		
 		// add elements to panel 8
@@ -367,10 +377,10 @@ public class ManagerPage extends JFrame implements ActionListener {
 		toAcctLabel.setFont(labelFont);
 		transferAmountLabel.setFont(labelFont);
 
-		fromAcctLabel.setHorizontalAlignment(JLabel.TRAILING);
-		toAcctLabel.setHorizontalAlignment(JLabel.TRAILING);
-		transferAmountLabel.setHorizontalAlignment(JLabel.TRAILING);
-		transferLabel.setHorizontalAlignment(JLabel.CENTER);
+		fromAcctLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		toAcctLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		transferAmountLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		transferLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
 		transferLabel.setBounds(header);
 		fromAcctLabel.setBounds(100,225,275,50);
@@ -395,7 +405,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 		// define panel 10 elements
 		confirmationLabel.setFont(labelFont);
 		confirmationLabel.setBounds(300,200,400,150);
-		confirmationLabel.setHorizontalAlignment(JLabel.CENTER);
+		confirmationLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		// add elements to panel 10
 		panel10.add(confirmationLabel);
@@ -406,9 +416,21 @@ public class ManagerPage extends JFrame implements ActionListener {
 		interestRateLabel.setFont(labelFont);
 		paymentPlanLabel.setFont(labelFont);
 
-		amountBorrowedLabel.setHorizontalAlignment(JLabel.TRAILING);
-		interestRateLabel.setHorizontalAlignment(JLabel.TRAILING);
-		paymentPlanLabel.setHorizontalAlignment(JLabel.TRAILING);
+		amountBorrowedLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		interestRateLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		paymentPlanLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+
+		
+		amountBorrowedLabel.setBounds(200,150,250,50);
+		interestRateLabel.setBounds(200,225,250,50);
+		paymentPlanLabel.setBounds(150,300,300,50);
+		
+		amountBorrowedField.setBounds(500,150,200,50);
+		interestRateField.setBounds(500,225,200,50);
+		paymentPlanField.setBounds(500,300,200,50);
+
+		shortLoanSubmitButton.setBounds(bottomRight);
+		
 		
 		// add elements to panel 11
 		panel11.add(amountBorrowedLabel);
@@ -424,11 +446,28 @@ public class ManagerPage extends JFrame implements ActionListener {
 		loanTermSelectLabel.setFont(labelFont);
 		longInterestRateLabel.setFont(labelFont);
 		longPaymentPlanLabel.setFont(labelFont);
+		longLoanSubmitButton.setFont(buttonFont);
 
-		longAmountBorrowedLabel.setHorizontalAlignment(JLabel.TRAILING);
-		loanTermSelectLabel.setHorizontalAlignment(JLabel.TRAILING);
-		longInterestRateLabel.setHorizontalAlignment(JLabel.TRAILING);
-		longPaymentPlanLabel.setHorizontalAlignment(JLabel.TRAILING);
+		longAmountBorrowedLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		loanTermSelectLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		longInterestRateLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		longPaymentPlanLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+
+
+		fifteenButton.setBounds(500,225,100,50);
+		thirtyButton.setBounds(600,225,100,50);
+
+		longAmountBorrowedLabel.setBounds(200,150,250,50);
+		loanTermSelectLabel.setBounds(200,225,250,50);
+		longInterestRateLabel.setBounds(200,300,250,50);
+		longPaymentPlanLabel.setBounds(150,375,300,50);
+
+		longAmountBorrowedField.setBounds(500,150,200,50);
+		longInterestRateField.setBounds(500,300,200,50);
+		longPaymentPlanField.setBounds(500,375,200,50);
+
+		longLoanSubmitButton.setBounds(bottomRight);
+
 
 		// add elements to panel 12
 		panel12.add(longAmountBorrowedLabel);
@@ -440,13 +479,23 @@ public class ManagerPage extends JFrame implements ActionListener {
 		panel12.add(longAmountBorrowedField);
 		panel12.add(longInterestRateField);
 		panel12.add(longPaymentPlanField);
+		panel12.add(longLoanSubmitButton);
 
 
 		// define panel 13 elements
+		loanPaymentAmtLabel.setFont(labelFont);
+		loanPaymentAmtLabel.setBounds(150,300,300,50);
+		loanPaymentAmtLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+
+		loanPaymentAmtField.setBounds(500,300,200,50);
+
+
+		loanCompletePaymentButton.setBounds(bottomRight);
 
 		// add elements to panel 13
-		panel13.add(loanListWindow);
+		//panel13.add(loanListWindow);
 		panel13.add(loanPaymentAmtLabel);
+		panel13.add(loanPaymentAmtField);
 		panel13.add(loanCompletePaymentButton);
 	
 		
@@ -616,13 +665,13 @@ public class ManagerPage extends JFrame implements ActionListener {
 		// panel 12 button (long term loan page)
 		if(e.getSource() == longLoanSubmitButton) {
 			panel10.add(backButton);
-			cl.show(panelContainer, "13");
+			cl.show(panelContainer, "10");
 		}
 
 		// panel 13 button (loan payment page) 
 		if(e.getSource() == loanCompletePaymentButton) {
-			// reduce amount owed from SELECTED loan
-			// maybe add a confirmation prompt here?
+			// TODO reduce amount owed from SELECTED loan
+			// TODO maybe add a confirmation prompt here?
 			panel10.add(backButton);
 			cl.show(panelContainer, "10");
 		}
