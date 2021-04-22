@@ -62,6 +62,43 @@ public class ManagerPage extends JFrame implements ActionListener {
 	JTextField acctNumLookupField = new JTextField();
 	JButton acctNumLookupButton = new JButton("Submit");
 	JLabel acctNumLookupFailLabel = new JLabel(); // used if account number lookup fails
+	
+	JButton createAccount = new JButton("Create Account");
+    final JLabel label = new JLabel();
+        createAccount.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String usrResult = (String)JOptionPane.showInputDialog(
+                    mainFrame,
+                    "Enter username",
+                    "Username",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    null,
+                    null
+            );
+            if(usrResult != null && usrResult.length() > 0){
+                String pswResult = (String)JOptionPane.showInputDialog(
+                        mainFrame,
+                        "Enter password",
+                        "Password",
+                        JOptionPane.PLAIN_MESSAGE,
+                        null,
+                        null,
+                        null
+                );
+                if(pswResult != null && pswResult.length() > 0) {
+                    label.setText("Welcome " + usrResult);
+
+                }
+            }else {
+                label.setText("Invalid");
+            }
+        }
+        panel1.add(createAccount);
+        panel1.add(label);
+        mainFrame.getContentPane().add(panel1, BorderLayout.CENTER);
+    }
 
 	// panel 2 elements -- lookup successful
 	JButton stopPaymentButton = new JButton("Stop Payment");
@@ -625,6 +662,28 @@ public class ManagerPage extends JFrame implements ActionListener {
 			// maybe add a confirmation prompt here?
 			panel10.add(backButton);
 			cl.show(panelContainer, "10");
+			
+			 JLabel label2 = new JLabel("Confirm Loan?");
+            label2.setVerticalAlignment(SwingConstants.TOP);
+            label2.setHorizontalAlignment(SwingConstants.CENTER);
+            label2.setBounds(20, 80, 200, 20);
+            panel13.add(label2);
+            UIManager.put("OptionPane.minimumSize", new Dimension(400, 200));
+            int res = JOptionPane.showConfirmDialog(null, panel13, "LoanConfirm",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.PLAIN_MESSAGE);
+            if (res == 0) {
+                System.out.println("Pressed YES");
+            } else if (res == 1) {
+                System.out.println("Pressed NO");
+            } else {
+                System.out.println("Pressed CANCEL");
+
+
+                panel10.add(backButton);
+                cl.show(panelContainer, "10");
+            }
+        }
 		}
 
 
