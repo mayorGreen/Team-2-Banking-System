@@ -6,6 +6,7 @@ import java.awt.CardLayout;
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.Rectangle;
+// TODO add radio button to select from checking/savings account when inputting account number
 
 public class TellerPage extends JFrame implements ActionListener {
 
@@ -50,7 +51,7 @@ public class TellerPage extends JFrame implements ActionListener {
 
 	JPanel[] panels = {panel1,panel2,panel3,panel4,panel5,panel6,panel7,panel8,panel9,panel10};
 
-	JLabel bankNameLabel = new JLabel("Bank Name here");
+	JLabel bankNameLabel = new JLabel("My Bank");
 	JButton backButton = new JButton("Back"); // sends teller back to option panel 2
 	JButton exitButton = new JButton("Exit"); // sends teller back to account lookup
 	JButton logoutButton = new JButton("Logout"); // logs teller out
@@ -173,7 +174,7 @@ public class TellerPage extends JFrame implements ActionListener {
 		bankNameLabel.setBounds(header);
 		bankNameLabel.setFocusable(true);
 		bankNameLabel.setFont(labelFont);
-		bankNameLabel.setHorizontalAlignment(JLabel.CENTER);
+		bankNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		acctNumLookupField.setForeground(Color.gray);
 		acctNumLookupField.setText("Enter Account Number");
 		acctNumLookupField.addFocusListener(new FocusListener() {
@@ -225,11 +226,11 @@ public class TellerPage extends JFrame implements ActionListener {
 		stopPaymentLabel.setFont(labelFont);
 		stopPaymentLabel.setBounds(header);
 		stopPaymentLabel.setFocusable(true);
-		stopPaymentLabel.setHorizontalAlignment(JLabel.CENTER);
+		stopPaymentLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
 		stopCheckNumLabel.setFont(labelFont);
 		stopCheckNumLabel.setBounds(200,250,175,50);
-		stopCheckNumLabel.setHorizontalAlignment(JLabel.TRAILING);
+		stopCheckNumLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 
 		checkNumField.setBounds(center);
 		submitStopButton.setBounds(bottomRight);
@@ -243,10 +244,10 @@ public class TellerPage extends JFrame implements ActionListener {
 		// define panel 4 elements
 		balanceInquiryLabel.setFont(labelFont);
 		balanceInquiryLabel.setBounds(header);
-		balanceInquiryLabel.setHorizontalAlignment(JLabel.CENTER);
+		balanceInquiryLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		balanceAmountLabel.setBounds(center);
 		balanceAmountLabel.setFont(labelFont);
-		balanceAmountLabel.setHorizontalAlignment(JLabel.CENTER);
+		balanceAmountLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		// add elements to panel 4
 		panel4.add(balanceInquiryLabel);
@@ -255,7 +256,7 @@ public class TellerPage extends JFrame implements ActionListener {
 		// define panel 5 elements
 		debitListLabel.setFont(labelFont);
 		debitListLabel.setBounds(header);
-		debitListLabel.setHorizontalAlignment(JLabel.CENTER);
+		debitListLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		debitList.setListData(listTestData);
 		scrollPane.setBounds(100,125,800,300);
 
@@ -266,7 +267,7 @@ public class TellerPage extends JFrame implements ActionListener {
 		// define panel 6 elements
 		creditAcctLabel.setFont(labelFont);
 		creditAcctLabel.setBounds(header);
-		creditAcctLabel.setHorizontalAlignment(JLabel.CENTER);
+		creditAcctLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		creditAmountField.setBounds(center);
 		checkDepositButton.setBounds(350,350,300,50);
 		creditSubmitButton.setBounds(bottomRight);
@@ -281,9 +282,9 @@ public class TellerPage extends JFrame implements ActionListener {
 		checkAmtLabel.setFont(labelFont);
 		checkNumLabel.setFont(labelFont);
 		checkDepositLabel.setFont(labelFont);
-		checkAmtLabel.setHorizontalAlignment(JLabel.TRAILING);
-		checkNumLabel.setHorizontalAlignment(JLabel.TRAILING);
-		checkDepositLabel.setHorizontalAlignment(JLabel.CENTER);
+		checkAmtLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		checkNumLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		checkDepositLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
 		checkDepositLabel.setBounds(header);
 		checkAmountField.setBounds(400,225,200,50);
@@ -304,7 +305,7 @@ public class TellerPage extends JFrame implements ActionListener {
 		debitSubmitButton.setBounds(bottomRight);
 		debitAmountLabel.setBounds(100,250,275,50);
 		debitAmountLabel.setFont(labelFont);
-		debitAmountLabel.setHorizontalAlignment(JLabel.TRAILING);
+		debitAmountLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 		debitAmountField.setBounds(center);
 		
 		// add elements to panel 8
@@ -318,10 +319,10 @@ public class TellerPage extends JFrame implements ActionListener {
 		toAcctLabel.setFont(labelFont);
 		transferAmountLabel.setFont(labelFont);
 
-		fromAcctLabel.setHorizontalAlignment(JLabel.TRAILING);
-		toAcctLabel.setHorizontalAlignment(JLabel.TRAILING);
-		transferAmountLabel.setHorizontalAlignment(JLabel.TRAILING);
-		transferLabel.setHorizontalAlignment(JLabel.CENTER);
+		fromAcctLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		toAcctLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		transferAmountLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		transferLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
 		transferLabel.setBounds(header);
 		fromAcctLabel.setBounds(100,225,275,50);
@@ -346,7 +347,7 @@ public class TellerPage extends JFrame implements ActionListener {
 		// define panel 10 elements
 		confirmationLabel.setFont(labelFont);
 		confirmationLabel.setBounds(300,200,400,150);
-		confirmationLabel.setHorizontalAlignment(JLabel.CENTER);
+		confirmationLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		// add elements to panel 10
 		panel10.add(confirmationLabel);
