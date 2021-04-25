@@ -28,9 +28,6 @@ class Main{
         List<CD> cdList;
         List<Loans> loanList;
 
-        IDandPass idAndPasswords = new IDandPass(); // initialize id and passwords --- this can be replaced for simply acct numbers instead
-        LoginPage loginPage = new LoginPage(idAndPasswords.getLoginInfo()); // generate login page
-
         // check if no prior record for customers exists
         if(!(new File("customerObj.txt").exists())){
             // get data from csv file
@@ -106,7 +103,11 @@ class Main{
             loanList = Parser.readObjectRecords("loansObj.txt");
         }
 
+        HelperFunc.updateCustomers(customerList);
 
+        IDandPass idAndPasswords = new IDandPass(customerList); // initialize id and passwords --- this can be replaced for simply acct numbers instead
+        idAndPasswords.listUsers();
+        LoginPage loginPage = new LoginPage(idAndPasswords.getLoginInfo(),customerList, checkingList, savingsList, cdList, loanList); // generate login page
         System.out.println(customerList.get(0).toString()); // print first cust
 
     } // end main method
