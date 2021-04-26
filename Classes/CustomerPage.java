@@ -8,10 +8,18 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import java.awt.event.*;
+import java.util.List;
 import java.awt.CardLayout;
 import java.awt.Font;
 
 public class CustomerPage extends JFrame implements ActionListener {
+
+    private List<Customer> customerList;
+    private List<Checking> checkingList;
+    private List<SavingsAccount> savingsList;
+    private List<CD> cdList;
+    private List<Loans> loanList;
+
     JFrame mainFrame = new JFrame();
 
     JPanel panelContainer = new JPanel();
@@ -23,13 +31,14 @@ public class CustomerPage extends JFrame implements ActionListener {
     JPanel panel5 = new JPanel(); // panel 5 is for Deposits
     JPanel panel6 = new JPanel(); // panel 6 is for entering withdrawal amount
     JPanel panel7 = new JPanel(); // panel 7 is transaction confirmation
+
+    JPanel[] panels = {panel1,panel2,panel3,panel4,panel5,panel6,panel7};
  
 
     CardLayout cl = new CardLayout();
 
     JLabel welcomeLabel = new JLabel("Hello");
 
-    
     JLabel selectAmount = new JLabel("Select Amount");
 
 
@@ -58,7 +67,7 @@ public class CustomerPage extends JFrame implements ActionListener {
 
     // panel 5 elements
     // this panel has it's own back button because it functions differently, it will both return deposit and go back
-    JButton returnFunds = new JButton("Return Funds");
+    JButton returnFundsButton = new JButton("Return Funds");
     JButton depositBackButton = new JButton("Back");
     JButton depositSubmitButton = new JButton("Submit");
     JLabel insertFundsLabel = new JLabel("Insert Checks/Bills");
@@ -83,65 +92,65 @@ public class CustomerPage extends JFrame implements ActionListener {
     JButton endButton = new JButton("End");
     
     Font buttonFont = new Font("Arial", Font.PLAIN, 28); // button font
+
+    JButton[] buttons = {checkingButton,
+                        savingsButton,balanceButton,withdrawButton,
+                        depositButton,tenButton,twentyButton,
+                        fourtyButton,fiftyButton,hundredButton,
+                        customAmountButton,returnFundsButton,depositBackButton,
+                        depositSubmitButton,withdrawMinusButton,withdrawPlusButton,
+                        withdrawCustomSubmitButton,backButton,endButton};
     
-    CustomerPage(String userID){
+    CustomerPage(String userID, List<Customer> customerList, List<Checking> checkingList, List<SavingsAccount> savingsList, List<CD> cdList, List<Loans> loanList){
+
+        this.customerList = customerList;
+        this.checkingList = checkingList;
+        this.savingsList = savingsList;
+        this.cdList = cdList;
+        this.loanList = loanList;
 
         panelContainer.setLayout(cl);
 
+        for(JPanel panel : panels){
+			panel.setLayout(null);
+		}
+
+        // set button fonts, action listeners
+		for(JButton button : buttons){
+			button.setFont(buttonFont);
+			button.setFocusable(false);
+			button.addActionListener(this);
+		}
+
         // set button fonts
         customAmountButton.setFont(new Font("Arial", Font.PLAIN, 22));
-        checkingButton.setFont(buttonFont);
-        savingsButton.setFont(buttonFont);
-        balanceButton.setFont(buttonFont);
-        withdrawButton.setFont(buttonFont);
-        depositButton.setFont(buttonFont);
-        tenButton.setFont(buttonFont);
-        twentyButton.setFont(buttonFont);
-        fourtyButton.setFont(buttonFont);
-        fiftyButton.setFont(buttonFont);
-        hundredButton.setFont(buttonFont);
-
-        backButton.setFont(buttonFont);
-        endButton.setFont(buttonFont);
 
         // add ActionListeners and set button bounds
-        checkingButton.addActionListener(this);
+        
         checkingButton.setBounds(125,125,250,80); // position 1
 
-        savingsButton.addActionListener(this);
         savingsButton.setBounds(125,225,250,80); // postion 2
-        
-        endButton.addActionListener(this);
+     
         endButton.setBounds(600,535,250,80); // end position
 
-        backButton.addActionListener(this);
         backButton.setBounds(125,535,250,80); // back position
 
-        balanceButton.addActionListener(this);
         balanceButton.setBounds(125,125,250,80); // position 1
 
-        withdrawButton.addActionListener(this);
         withdrawButton.setBounds(125,225,250,80); // postion 2
 
-        depositButton.addActionListener(this);
         depositButton.setBounds(125,325,250,80); // position 3
 
-        tenButton.addActionListener(this);
         tenButton.setBounds(125,125,250,80); // position 1
 
-        twentyButton.addActionListener(this);
         twentyButton.setBounds(125,225,250,80); // position 2
 
-        fourtyButton.addActionListener(this);
         fourtyButton.setBounds(125,325,250,80); // position 3
 
-        fiftyButton.addActionListener(this);
         fiftyButton.setBounds(600,125,250,80); // position 4
 
-        hundredButton.addActionListener(this);
         hundredButton.setBounds(600,225,250,80); // position 5
 
-        customAmountButton.addActionListener(this);
         customAmountButton.setBounds(600,325,250,100); // position 6
 
         
@@ -184,15 +193,9 @@ public class CustomerPage extends JFrame implements ActionListener {
 
 
         // define panel 5 elements
-        returnFunds.addActionListener(this);
-        returnFunds.setBounds(375,350,250,80);
-        returnFunds.setFont(buttonFont);
-        depositBackButton.addActionListener(this);
+        returnFundsButton.setBounds(375,350,250,80);
         depositBackButton.setBounds(125,535,250,80);
-        depositBackButton.setFont(buttonFont);
-        depositSubmitButton.addActionListener(this);
         depositSubmitButton.setBounds(600,535,250,80);
-        depositSubmitButton.setFont(buttonFont);
         insertFundsLabel.setBounds(0,0,mainFrame.getWidth(),300);
         insertFundsLabel.setFont(buttonFont);
         insertFundsLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -212,16 +215,11 @@ public class CustomerPage extends JFrame implements ActionListener {
         enterAmt.setBounds(400,300,200,50);
         enterAmt.setEditable(false);
 
-        withdrawMinusButton.addActionListener(this);
         withdrawMinusButton.setBounds(325, 300, 50,50);
-        withdrawMinusButton.setFont(buttonFont);
         withdrawMinusButton.setEnabled(false);
 
-        withdrawPlusButton.addActionListener(this);
         withdrawPlusButton.setBounds(625, 300, 50,50);
-        withdrawPlusButton.setFont(buttonFont);
 
-        withdrawCustomSubmitButton.addActionListener(this);
         withdrawCustomSubmitButton.setBounds(450, 375, 100, 50);
 
         // define panel 7 elements
@@ -232,14 +230,14 @@ public class CustomerPage extends JFrame implements ActionListener {
 
 
         // add elements to panel 1
-        panel1.setLayout(null);
+
         panel1.add(welcomeLabel);
         panel1.add(checkingButton);
         panel1.add(savingsButton);
         panel1.add(endButton);
 
         // add elements to panel 2
-        panel2.setLayout(null);
+
         panel2.add(accountLabel);
         panel2.add(balanceButton);
         panel2.add(withdrawButton);
@@ -247,13 +245,13 @@ public class CustomerPage extends JFrame implements ActionListener {
         panel2.add(backButton);
 
         // add elements to panel 3
-        panel3.setLayout(null);
+
         panel3.add(balanceInquiryLabel);
         panel3.add(balanceAmount);
 
 
         // add elements to panel 4
-        panel4.setLayout(null);
+
         panel4.add(tenButton);
         panel4.add(twentyButton);
         panel4.add(fourtyButton);
@@ -262,15 +260,15 @@ public class CustomerPage extends JFrame implements ActionListener {
         panel4.add(customAmountButton);
 
         // add elements to panel 5
-        panel5.setLayout(null);
+
         panel5.add(depositBackButton);
         panel5.add(depositSubmitButton);
-        panel5.add(returnFunds);
+        panel5.add(returnFundsButton);
         panel5.add(insertFundsLabel);
         panel5.add(depositAmtLabel);
 
         // add elements to panel 6
-        panel6.setLayout(null);
+
         panel6.add(enterAmtLabel);
         panel6.add(enterAmt);
         panel6.add(withdrawMinusButton);
@@ -278,7 +276,7 @@ public class CustomerPage extends JFrame implements ActionListener {
         panel6.add(withdrawCustomSubmitButton);
 
         // add elements to panel 7
-        panel7.setLayout(null);
+
         panel7.add(confirmationLabel);
 
 
@@ -306,13 +304,12 @@ public class CustomerPage extends JFrame implements ActionListener {
         // User selects end
         if(e.getSource() == endButton){
             mainFrame.dispose();
-            IDandPass idAndPasswords = new IDandPass();
-            new LoginPage(idAndPasswords.getLoginInfo());
+            IDandPass idAndPasswords = new IDandPass(customerList);
+            new LoginPage(idAndPasswords.getLoginInfo(), customerList, checkingList, savingsList, cdList, loanList);
         }
 
         // User selects checking acct
         if(e.getSource() == checkingButton) {
-            System.out.println("done");
             accountLabel.setText("Checking");
             panel2.add(endButton);
             panel2.add(backButton);

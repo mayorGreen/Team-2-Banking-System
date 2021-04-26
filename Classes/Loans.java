@@ -18,6 +18,8 @@ public class Loans extends Account
     String type; // type of loan
     boolean missedPayment; // raised if a payment is missed on the account
     Date lastPaymentDate;
+    CreditCard card; // if account type is "Credit Card" then a credit card will be created
+    double limit; // if account type is credit card then a limit will be set
 
     // Constructor
     public Loans(List<String> list) {
@@ -42,6 +44,12 @@ public class Loans extends Account
         } else {
             missedPayment = false;
         }
+
+        if (type.equals("Credit Card")){
+            card = new CreditCard(accountCustID, 2, (accountNumber + accountCustID.substring(0,2)));
+            setLimit(30000);
+        }
+
     }
 
     @Override
@@ -54,6 +62,46 @@ public class Loans extends Account
     void depositAmt(double amt) {
         // TODO Auto-generated method stub
         
+    }
+
+    // getters
+    public double getLimit() {
+        return limit;
+    }
+    public Date getLastPaymentDate() {
+        return lastPaymentDate;
+    }
+    public Date getDueDate() {
+        return dueDate;
+    }
+    public double getAmountDue() {
+        return amountDue;
+    }
+    public double getInterestRate() {
+        return interestRate;
+    }
+    public boolean isMissedPayment() {
+        return missedPayment;
+    }
+
+    // setters
+    public void setAmountDue(double amountDue) {
+        this.amountDue = amountDue;
+    }
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
+    public void setInterestRate(double interestRate) {
+        this.interestRate = interestRate;
+    }
+    public void setLastPaymentDate(Date lastPaymentDate) {
+        this.lastPaymentDate = lastPaymentDate;
+    }
+    public void setMissedPayment(boolean missedPayment) {
+        this.missedPayment = missedPayment;
+    }
+    public void setLimit(double limit) {
+        this.limit = limit;
     }
 
 } // end Loans

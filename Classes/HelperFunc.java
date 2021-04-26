@@ -1,9 +1,10 @@
 package Classes;
-
 import java.util.List;
 
 // some helper functions vital for system functionality
 public class HelperFunc {
+
+    private HelperFunc(){}
 
     // creates a new customer object
     public static Customer createCustomer(String ssn, String streetAddress, String city, String state, String zip, String firstName, String lastName) {
@@ -21,6 +22,7 @@ public class HelperFunc {
         for(int i=0; i<custList.size(); i++){
             if(custList.get(i).getSsn().equals(customerID)){
                 custList.remove(i);
+                break;
             }
         }
     }

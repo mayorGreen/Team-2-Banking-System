@@ -2,6 +2,8 @@ package Classes;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.HashMap;
+import java.util.List;
 import java.awt.CardLayout;
 import java.awt.Font;
 import java.awt.Color;
@@ -11,6 +13,12 @@ import java.awt.Rectangle;
 // TODO add 'create new account' to first page, add radio button group for checking, savings, etc (loans may not be neccessary as its on the next screen)
 
 public class ManagerPage extends JFrame implements ActionListener {
+
+	private List<Customer> customerList;
+    private List<Checking> checkingList;
+    private List<SavingsAccount> savingsList;
+    private List<CD> cdList;
+    private List<Loans> loanList;
 
 	String[] listTestData = {"Transaction 1   -    $20.23", 
 							"Transaction 2   -    $122.30", 
@@ -94,8 +102,8 @@ public class ManagerPage extends JFrame implements ActionListener {
 	// NOTE 3: Optionally, ArrayList has a .toArray() method which can convert data to a simple array for import into JList
 	JList<String> debitList = new JList<>();
 	JLabel debitListLabel = new JLabel("Debits Inquiry");
-	JScrollPane scrollPane = new JScrollPane(debitList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
-											JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	JScrollPane scrollPane = new JScrollPane(debitList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
+											ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
 	// panel 6 elements -- credit account
 	JLabel creditAcctLabel = new JLabel("Credit Account");
@@ -185,7 +193,13 @@ public class ManagerPage extends JFrame implements ActionListener {
 	Font labelFont = new Font("Arial", Font.PLAIN, 28); // default label font
 	Font buttonFont = new Font("Arial", Font.PLAIN, 26); // default button font
 
-    ManagerPage(String userID){
+    ManagerPage(String userID, List<Customer> customerList, List<Checking> checkingList, List<SavingsAccount> savingsList, List<CD> cdList, List<Loans> loanList){
+
+		this.customerList = customerList;
+        this.checkingList = checkingList;
+        this.savingsList = savingsList;
+        this.cdList = cdList;
+        this.loanList = loanList;
 
 		loanButtons.add(fifteenButton);
 		loanButtons.add(thirtyButton);
@@ -517,8 +531,8 @@ public class ManagerPage extends JFrame implements ActionListener {
 		// logout button pressed
         if(e.getSource() == logoutButton) {
             mainFrame.dispose();
-            IDandPass idAndPasswords = new IDandPass();
-            new LoginPage(idAndPasswords.getLoginInfo());
+            IDandPass idAndPasswords = new IDandPass(customerList);
+            new LoginPage(idAndPasswords.getLoginInfo(), customerList, checkingList, savingsList, cdList, loanList);
         }
 
 		// checks account number, if valid, move to panel 2 options screen

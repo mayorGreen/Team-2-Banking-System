@@ -6,9 +6,9 @@ import java.io.Serializable;
 // the class is declared as abstract
 public abstract class Account implements Serializable{
     int accountNumber;
-    String accountCustID;
-    double balance;
-    boolean paymentIsCurrent;
+    String accountCustID; // ssn of associated customer
+    double balance; // current balance of account
+    boolean paymentIsCurrent; // for loans/credit cards, flag for if they're up to date on payments
     boolean loanPenalty;
 
     protected Account(){

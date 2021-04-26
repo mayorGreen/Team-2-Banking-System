@@ -10,6 +10,8 @@ public class SavingsAccount extends Account{
 
     protected double interestRate; // interest rate
     protected Date dateCreated; // date account created
+    private ATMCard card; // ATM card associated with the account
+
     Date todaysDate;
     // TODO: implement a method to update the time for all accounts upon load
     // generic constructor
@@ -32,6 +34,9 @@ public class SavingsAccount extends Account{
             e.printStackTrace();
         }
 
+        // create an atm card for this account
+        card = new ATMCard(accountCustID, 1, (accountNumber + accountCustID.substring(0,2)), accountCustID.substring(accountCustID.length()-4));
+
     }
     // setters
     public void setInterestRate(double interestRate) {
@@ -47,6 +52,9 @@ public class SavingsAccount extends Account{
     }
     public Date getDateCreated() {
         return dateCreated;
+    }
+    public ATMCard getCard() {
+        return card;
     }
 
     void compoundInterest() {

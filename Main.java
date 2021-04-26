@@ -28,9 +28,6 @@ class Main{
         List<CD> cdList;
         List<Loans> loanList;
 
-        IDandPass idAndPasswords = new IDandPass(); // initialize id and passwords --- this can be replaced for simply acct numbers instead
-        LoginPage loginPage = new LoginPage(idAndPasswords.getLoginInfo()); // generate login page
-
         // check if no prior record for customers exists
         if(!(new File("customerObj.txt").exists())){
             // get data from csv file
@@ -106,7 +103,20 @@ class Main{
             loanList = Parser.readObjectRecords("loansObj.txt");
         }
 
+        //HelperFunc.updateCustomers(customerList);
 
+        // data manip demoo
+        System.out.println("checking balance for first account");
+        System.out.println("Balance: " + checkingList.get(0).getAccountBalance());
+        System.out.println("Depositing $3");
+        checkingList.get(0).depositAmt(3);
+        System.out.println("New Balance is: " + checkingList.get(0).getAccountBalance());
+        System.out.println("Updating System");
+        HelperFunc.updateChecking(checkingList);
+        IDandPass idAndPasswords = new IDandPass(customerList); // initialize id and passwords --- this can be replaced for simply acct numbers instead
+        //idAndPasswords.listUsers(); // debug
+        
+        LoginPage loginPage = new LoginPage(idAndPasswords.getLoginInfo(),customerList, checkingList, savingsList, cdList, loanList); // generate login page
         System.out.println(customerList.get(0).toString()); // print first cust
 
     } // end main method
