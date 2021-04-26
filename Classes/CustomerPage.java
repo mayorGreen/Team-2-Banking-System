@@ -8,10 +8,18 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import java.awt.event.*;
+import java.util.List;
 import java.awt.CardLayout;
 import java.awt.Font;
 
 public class CustomerPage extends JFrame implements ActionListener {
+
+    private List<Customer> customerList;
+    private List<Checking> checkingList;
+    private List<SavingsAccount> savingsList;
+    private List<CD> cdList;
+    private List<Loans> loanList;
+
     JFrame mainFrame = new JFrame();
 
     JPanel panelContainer = new JPanel();
@@ -84,7 +92,13 @@ public class CustomerPage extends JFrame implements ActionListener {
     
     Font buttonFont = new Font("Arial", Font.PLAIN, 28); // button font
     
-    CustomerPage(String userID){
+    CustomerPage(String userID, List<Customer> customerList, List<Checking> checkingList, List<SavingsAccount> savingsList, List<CD> cdList, List<Loans> loanList){
+
+        this.customerList = customerList;
+        this.checkingList = checkingList;
+        this.savingsList = savingsList;
+        this.cdList = cdList;
+        this.loanList = loanList;
 
         panelContainer.setLayout(cl);
 
@@ -306,8 +320,8 @@ public class CustomerPage extends JFrame implements ActionListener {
         // User selects end
         if(e.getSource() == endButton){
             mainFrame.dispose();
-            IDandPass idAndPasswords = new IDandPass();
-            new LoginPage(idAndPasswords.getLoginInfo());
+            IDandPass idAndPasswords = new IDandPass(customerList);
+            new LoginPage(idAndPasswords.getLoginInfo(), customerList, checkingList, savingsList, cdList, loanList);
         }
 
         // User selects checking acct

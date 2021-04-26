@@ -13,6 +13,8 @@ public class Customer implements Serializable{
     private String zip;
     private String firstName;
     private String lastName;
+    private String loginUsername;
+    private String loginPassword;
 
     public Customer(List<String> cust){
         ssn = cust.get(0);
@@ -22,6 +24,8 @@ public class Customer implements Serializable{
         zip = cust.get(4);
         firstName = cust.get(5);
         lastName = cust.get(6);
+        if(lastName != null && firstName != null) loginUsername = lastName + firstName.charAt(0);
+        if(ssn != null) loginPassword = ssn.substring(ssn.length()-4, ssn.length());
     }
 
     public Customer(String ssn, String streetAddress, String city, String state, String zip, String firstName, String lastName){
@@ -32,6 +36,8 @@ public class Customer implements Serializable{
         this.zip = zip;
         this.firstName = firstName;
         this.lastName = lastName;
+        if(lastName != null && firstName != null) this.loginUsername = lastName + firstName.charAt(0);
+        if(ssn != null) this.loginPassword = ssn.substring(ssn.length()-4, ssn.length()-1);
     }
 
     
@@ -51,11 +57,18 @@ public class Customer implements Serializable{
     }public String getZip() {
         return zip;
     }
+    public String getLoginUsername() {
+        return loginUsername;
+    }
+    public String getLoginPassword() {
+        return loginPassword;
+    }
 
     @Override
     public String toString() {
         return  "CustID: " + ssn + " Street Address: " + streetAddress + " City: " + city
-        + " State: " + state + " Zip Code: " + zip + " First Name: " + firstName + " Last Name: " + lastName;
+        + " State: " + state + " Zip Code: " + zip + " First Name: " + firstName + " Last Name: " + lastName
+        + " Username: " + loginUsername + " Password: " + loginPassword;
 
 
     }

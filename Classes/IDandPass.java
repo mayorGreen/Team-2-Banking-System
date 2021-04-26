@@ -1,45 +1,53 @@
 package Classes;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+
 
 public class IDandPass {
-    HashMap<String,String> loginInfo = new HashMap<>();
-    public int password;
-    public String username;
+    HashMap<String,String> customerLoginInfo = new HashMap<>();
+    HashMap<String,String> tellerLoginInfo = new HashMap<>();
+    HashMap<String,String> managerLoginInfo = new HashMap<>();
+    ArrayList<HashMap<String,String>> loginInfo = new ArrayList<>();
 
-    public IDandPass(){
-        // TODO: pass in customer list, set unique values for login stuff
-        loginInfo.put("person1", "password");
-        loginInfo.put("person2", "password2");
-        loginInfo.put("person3", "password3");
-        loginInfo.put("a", "a");
+
+    List<Customer> customerList;
+
+    Teller t1 = new Teller("JamesP", "pass1");
+    Teller t2 = new Teller("KateW", "pass2");
+
+    Manager m1 = new Manager("SamR", "password");
+
+    public IDandPass(List<Customer> customerList){
+        this.customerList = customerList;
+
+        for(Customer cust : customerList) {
+            customerLoginInfo.put(cust.getLoginUsername(), cust.getLoginPassword());
+        }
+
+
+        tellerLoginInfo.put(t1.getUsername(), t1.getPassword());
+        tellerLoginInfo.put(t2.getUsername(), t2.getPassword());
+        managerLoginInfo.put(m1.getUsername(), m1.getPassword());
+
+        customerLoginInfo.put("a", "a");
+        tellerLoginInfo.put("a", "a");
+        managerLoginInfo.put("a", "a");
+
+        // add login information to master array
+        loginInfo.add(customerLoginInfo);
+        loginInfo.add(tellerLoginInfo);
+        loginInfo.add(managerLoginInfo);
     }
 
-    public IDandPass(String username, int password)
-    {
-        this.username = username;
-        this.password = password;
-        loginInfo.put(username, String.valueOf(password));
+    
+    public void listUsers(){
+       customerLoginInfo.forEach((k,v) -> System.out.println("Customer login: " + k + " Password: " + v));
+       tellerLoginInfo.forEach((k,v) -> System.out.println("Teller login: " + k + " Password: " + v));
+       managerLoginInfo.forEach((k,v) -> System.out.println("Manager login: " + k + " Password: " + v));
     }
 
-    public void setPassword(int password) {
-        this.password = password;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setLoginInfo(String username, int password)
-    {
-        loginInfo.put(username, String.valueOf(password));
-    }
-
-    public void listUsers()
-    {
-        System.out.println(username+" "+password);
-    }
-
-    public HashMap getLoginInfo() {
+    public List<HashMap<String,String>> getLoginInfo() {
         return loginInfo;
     }
 }
