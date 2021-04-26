@@ -7,7 +7,7 @@ import java.io.Writer;
 public class SaveState
 {
     //save state for savings accounts
-    public SaveState (Savings savings) throws IOException
+    public SaveState () throws IOException
     {
         Writer fileWriter = new FileWriter("Database Files/savings.csv", false);
         //Don't have anything yet, but we will give it the savings account and hopefully rewrite over the savings file.

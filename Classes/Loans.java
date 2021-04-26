@@ -20,6 +20,8 @@ public class Loans extends Account
     Date lastPaymentDate;
     CreditCard card; // if account type is "Credit Card" then a credit card will be created
     double limit; // if account type is credit card then a limit will be set
+    int months; //months for the loan based on years
+    int years; // years of loan based on "Long Term" and "Short Term"
 
     // Constructor
     public Loans(List<String> list) {
@@ -39,6 +41,20 @@ public class Loans extends Account
         amountDue = Double.parseDouble(list.get(6));
         type = list.get(7);
 
+        switch (type)// sets the number of years on a loan and sets loan to true or false based on if it is a loan or credit card
+        {
+            case "Short Term":
+                years = 5;
+                break;
+            case "Long Term":
+                years = 30;
+                break;
+            case "Credit Card":
+                limit = balance;
+                break;
+            default: break;
+        }
+
         if(list.get(8).equals("TRUE")) {
             missedPayment = true;
         } else {
@@ -50,6 +66,22 @@ public class Loans extends Account
             setLimit(30000);
         }
 
+        months = years * 12;
+        //System.out.println();
+        calculateMonthlyPayment();
+    }
+
+    //method to calculate the monthly payment of each loan or credit card
+    void calculateMonthlyPayment()
+    {
+            amountDue = (balance/months) + ((balance/2)*years*interestRate/months);
+
+            if (missedPayment = true)
+            {
+                amountDue += 75;
+            }
+
+        System.out.println(amountDue);
     }
 
     @Override
