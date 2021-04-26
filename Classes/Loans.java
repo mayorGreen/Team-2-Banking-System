@@ -22,6 +22,7 @@ public class Loans extends Account
     double limit; // if account type is credit card then a limit will be set
     int months; //months for the loan based on years
     int years; // years of loan based on "Long Term" and "Short Term"
+    int specialInfo;
 
     // Constructor
     public Loans(List<String> list) {
@@ -40,17 +41,18 @@ public class Loans extends Account
         }
         amountDue = Double.parseDouble(list.get(6));
         type = list.get(7);
+        specialInfo = Integer.parseInt(list.get(10));
 
         switch (type)// sets the number of years on a loan and sets loan to true or false based on if it is a loan or credit card
         {
             case "Short Term":
-                years = 5;
-                break;
             case "Long Term":
-                years = 30;
+                years = specialInfo;
                 break;
             case "Credit Card":
-                limit = balance;
+                limit = specialInfo;
+                card = new CreditCard(accountCustID, 2, (accountNumber + accountCustID.substring(0,2)));
+                setLimit(specialInfo);
                 break;
             default: break;
         }
@@ -61,18 +63,13 @@ public class Loans extends Account
             missedPayment = false;
         }
 
-        if (type.equals("Credit Card")){
-            card = new CreditCard(accountCustID, 2, (accountNumber + accountCustID.substring(0,2)));
-            setLimit(30000);
-        }
-
         months = years * 12;
-        //System.out.println();
+        System.out.println(specialInfo);
         calculateMonthlyPayment();
     }
 
     //method to calculate the monthly payment of each loan or credit card
-    void calculateMonthlyPayment()
+    double calculateMonthlyPayment()
     {
             amountDue = (balance/months) + ((balance/2)*years*interestRate/months);
 
@@ -81,7 +78,8 @@ public class Loans extends Account
                 amountDue += 75;
             }
 
-        System.out.println(amountDue);
+        //System.out.println(amountDue);
+            return amountDue;
     }
 
     @Override
