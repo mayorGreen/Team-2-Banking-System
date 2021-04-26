@@ -9,15 +9,15 @@ import java.util.List;
 // Checking account class
 public class Checking extends Account
 {
-    boolean goldDiamondAccount; // raised if account balance > $1000.00
-    double interestRate; // interest rate for account, only goldDiamond accounts accrue interest
-    ArrayList<Check> checksList = new ArrayList<>(); // list of checks tied to this account
-    int nextCheckNumber; // next check number associated with account
-    boolean hasBackupAccount; // raised if account has backup account associated for overdrdaft protection
-    int backupAccountNumber; // account number of backup account
-    int numOfOverdrafts; // number of overdrafts logged on account
-    Date dateCreated; // date account created
-    Date todaysDate; // today's date --- needed for interest purposed on GD account
+    private boolean goldDiamondAccount; // raised if account balance > $1000.00
+    private double interestRate; // interest rate for account, only goldDiamond accounts accrue interest
+    private ArrayList<Check> checksList = new ArrayList<>(); // list of checks tied to this account
+    private int nextCheckNumber; // next check number associated with account
+    private boolean hasBackupAccount; // raised if account has backup account associated for overdrdaft protection
+    private int backupAccountNumber; // account number of backup account
+    private int numOfOverdrafts; // number of overdrafts logged on account
+    private Date dateCreated; // date account created
+    private Date todaysDate; // today's date --- needed for interest purposed on GD account
     private ATMCard card; // ATM card associated with the account
 
     // generic constructor
@@ -61,7 +61,7 @@ public class Checking extends Account
     // withdraw method, charges account a fee if it is not GD. calls balanceCheck
     // if withdraw is greater
     @Override
-    void withdrawAmt(double amt) {
+    public void withdrawAmt(double amt) {
         balance -= Math.abs(amt);
         if(!goldDiamondAccount)balance -= 0.5;
         balanceCheck();
@@ -74,7 +74,7 @@ public class Checking extends Account
 
     // deposit method, charges account a fee if it is not GD. calls balanceCheck
     @Override
-    void depositAmt(double amt) {
+    public void depositAmt(double amt) {
         balance += Math.abs(amt);
         if(!goldDiamondAccount)balance -= 0.5;
         balanceCheck();
@@ -82,13 +82,13 @@ public class Checking extends Account
 
     // credit account method, ignores transaction fee
     @Override
-    void creditAccount(double amt) {
+    public void creditAccount(double amt) {
         super.creditAccount(amt);
         balanceCheck();
     }
     // debit account method, ignores transaction fee
     @Override
-    void debitAccount(double amt) {
+    public void debitAccount(double amt) {
         super.debitAccount(amt);
         balanceCheck();
         if(balance < 0) {
@@ -98,7 +98,7 @@ public class Checking extends Account
     }
 
     // this method checks the current balance and verifes what type of account the account should be
-    void balanceCheck(){
+    public void balanceCheck(){
         if(balance < 1000.00){
             goldDiamondAccount = false;
         } else{
