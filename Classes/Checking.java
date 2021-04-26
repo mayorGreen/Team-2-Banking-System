@@ -18,6 +18,7 @@ public class Checking extends Account
     int numOfOverdrafts; // number of overdrafts logged on account
     Date dateCreated; // date account created
     Date todaysDate; // today's date --- needed for interest purposed on GD account
+    private ATMCard card; // ATM card associated with the account
 
     // generic constructor
     public Checking(){
@@ -51,6 +52,9 @@ public class Checking extends Account
             System.out.println("Error in trying to parse date in Checking");
             e.printStackTrace();
         }
+
+        // create an atm card for this account
+        card = new ATMCard(accountCustID, 0, (accountNumber + accountCustID.substring(0,2)), accountCustID.substring(accountCustID.length()-4));
 
     } // end Constructor
 
@@ -104,6 +108,9 @@ public class Checking extends Account
 
     public Date getDateCreated() {
         return dateCreated;
+    }
+    public ATMCard getCard() {
+        return card;
     }
 
     public void setDateCreated(Date dateCreated) {

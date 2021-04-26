@@ -103,10 +103,10 @@ class Main{
             loanList = Parser.readObjectRecords("loansObj.txt");
         }
 
-        HelperFunc.updateCustomers(customerList);
+        //HelperFunc.updateCustomers(customerList);
 
         IDandPass idAndPasswords = new IDandPass(customerList); // initialize id and passwords --- this can be replaced for simply acct numbers instead
-        idAndPasswords.listUsers();
+        idAndPasswords.listUsers(); // debug
         LoginPage loginPage = new LoginPage(idAndPasswords.getLoginInfo(),customerList, checkingList, savingsList, cdList, loanList); // generate login page
         System.out.println(customerList.get(0).toString()); // print first cust
 
