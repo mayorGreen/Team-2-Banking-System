@@ -54,7 +54,7 @@ public class Checking extends Account
         }
 
         // create an atm card for this account
-        card = new ATMCard(accountCustID, 0, (accountNumber + accountCustID.substring(0,2)), accountCustID.substring(accountCustID.length()-4));
+        card = new ATMCard(accountCustID, 0, accountNumber, ("0" +accountNumber + accountCustID.substring(0,2)), accountCustID.substring(accountCustID.length()-4));
 
     } // end Constructor
 
@@ -65,7 +65,7 @@ public class Checking extends Account
         balance -= Math.abs(amt);
         if(!goldDiamondAccount)balance -= 0.5;
         balanceCheck();
-        if(balance < 0) {
+        if(balance < 0 && (!hasBackupAccount)) {
             numOfOverdrafts++;
             balance -= 20.0;
         } // TODO check for overdraft protection, pull data from the file using helper method
@@ -112,11 +112,17 @@ public class Checking extends Account
     public ATMCard getCard() {
         return card;
     }
+    public int getBackupAccountNumber() {
+        return backupAccountNumber;
+    }
+    public boolean hasBackupAccount() {
+        return hasBackupAccount;
+    }
 
     public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
-    void setTodaysDate(Date today){
+    public void setTodaysDate(Date today){
         todaysDate = today;
     }
 

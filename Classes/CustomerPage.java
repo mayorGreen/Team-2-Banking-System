@@ -20,10 +20,16 @@ public class CustomerPage extends JFrame implements ActionListener {
     private List<CD> cdList;
     private List<Loans> loanList;
 
+    private int workingAcctNum;
+    private String workingAcctType;
+    private ATMCard workingCard;
+
     JFrame mainFrame = new JFrame();
 
     JPanel panelContainer = new JPanel();
 
+    JPanel initPanel = new JPanel(); // initPanel is the insert card screen, for sim purposes, enter card num
+    JPanel panel0 = new JPanel(); // panel 0 is the enter pin screen
     JPanel panel1 = new JPanel(); // panel 1 is for selecting checking or savings acct
     JPanel panel2 = new JPanel(); // panel 2 is for selecting action for account (balance, withdraw, deposit)
     JPanel panel3 = new JPanel(); // panel 3 is for Balance Inquiries
@@ -32,7 +38,7 @@ public class CustomerPage extends JFrame implements ActionListener {
     JPanel panel6 = new JPanel(); // panel 6 is for entering withdrawal amount
     JPanel panel7 = new JPanel(); // panel 7 is transaction confirmation
 
-    JPanel[] panels = {panel1,panel2,panel3,panel4,panel5,panel6,panel7};
+    JPanel[] panels = {initPanel,panel0,panel1,panel2,panel3,panel4,panel5,panel6,panel7};
  
 
     CardLayout cl = new CardLayout();
@@ -40,6 +46,17 @@ public class CustomerPage extends JFrame implements ActionListener {
     JLabel welcomeLabel = new JLabel("Hello");
 
     JLabel selectAmount = new JLabel("Select Amount");
+
+    // initPanel elements
+    JLabel cardNumLabel = new JLabel("Insert ATM Card");
+    JTextField cardNumField = new JTextField();
+    JButton cardNumButton = new JButton("Submit");
+
+    // panel 0 elements
+    JLabel cardPinLabel = new JLabel("Please Enter Pin");
+    JTextField cardPinField = new JTextField();
+    JButton cardPinButton = new JButton("Submit");
+    JButton cardPinCancelButton = new JButton("Cancel");
 
 
     // panel 1 elements
@@ -58,10 +75,10 @@ public class CustomerPage extends JFrame implements ActionListener {
 
 
     // panel 4 buttons
-    JButton tenButton = new JButton("$10");
     JButton twentyButton = new JButton("$20");
     JButton fourtyButton = new JButton("$40");
-    JButton fiftyButton = new JButton("$50");
+    JButton sixtyButton = new JButton("$60");
+    JButton eightyButton = new JButton("$80");
     JButton hundredButton = new JButton("$100");
     JButton customAmountButton = new JButton("Enter An Amount");
 
@@ -95,11 +112,12 @@ public class CustomerPage extends JFrame implements ActionListener {
 
     JButton[] buttons = {checkingButton,
                         savingsButton,balanceButton,withdrawButton,
-                        depositButton,tenButton,twentyButton,
-                        fourtyButton,fiftyButton,hundredButton,
+                        depositButton,twentyButton,fourtyButton,
+                        sixtyButton,eightyButton,hundredButton,
                         customAmountButton,returnFundsButton,depositBackButton,
                         depositSubmitButton,withdrawMinusButton,withdrawPlusButton,
-                        withdrawCustomSubmitButton,backButton,endButton};
+                        withdrawCustomSubmitButton,backButton,endButton,
+                        cardNumButton,cardPinButton,cardPinCancelButton};
     
     CustomerPage(String userID, List<Customer> customerList, List<Checking> checkingList, List<SavingsAccount> savingsList, List<CD> cdList, List<Loans> loanList){
 
@@ -141,13 +159,13 @@ public class CustomerPage extends JFrame implements ActionListener {
 
         depositButton.setBounds(125,325,250,80); // position 3
 
-        tenButton.setBounds(125,125,250,80); // position 1
+        twentyButton.setBounds(125,125,250,80); // position 1
 
-        twentyButton.setBounds(125,225,250,80); // position 2
+        fourtyButton.setBounds(125,225,250,80); // position 2
 
-        fourtyButton.setBounds(125,325,250,80); // position 3
+        sixtyButton.setBounds(125,325,250,80); // position 3
 
-        fiftyButton.setBounds(600,125,250,80); // position 4
+        eightyButton.setBounds(600,125,250,80); // position 4
 
         hundredButton.setBounds(600,225,250,80); // position 5
 
@@ -156,15 +174,28 @@ public class CustomerPage extends JFrame implements ActionListener {
         
         // set frame properties
         mainFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        mainFrame.setTitle("Welcome " + userID + "!"); // window title
+        mainFrame.setTitle("Welcome!"); // window title
         mainFrame.add(panelContainer);
         mainFrame.setSize(1000,700);
         mainFrame.setVisible(true);
 
+        // define init panel elements
+        cardNumLabel.setBounds(400,200,350,50);
+        cardNumLabel.setFont(buttonFont);
+        cardNumField.setBounds(400,300,200,50);
+        cardNumButton.setBounds(400,375,200,75);
+
+        // define panel 0 panel elements
+        cardPinLabel.setBounds(400,200,350,50);
+        cardPinLabel.setFont(buttonFont);
+        cardPinField.setBounds(400,300,200,50);
+        cardPinButton.setBounds(600,535,250,80);
+        cardPinCancelButton.setBounds(125,535,250,80);
+
         // set welcome label
         welcomeLabel.setBounds(0,0,mainFrame.getWidth(),100); // position 0
         welcomeLabel.setFont(buttonFont);
-        welcomeLabel.setText("Hello " + userID);
+        welcomeLabel.setText("MyBank");
         welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
         welcomeLabel.setHorizontalTextPosition(SwingConstants.CENTER);
 
@@ -184,7 +215,7 @@ public class CustomerPage extends JFrame implements ActionListener {
         balanceAmount.setHorizontalAlignment(SwingConstants.CENTER);
         balanceAmount.setHorizontalTextPosition(SwingConstants.CENTER);
         balanceAmount.setFont(buttonFont);
-        balanceAmount.setBounds(400,250,200,50);
+        balanceAmount.setBounds(200 ,250,600,50);
         balanceInquiryLabel.setBounds(0,0,mainFrame.getWidth(),100); // position 0
         balanceInquiryLabel.setFont(buttonFont);
         balanceInquiryLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -229,12 +260,26 @@ public class CustomerPage extends JFrame implements ActionListener {
         confirmationLabel.setHorizontalTextPosition(SwingConstants.CENTER);
 
 
+
+        // add elements to initPanel
+
+        initPanel.add(cardNumLabel);
+        initPanel.add(cardNumField);
+        initPanel.add(cardNumButton);
+        initPanel.add(endButton);
+
+        // add elements to panel 0
+
+        panel0.add(cardPinLabel);
+        panel0.add(cardPinField);
+        panel0.add(cardPinButton);
+        panel0.add(cardPinCancelButton);
+
         // add elements to panel 1
 
         panel1.add(welcomeLabel);
         panel1.add(checkingButton);
         panel1.add(savingsButton);
-        panel1.add(endButton);
 
         // add elements to panel 2
 
@@ -252,10 +297,10 @@ public class CustomerPage extends JFrame implements ActionListener {
 
         // add elements to panel 4
 
-        panel4.add(tenButton);
         panel4.add(twentyButton);
         panel4.add(fourtyButton);
-        panel4.add(fiftyButton);
+        panel4.add(sixtyButton);
+        panel4.add(eightyButton);
         panel4.add(hundredButton);
         panel4.add(customAmountButton);
 
@@ -281,6 +326,8 @@ public class CustomerPage extends JFrame implements ActionListener {
 
 
         // add panels to container
+        panelContainer.add(initPanel, "init");
+        panelContainer.add(panel0, "0");
         panelContainer.add(panel1, "1");
         panelContainer.add(panel2, "2");
         panelContainer.add(panel3, "3");
@@ -288,13 +335,67 @@ public class CustomerPage extends JFrame implements ActionListener {
         panelContainer.add(panel5, "5");
         panelContainer.add(panel6, "6");
         panelContainer.add(panel7, "7");
-        cl.show(panelContainer, "1"); // show first panel
+        cl.show(panelContainer, "init"); // show init panel
 
     }
 
     // button actions
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        // user inserts their atm card
+        if(e.getSource() == cardNumButton){
+            // check if valid card
+            if(cardNumField.getText().equals("")){
+                System.out.println("invalid card");
+            } else if(cardNumField.getText().charAt(0) == '0'){
+                // card belongs to checking account, look for account
+                int accIndex = HelperFunc.findCardChecking(checkingList, cardNumField.getText());
+                if (accIndex != -1){
+                    // set working card and acct num
+                    System.out.println("Found card at index " + accIndex);
+                    workingCard = checkingList.get(accIndex).getCard();
+                    workingAcctNum = workingCard.getAccountNumber();
+                    workingAcctType = workingCard.getAccountType();
+                    panel0.add(endButton);
+                    cl.show(panelContainer, "0");
+                } else {
+                    System.out.println("Card does not exist");
+                }
+
+            } else if(cardNumField.getText().charAt(0) == '1'){
+                int accIndex = HelperFunc.findCardSavings(savingsList, cardNumField.getText());
+                if (accIndex != -1){
+                    workingCard = savingsList.get(accIndex).getCard();
+                    workingAcctNum = workingCard.getAccountNumber();
+                    workingAcctType = workingCard.getAccountType();
+                    panel0.add(endButton);
+                    cl.show(panelContainer, "0");
+                } else {
+                    System.out.println("Card does not exist");
+                }
+            }
+        }
+
+
+        if(e.getSource() == cardPinCancelButton){
+            initPanel.add(endButton);
+            cardNumField.setText("");
+            cardPinField.setText("");
+            cl.show(panelContainer, "init");
+        }
+
+        if(e.getSource() == cardPinButton){
+            if(HelperFunc.pinCheck(workingCard, cardPinField.getText())){
+                panel1.add(endButton);
+                if(workingAcctType.equals("Checking")){
+                    savingsButton.setEnabled(false);
+                } else if(workingAcctType.equals("Savings")){
+                    checkingButton.setEnabled(false);
+                }
+                cl.show(panelContainer, "1");
+            } else System.out.println("Incorrect Pin Number");
+        } 
 
         // User selects back
         if(e.getSource() == backButton) {
@@ -326,6 +427,11 @@ public class CustomerPage extends JFrame implements ActionListener {
 
         // User selects balance inquiry
         if(e.getSource() == balanceButton){
+            if(workingAcctType.equals("Checking")){
+            balanceAmount.setText("Balance: $" + HelperFunc.getCheckingBalance(checkingList, workingAcctNum));
+        } else if(workingAcctType.equals("Savings")){
+            balanceAmount.setText("Balance: $" + HelperFunc.getSavingsBalance(savingsList, workingAcctNum));
+        }
             panel3.add(backButton);
             panel3.add(endButton);
             cl.show(panelContainer, "3");
@@ -337,6 +443,13 @@ public class CustomerPage extends JFrame implements ActionListener {
             panel4.add(backButton);
             cl.show(panelContainer, "4");
         }
+
+        // withdraw buttons
+        if(e.getSource() == twentyButton){}
+        if(e.getSource() == fourtyButton){}
+        if(e.getSource() == sixtyButton){}
+        if(e.getSource() == eightyButton){}
+        if(e.getSource() == hundredButton){}
 
         // user selects deposit
         if(e.getSource() == depositButton){

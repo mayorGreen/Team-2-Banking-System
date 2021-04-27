@@ -7,12 +7,14 @@ import java.io.Serializable;
 public class ATMCard implements Serializable {
     String accountCustID;
     String accountType;
+    private int accountNumber;
     private String cardNumber;
     private String pinNum;
 
     // Constructor
-    public ATMCard(String accountCustID, int type, String cardNumber, String pinNum){
+    public ATMCard(String accountCustID, int type, int accountNumber, String cardNumber, String pinNum){
         this.accountCustID = accountCustID;
+        this.accountNumber = accountNumber;
         if(type == 0) {
             accountType = "Checking";
         } else if (type == 1) {
@@ -36,6 +38,9 @@ public class ATMCard implements Serializable {
     }
     public String getPinNum() {
         return pinNum;
+    }
+    public int getAccountNumber() {
+        return accountNumber;
     }
 
     // setters

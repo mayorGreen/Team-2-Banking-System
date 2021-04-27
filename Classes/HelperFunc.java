@@ -1,4 +1,5 @@
 package Classes;
+import java.util.Date;
 import java.util.List;
 
 // some helper functions vital for system functionality
@@ -46,6 +47,22 @@ public class HelperFunc {
         Parser.writeObjectRecords(loanList, "loansObj.txt");
     }
 
+
+    public static Checking getCheckingObj(List<Checking> checkingList, int accountNum) throws NullPointerException{
+        Checking acct = null;
+        try {
+            for(int i=0; i<checkingList.size(); i++){
+                 if(checkingList.get(i).getAccountNumber() == accountNum)
+                    acct = checkingList.get(i);
+            }
+        } catch (Exception e) {
+            //TODO: handle exception
+            System.out.println("ERROR in getCheckingObj, account not found");
+            e.printStackTrace();
+        }
+        return acct;
+
+    }
     // returns an index location of the checking account with the given account number
     // returns -1 if account does not exist
     public static int getChecking(List<Checking> checkingList, int accountNumber){
@@ -57,6 +74,35 @@ public class HelperFunc {
             }
         }
         return index;
+    }
+
+    // finds card if exists, returns index of card in list
+    public static int findCardChecking(List<Checking> checkingList, String cardNum){
+        int cardIndex = -1;
+        for(int i=0; i<checkingList.size(); i++){
+            if(checkingList.get(i).getCard().getCardNumber().equals(cardNum)){
+                 cardIndex = i;
+                break;
+            }
+        }
+        return cardIndex;
+    }
+
+    public static int findCardSavings(List<SavingsAccount> savingsList, String cardNum){
+        int cardIndex = -1;
+        for(int i=0; i<savingsList.size(); i++){
+            if(savingsList.get(i).getCard().getCardNumber().equals(cardNum)){
+                 cardIndex = i;
+                break;
+            }
+        }
+        return cardIndex;
+    }
+
+    public static boolean pinCheck(ATMCard workingCard, String pin){
+        boolean isCorrect = false;
+        if(workingCard.getPinNum().equals(pin)) isCorrect = true;
+        return isCorrect;
     }
 
     // returns an index location of the savings account with the given account number
@@ -72,6 +118,98 @@ public class HelperFunc {
         return index;
     }
 
+    public static double getCheckingBalance(List<Checking> checkingList, int accountNum){
+        double balance = 0;
+        for(int i=0; i<checkingList.size(); i++){
+            if(checkingList.get(i).getAccountNumber() == accountNum) {
+                balance = checkingList.get(i).getAccountBalance();
+                break;
+            }
+        }
+        return balance;
+    }
+
+    public static double getSavingsBalance(List<SavingsAccount> savingsList, int accountNum){
+        double balance = 0;
+        for(int i=0; i<savingsList.size(); i++){
+            if(savingsList.get(i).getAccountNumber() == accountNum) {
+                balance = savingsList.get(i).getAccountBalance();
+                break;
+            }
+        }
+        return balance;
+    }
+
+    // this method withdraws the requested amount from the given savings account
+    // the date is checked to ensure that money is withdrawn a maximum amount of 2 times per day
+    public static void withdrawSavings(List<SavingsAccount> savingsList, int accountNum, double withdrawAmt){
+        int savingsIndex = getSavings(savingsList, accountNum);
+
+        // check if new day
+        if((new Date().getDate()) != (savingsList.get(savingsIndex).getLastWithdrawal().getDate())){
+            savingsList.get(savingsIndex).setWithdrawalsToday(0);
+        }
+
+        // check if at max withdrawals today
+        if(savingsList.get(savingsIndex).getWithdrawalsToday() == 2){
+            System.out.println("Maximum amount of withdrawals today");
+        } else {
+            // check if withdraw amount is greater than what's in account
+            if(withdrawAmt > savingsList.get(savingsIndex).getAccountBalance()){
+                System.out.println("Amount requested greater than what is in account");
+            } else {
+                // withdraw requested amount, increment withdrawals today, set last withdrawal date
+                savingsList.get(savingsIndex).withdrawAmt(withdrawAmt);
+                savingsList.get(savingsIndex).incrementWithdrawals(); // increment withdrawals today
+                savingsList.get(savingsIndex).setLastWithdrawal(new Date());
+            }
+        }
+    }
+
+
+    // this method withdraws an amount from a checking account and does multiple checks for backup accounts and overdraft protection
+    public static void withdrawCheckingWithSafety(List<Checking> checkingList, List<SavingsAccount> savingsList, int accountNum, double withdrawAmt){
+        double amountToWithdraw = withdrawAmt; // amount remaining to be withdrawn
+        int accountIndex = getChecking(checkingList, accountNum); // index of account in list
+        int savingsIndex = -1;
+        Checking workingAccount = getCheckingObj(checkingList, accountNum); // dummy account for extracting data
+        if(workingAccount == null) {
+            // check for null pointer
+            System.out.println("Error in withdrawCheckingWithSafety. Account obj could not be found");
+            return;
+        }
+        double currentBalance = workingAccount.getAccountBalance(); // current balance in checking
+        boolean hasBackupAccount = workingAccount.hasBackupAccount(); // value for if account has backup
+        int backupAccountNumber; // account number of savings backup
+
+        // if account has a backup, set variables
+        if(hasBackupAccount) {
+            backupAccountNumber = workingAccount.getBackupAccountNumber(); // set backup acct num
+            savingsIndex = getSavings(savingsList, backupAccountNumber);
+        }
+        
+        // amount requested to withdraw is less than current account balance
+        if (amountToWithdraw <= currentBalance){
+            checkingList.get(accountIndex).withdrawAmt(amountToWithdraw); // directly manipulate account
+        }
+
+        // amount requested to withdraw is greater than what is in the account
+        // account has a savings backup tied to it
+        if (amountToWithdraw > currentBalance && hasBackupAccount){
+            amountToWithdraw -= currentBalance;
+            checkingList.get(accountIndex).setBalance(0); // set account balance to $0.00
+            savingsList.get(savingsIndex).withdrawAmt(amountToWithdraw); // pull remaining amount from backup acct
+        }
+
+        // amount requested to withdraw is greater than what is in the account
+        // account has NO backup
+        if (amountToWithdraw > currentBalance) {
+            checkingList.get(accountIndex).withdrawAmt(amountToWithdraw);
+        }
+    } // end withdrawCheckingWithSafety
+
+
+
 
     // These functions can be used by teller and manager
 
@@ -83,6 +221,17 @@ public class HelperFunc {
     }
     public static void stopCheck(int accountNumber, int checkNumber){
         // stops check
+    }
+
+
+    public static void updateDate(List<Checking> checkingList, List<SavingsAccount> savingsList){
+        Date today = new Date();
+        for(Checking acct : checkingList) {
+            acct.setTodaysDate(today);
+        }
+        for(SavingsAccount acct : savingsList) {
+            acct.setTodaysDate(today);
+        }
     }
 
 } // end HelperFunc

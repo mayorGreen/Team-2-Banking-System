@@ -38,6 +38,12 @@ public class LoginPage extends JFrame implements ActionListener{
 
     public LoginPage(List<HashMap<String, String>> list, List<Customer> customerList, List<Checking> checkingList, List<SavingsAccount> savingsList, List<CD> cdList, List<Loans> loanList) {
 
+        // FIRST UPDATE TIME FOR ALL ACCOUNTS
+        HelperFunc.updateDate(checkingList, savingsList);
+        // save changes
+        //HelperFunc.updateChecking(checkingList);
+        //HelperFunc.updateSavings(savingsList);
+
         this.customerList = customerList;
         this.checkingList = checkingList;
         this.savingsList = savingsList;

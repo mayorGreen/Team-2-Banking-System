@@ -62,7 +62,7 @@ public class Loans extends Account
         }
 
         if (type.equals("Credit Card")){
-            card = new CreditCard(accountCustID, 2, (accountNumber + accountCustID.substring(0,2)));
+            card = new CreditCard(accountCustID, 2, loanID, ("2" + loanID + accountCustID.substring(0,2)));
             setLimit(30000);
         }
 

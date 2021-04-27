@@ -11,8 +11,10 @@ public class SavingsAccount extends Account{
     protected double interestRate; // interest rate
     protected Date dateCreated; // date account created
     private ATMCard card; // ATM card associated with the account
+    private Date lastWithdrawal; // time of last withdrawal
+    private Date todaysDate; // todays date
 
-    Date todaysDate;
+    private int withdrawalsToday;
     // TODO: implement a method to update the time for all accounts upon load
     // generic constructor
     public SavingsAccount(){
@@ -23,6 +25,7 @@ public class SavingsAccount extends Account{
 
     public SavingsAccount(List<String> savAcc){
         super();
+        withdrawalsToday = 0;
         accountCustID=savAcc.get(0);
         accountNumber = Integer.parseInt(savAcc.get(1)); 
         balance = Double.parseDouble(savAcc.get(2));
@@ -35,7 +38,7 @@ public class SavingsAccount extends Account{
         }
 
         // create an atm card for this account
-        card = new ATMCard(accountCustID, 1, (accountNumber + accountCustID.substring(0,2)), accountCustID.substring(accountCustID.length()-4));
+        card = new ATMCard(accountCustID, 1, accountNumber, ("1" + accountNumber + accountCustID.substring(0,2)), accountCustID.substring(accountCustID.length()-4));
 
     }
     // setters
@@ -45,8 +48,18 @@ public class SavingsAccount extends Account{
     public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
+    public void setTodaysDate(Date todaysDate) {
+        this.todaysDate = todaysDate;
+    }
+    public void setLastWithdrawal(Date lastWithdrawal) {
+        this.lastWithdrawal = lastWithdrawal;
+    }
+    public void setWithdrawalsToday(int withdrawalsToday) {
+        this.withdrawalsToday = withdrawalsToday;
+    }
 
     // getters
+    
     public double getInterestRate() {
         return interestRate;
     }
@@ -55,6 +68,16 @@ public class SavingsAccount extends Account{
     }
     public ATMCard getCard() {
         return card;
+    }
+    public int getWithdrawalsToday() {
+        return withdrawalsToday;
+    }
+    public Date getLastWithdrawal() {
+        return lastWithdrawal;
+    }
+
+    public void incrementWithdrawals() {
+        withdrawalsToday++;
     }
 
     void compoundInterest() {
