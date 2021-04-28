@@ -51,6 +51,7 @@ public class CustomerPage extends JFrame implements ActionListener {
     JLabel cardNumLabel = new JLabel("Insert ATM Card");
     JTextField cardNumField = new JTextField();
     JButton cardNumButton = new JButton("Submit");
+    JButton programEndButton = new JButton("End");
 
     // panel 0 elements
     JLabel cardPinLabel = new JLabel("Please Enter Pin");
@@ -88,7 +89,7 @@ public class CustomerPage extends JFrame implements ActionListener {
     JButton depositBackButton = new JButton("Back");
     JButton depositSubmitButton = new JButton("Submit");
     JLabel insertFundsLabel = new JLabel("Insert Checks/Bills");
-    JLabel depositAmtLabel = new JLabel("$0.00");
+    JTextField depositAmtField = new JTextField("0.00");
     double depositAmt = 0;
 
     // panel 6 elements
@@ -117,9 +118,9 @@ public class CustomerPage extends JFrame implements ActionListener {
                         customAmountButton,returnFundsButton,depositBackButton,
                         depositSubmitButton,withdrawMinusButton,withdrawPlusButton,
                         withdrawCustomSubmitButton,backButton,endButton,
-                        cardNumButton,cardPinButton,cardPinCancelButton};
+                        cardNumButton,cardPinButton,cardPinCancelButton,programEndButton};
     
-    CustomerPage(String userID, List<Customer> customerList, List<Checking> checkingList, List<SavingsAccount> savingsList, List<CD> cdList, List<Loans> loanList){
+    CustomerPage(List<Customer> customerList, List<Checking> checkingList, List<SavingsAccount> savingsList, List<CD> cdList, List<Loans> loanList){
 
         this.customerList = customerList;
         this.checkingList = checkingList;
@@ -184,6 +185,8 @@ public class CustomerPage extends JFrame implements ActionListener {
         cardNumLabel.setFont(buttonFont);
         cardNumField.setBounds(400,300,200,50);
         cardNumButton.setBounds(400,375,200,75);
+        programEndButton.setBounds(600,535,250,80);
+        programEndButton.setFont(buttonFont);
 
         // define panel 0 panel elements
         cardPinLabel.setBounds(400,200,350,50);
@@ -231,10 +234,9 @@ public class CustomerPage extends JFrame implements ActionListener {
         insertFundsLabel.setFont(buttonFont);
         insertFundsLabel.setHorizontalAlignment(SwingConstants.CENTER);
         insertFundsLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-        depositAmtLabel.setBounds(400,250,200,100);
-        depositAmtLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        depositAmtLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-        depositAmtLabel.setFont(buttonFont);
+        depositAmtField.setBounds(400,250,200,100);
+        depositAmtField.setHorizontalAlignment(SwingConstants.CENTER);
+        depositAmtField.setFont(buttonFont);
 
 
         // define panel 6 elements
@@ -266,14 +268,15 @@ public class CustomerPage extends JFrame implements ActionListener {
         initPanel.add(cardNumLabel);
         initPanel.add(cardNumField);
         initPanel.add(cardNumButton);
-        initPanel.add(endButton);
-
+        initPanel.add(programEndButton);
+        
         // add elements to panel 0
-
+        
         panel0.add(cardPinLabel);
         panel0.add(cardPinField);
         panel0.add(cardPinButton);
         panel0.add(cardPinCancelButton);
+        panel0.add(endButton);
 
         // add elements to panel 1
 
@@ -310,7 +313,7 @@ public class CustomerPage extends JFrame implements ActionListener {
         panel5.add(depositSubmitButton);
         panel5.add(returnFundsButton);
         panel5.add(insertFundsLabel);
-        panel5.add(depositAmtLabel);
+        panel5.add(depositAmtField);
 
         // add elements to panel 6
 
@@ -390,8 +393,10 @@ public class CustomerPage extends JFrame implements ActionListener {
                 panel1.add(endButton);
                 if(workingAcctType.equals("Checking")){
                     savingsButton.setEnabled(false);
+                    checkingButton.setEnabled(true);
                 } else if(workingAcctType.equals("Savings")){
                     checkingButton.setEnabled(false);
+                    savingsButton.setEnabled(true);
                 }
                 cl.show(panelContainer, "1");
             } else System.out.println("Incorrect Pin Number");
@@ -402,11 +407,17 @@ public class CustomerPage extends JFrame implements ActionListener {
             panel1.add(endButton);
             cl.show(panelContainer, "1");
         }
-        // User selects end
-        if(e.getSource() == endButton){
+        // User selects end on ATM card screen
+        if(e.getSource() == programEndButton){
             mainFrame.dispose();
             IDandPass idAndPasswords = new IDandPass(customerList);
             new LoginPage(idAndPasswords.getLoginInfo(), customerList, checkingList, savingsList, cdList, loanList);
+        }
+
+        if(e.getSource() == endButton){
+            cardNumField.setText("");
+            cardPinField.setText("");
+            cl.show(panelContainer, "init");
         }
 
         // User selects checking acct
@@ -445,11 +456,71 @@ public class CustomerPage extends JFrame implements ActionListener {
         }
 
         // withdraw buttons
-        if(e.getSource() == twentyButton){}
-        if(e.getSource() == fourtyButton){}
-        if(e.getSource() == sixtyButton){}
-        if(e.getSource() == eightyButton){}
-        if(e.getSource() == hundredButton){}
+        if(e.getSource() == twentyButton){
+            if(workingAcctType.equals("Checking")){
+                HelperFunc.withdrawCheckingWithSafety(checkingList, savingsList, workingAcctNum, 20);
+                HelperFunc.updateChecking(checkingList); // update checking accts
+                HelperFunc.updateSavings(savingsList); // update savings accts
+            } else if(workingAcctType.equals("Savings")){
+                HelperFunc.withdrawSavings(savingsList, workingAcctNum, 20);
+                HelperFunc.updateSavings(savingsList);
+            }
+            confirmationLabel.setText("<HTML><p style=\"text-align:center;\">Thank you for your Transaction!<br>Have a nice day!</p></HTML>");
+            panel7.add(endButton);
+            cl.show(panelContainer, "7");
+        }
+        if(e.getSource() == fourtyButton){
+            if(workingAcctType.equals("Checking")){
+                HelperFunc.withdrawCheckingWithSafety(checkingList, savingsList, workingAcctNum, 40);
+                HelperFunc.updateChecking(checkingList); // update checking accts
+                HelperFunc.updateSavings(savingsList); // update savings accts
+            } else if(workingAcctType.equals("Savings")){
+                HelperFunc.withdrawSavings(savingsList, workingAcctNum, 40);
+                HelperFunc.updateSavings(savingsList);
+            }
+            confirmationLabel.setText("<HTML><p style=\"text-align:center;\">Thank you for your Transaction!<br>Have a nice day!</p></HTML>");
+            panel7.add(endButton);
+            cl.show(panelContainer, "7");
+        }
+        if(e.getSource() == sixtyButton){
+            if(workingAcctType.equals("Checking")){
+                HelperFunc.withdrawCheckingWithSafety(checkingList, savingsList, workingAcctNum, 60);
+                HelperFunc.updateChecking(checkingList); // update checking accts
+                HelperFunc.updateSavings(savingsList); // update savings accts
+            } else if(workingAcctType.equals("Savings")){
+                HelperFunc.withdrawSavings(savingsList, workingAcctNum, 60);
+                HelperFunc.updateSavings(savingsList);
+            }
+            confirmationLabel.setText("<HTML><p style=\"text-align:center;\">Thank you for your Transaction!<br>Have a nice day!</p></HTML>");
+            panel7.add(endButton);
+            cl.show(panelContainer, "7");
+        }
+        if(e.getSource() == eightyButton){
+            if(workingAcctType.equals("Checking")){
+                HelperFunc.withdrawCheckingWithSafety(checkingList, savingsList, workingAcctNum, 80);
+                HelperFunc.updateChecking(checkingList); // update checking accts
+                HelperFunc.updateSavings(savingsList); // update savings accts
+            } else if(workingAcctType.equals("Savings")){
+                HelperFunc.withdrawSavings(savingsList, workingAcctNum, 80);
+                HelperFunc.updateSavings(savingsList);
+            }
+            confirmationLabel.setText("<HTML><p style=\"text-align:center;\">Thank you for your Transaction!<br>Have a nice day!</p></HTML>");
+            panel7.add(endButton);
+            cl.show(panelContainer, "7");
+        }
+        if(e.getSource() == hundredButton){
+            if(workingAcctType.equals("Checking")){
+                HelperFunc.withdrawCheckingWithSafety(checkingList, savingsList, workingAcctNum, 100);
+                HelperFunc.updateChecking(checkingList); // update checking accts
+                HelperFunc.updateSavings(savingsList); // update savings accts
+            } else if(workingAcctType.equals("Savings")){
+                HelperFunc.withdrawSavings(savingsList, workingAcctNum, 100);
+                HelperFunc.updateSavings(savingsList);
+            }
+            confirmationLabel.setText("<HTML><p style=\"text-align:center;\">Thank you for your Transaction!<br>Have a nice day!</p></HTML>");
+            panel7.add(endButton);
+            cl.show(panelContainer, "7");
+        }
 
         // user selects deposit
         if(e.getSource() == depositButton){
@@ -460,20 +531,43 @@ public class CustomerPage extends JFrame implements ActionListener {
         // user selects back button on DEPOSIT screen
         if(e.getSource() == depositBackButton){
             // return money
-            depositAmtLabel.setText("$0.00");
+            depositAmtField.setText("0.00");
             panel1.add(backButton);
             panel1.add(endButton);
             cl.show(panelContainer, "1");
+        }
+
+        // return funds
+        if(e.getSource() == returnFundsButton){
+            // return money
+            depositAmtField.setText("0.00");
         }
         
         // user selects submit button on DEPOSIT screen
         if(e.getSource() == depositSubmitButton) {
             // UPDATE ACCOUNT BALANCE
-            
-            // send user to confirmation screen
-            confirmationLabel.setText("<HTML><p style=\"text-align:center;\">Thank you for your Transaction!<br>Have a nice day!</p></HTML>");
-            panel7.add(endButton);
-            cl.show(panelContainer, "7");
+            boolean parsable = true;
+            for(char character : depositAmtField.getText().toCharArray()){
+                if (!(character >= '0' && character <= '9' || character == '.')) {
+                    System.out.println("incompatible character");
+                    parsable = false;
+                }
+            }
+            if(parsable){
+                depositAmt = Double.parseDouble(depositAmtField.getText());
+                if(workingAcctType.equals("Checking")){
+                    HelperFunc.depositToChecking(checkingList, workingAcctNum, depositAmt);
+                    HelperFunc.updateChecking(checkingList); // update checking accts
+                } else if (workingAcctType.equals("Savings")){
+                    HelperFunc.depositToSavings(savingsList, workingAcctNum, depositAmt);
+                    HelperFunc.updateSavings(savingsList); // update savings accts
+                }
+                confirmationLabel.setText("<HTML><p style=\"text-align:center;\">Thank you for your Transaction!<br>Have a nice day!</p></HTML>");
+                panel7.add(endButton);
+                cl.show(panelContainer, "7");
+            } else {
+                System.out.println("Error in deposit input: Unparsable number");
+            }
         }
 
         // user selects withdraw custom amount
@@ -483,13 +577,6 @@ public class CustomerPage extends JFrame implements ActionListener {
             cl.show(panelContainer, "6");
         }
         
-        // user submits custom withdraw amount
-        if(e.getSource() == withdrawCustomSubmitButton) {
-            confirmationLabel.setText("<HTML><p style=\"text-align:center;\">Thank you for your Transaction!<br>Have a nice day!</p></HTML>");
-            panel7.add(endButton);
-            cl.show(panelContainer, "7");
-        }
-
         // user presses '-' button on custom withdraw screen
         if(e.getSource() == withdrawMinusButton) {
             if(currentVal > 0) {
@@ -509,8 +596,21 @@ public class CustomerPage extends JFrame implements ActionListener {
             }
             if(withdrawMinusButton.isEnabled() == false) withdrawMinusButton.setEnabled(true);
         }
-        
 
-       
+        // user submits custom withdraw amount
+        if(e.getSource() == withdrawCustomSubmitButton) {
+            double amtToWithdraw = possibleMoneyValues2[currentVal];
+            if(workingAcctType.equals("Checking")){
+                HelperFunc.withdrawCheckingWithSafety(checkingList, savingsList, workingAcctNum, amtToWithdraw);
+                HelperFunc.updateChecking(checkingList);
+            } else if(workingAcctType.equals("Savings")){
+                HelperFunc.withdrawSavings(savingsList, workingAcctNum, amtToWithdraw);
+                HelperFunc.updateSavings(savingsList);
+            }
+            confirmationLabel.setText("<HTML><p style=\"text-align:center;\">Thank you for your Transaction!<br>Have a nice day!</p></HTML>");
+            panel7.add(endButton);
+            cl.show(panelContainer, "7");
+        }
+
     }
 }

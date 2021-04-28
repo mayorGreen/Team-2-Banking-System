@@ -32,6 +32,7 @@ public class SavingsAccount extends Account{
         interestRate = Double.parseDouble(savAcc.get(3));
         try {
             dateCreated = new SimpleDateFormat("MM/dd/yyyy").parse(savAcc.get(4));
+            lastWithdrawal = dateCreated;
         } catch (ParseException e) {
             System.out.println("Error in trying to parse date in Savings");
             e.printStackTrace();

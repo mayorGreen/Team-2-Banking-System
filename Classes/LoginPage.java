@@ -17,7 +17,7 @@ public class LoginPage extends JFrame implements ActionListener{
     JPasswordField userPassField = new JPasswordField();
 
     ButtonGroup buttons = new ButtonGroup();
-    JRadioButton customerButton = new JRadioButton("Customer");
+    JButton atmButton = new JButton("ATM");
     JRadioButton tellerButton = new JRadioButton("Teller");
     JRadioButton managerButton = new JRadioButton("Manager");
     
@@ -54,7 +54,7 @@ public class LoginPage extends JFrame implements ActionListener{
         tellerLoginInfo = list.get(1);
         managerLoginInfo = list.get(2);
 
-        buttons.add(customerButton);
+        
         buttons.add(tellerButton);
         buttons.add(managerButton);
 
@@ -79,9 +79,10 @@ public class LoginPage extends JFrame implements ActionListener{
         endButton.addActionListener(this);
         endButton.setFocusable(false);
 
-        customerButton.setBounds(50,50,100,25);
-        customerButton.setHorizontalTextPosition(SwingConstants.TRAILING);
-        customerButton.addActionListener(this);
+        atmButton.setBounds(50,50,80,25);
+        atmButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        atmButton.addActionListener(this);
+        atmButton.setFocusable(false);
 
         tellerButton.setBounds(150,50,100,25);
         tellerButton.setHorizontalTextPosition(SwingConstants.TRAILING);
@@ -91,7 +92,7 @@ public class LoginPage extends JFrame implements ActionListener{
         managerButton.setHorizontalTextPosition(SwingConstants.TRAILING);
         managerButton.addActionListener(this);
 
-        frame.add(customerButton);
+        frame.add(atmButton);
         frame.add(tellerButton);
         frame.add(managerButton);
         frame.add(userIDLabel);
@@ -116,24 +117,9 @@ public class LoginPage extends JFrame implements ActionListener{
             userPassField.setText("");
             messageLabel.setText("Login");
         }
-        if(e.getSource() == loginButton && customerButton.isSelected()){
-            String userID = userIDField.getText();
-            String password = String.valueOf(userPassField.getPassword());
-
-            if(customerLoginInfo.containsKey(userID)){
-                if(customerLoginInfo.get(userID).equals(password)){
-                    messageLabel.setForeground(Color.green);
-                    messageLabel.setText("Login Successful");
-                    frame.dispose();
-                    CustomerPage customerPage = new CustomerPage(userID, customerList, checkingList, savingsList, cdList, loanList);
-                } else {
-                    messageLabel.setForeground(Color.red);
-                    messageLabel.setText("Incorrect Password");
-                }
-            } else {
-                messageLabel.setForeground(Color.red);
-                messageLabel.setText("Incorrect Username");
-            }
+        if(e.getSource() == atmButton){
+            frame.dispose();
+            CustomerPage customerPage = new CustomerPage(customerList, checkingList, savingsList, cdList, loanList);
         }
 
         if(e.getSource() == loginButton && tellerButton.isSelected()){

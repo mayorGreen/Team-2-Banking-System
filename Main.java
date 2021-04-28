@@ -119,5 +119,15 @@ class Main{
         LoginPage loginPage = new LoginPage(idAndPasswords.getLoginInfo(),customerList, checkingList, savingsList, cdList, loanList); // generate login page
         System.out.println(customerList.get(0).toString()); // print first cust
 
+        /* // withdrawCheckingWithbackup test - works!
+        HelperFunc.withdrawCheckingWithSafety(checkingList, savingsList, 1, 300);
+        HelperFunc.withdrawCheckingWithSafety(checkingList, savingsList, 1, 1000);
+        HelperFunc.withdrawCheckingWithSafety(checkingList, savingsList, 1, 20);
+
+        // withdrawSavings Test - works!
+        HelperFunc.withdrawSavings(savingsList, 1, 20);
+        HelperFunc.withdrawSavings(savingsList, 1, 20);
+        HelperFunc.withdrawSavings(savingsList, 1, 20);
+        */
     } // end main method
 } // end Main class

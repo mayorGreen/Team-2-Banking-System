@@ -68,8 +68,8 @@ public class Checking extends Account
         if(balance < 0 && (!hasBackupAccount)) {
             numOfOverdrafts++;
             balance -= 20.0;
-        } // TODO check for overdraft protection, pull data from the file using helper method
-          // then update both files, it's gonna be a bit messsy but should work
+        }
+        
     }
 
     // deposit method, charges account a fee if it is not GD. calls balanceCheck

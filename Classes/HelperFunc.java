@@ -29,8 +29,7 @@ public class HelperFunc {
     }
 
 
-    // update functions for saving changed data call these after every change in data
-    // TODO: Make these thread safe later
+    // update functions for saving changed data -- call these after every change in data
     public static void updateCustomers(List<Customer> custList){
         Parser.writeObjectRecords(custList, "customerObj.txt");
     }
@@ -47,7 +46,7 @@ public class HelperFunc {
         Parser.writeObjectRecords(loanList, "loansObj.txt");
     }
 
-
+    // finds and returns checking account object from list given acct num
     public static Checking getCheckingObj(List<Checking> checkingList, int accountNum) throws NullPointerException{
         Checking acct = null;
         try {
@@ -143,10 +142,13 @@ public class HelperFunc {
     // this method withdraws the requested amount from the given savings account
     // the date is checked to ensure that money is withdrawn a maximum amount of 2 times per day
     public static void withdrawSavings(List<SavingsAccount> savingsList, int accountNum, double withdrawAmt){
+        System.out.println("Entering withdrawSavings for acct num: " + accountNum);
         int savingsIndex = getSavings(savingsList, accountNum);
-
+        System.out.println("Today's date is: " + new Date());
+        System.out.println("Last withdrawal date is " + savingsList.get(savingsIndex).getLastWithdrawal().getDate());
         // check if new day
         if((new Date().getDate()) != (savingsList.get(savingsIndex).getLastWithdrawal().getDate())){
+            System.out.println("Withdrawals today: " + savingsList.get(savingsIndex).getWithdrawalsToday());
             savingsList.get(savingsIndex).setWithdrawalsToday(0);
         }
 
@@ -164,6 +166,15 @@ public class HelperFunc {
                 savingsList.get(savingsIndex).setLastWithdrawal(new Date());
             }
         }
+    }
+
+    public static void depositToChecking(List<Checking> checkingList, int accountNum, double depositAmount){
+        int accountIndex = getChecking(checkingList, accountNum);
+        checkingList.get(accountIndex).depositAmt(depositAmount);
+    }
+    public static void depositToSavings(List<SavingsAccount> savingsList, int accountNum, double depositAmount){
+        int accountIndex = getSavings(savingsList, accountNum);
+        savingsList.get(accountIndex).depositAmt(depositAmount);
     }
 
 
@@ -203,7 +214,7 @@ public class HelperFunc {
 
         // amount requested to withdraw is greater than what is in the account
         // account has NO backup
-        if (amountToWithdraw > currentBalance) {
+        if (amountToWithdraw > currentBalance && !hasBackupAccount) {
             checkingList.get(accountIndex).withdrawAmt(amountToWithdraw);
         }
     } // end withdrawCheckingWithSafety
