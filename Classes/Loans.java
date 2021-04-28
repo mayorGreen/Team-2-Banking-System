@@ -22,6 +22,7 @@ public class Loans extends Account
     double limit; // if account type is credit card then a limit will be set
     int months; //months for the loan based on years
     int years; // years of loan based on "Long Term" and "Short Term"
+    String specialInfo;
 
     // Constructor
     public Loans(List<String> list) {
@@ -40,17 +41,18 @@ public class Loans extends Account
         }
         amountDue = Double.parseDouble(list.get(6));
         type = list.get(7);
+        specialInfo = list.get(10);
 
         switch (type)// sets the number of years on a loan and sets loan to true or false based on if it is a loan or credit card
         {
             case "Short Term":
-                years = 5;
+                years = Integer.parseInt(specialInfo);
                 break;
             case "Long Term":
-                years = 30;
+                years = Integer.parseInt(specialInfo);
                 break;
             case "Credit Card":
-                limit = balance;
+                limit = Integer.parseInt(specialInfo);
                 break;
             default: break;
         }
@@ -63,7 +65,7 @@ public class Loans extends Account
 
         if (type.equals("Credit Card")){
             card = new CreditCard(accountCustID, 2, loanID, ("2" + loanID + accountCustID.substring(0,2)));
-            setLimit(30000);
+            setLimit(Double.parseDouble(list.get(10)));
         }
 
         months = years * 12;
