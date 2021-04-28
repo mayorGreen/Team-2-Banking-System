@@ -27,8 +27,8 @@ public class HelperFunc {
             }
         }
     }
-
-
+    
+    
     // update functions for saving changed data -- call these after every change in data
     public static void updateCustomers(List<Customer> custList){
         Parser.writeObjectRecords(custList, "customerObj.txt");
@@ -45,14 +45,25 @@ public class HelperFunc {
     public static void updateLoans(List<Loans> loanList){
         Parser.writeObjectRecords(loanList, "loansObj.txt");
     }
-
+    public static void updateChecks(List<Check> checkList){
+        Parser.writeObjectRecords(checkList, "checkObj.txt");
+    }
+    public static void updateDate(List<Checking> checkingList, List<SavingsAccount> savingsList){
+        Date today = new Date();
+        for(Checking acct : checkingList) {
+            acct.setTodaysDate(today);
+        }
+        for(SavingsAccount acct : savingsList) {
+            acct.setTodaysDate(today);
+        }
+    }
+    
     // finds and returns checking account object from list given acct num
     public static Checking getCheckingObj(List<Checking> checkingList, int accountNum) throws NullPointerException{
         Checking acct = null;
         try {
             for(int i=0; i<checkingList.size(); i++){
-                 if(checkingList.get(i).getAccountNumber() == accountNum)
-                    acct = checkingList.get(i);
+                if(checkingList.get(i).getAccountNumber() == accountNum) acct = checkingList.get(i);
             }
         } catch (Exception e) {
             //TODO: handle exception
@@ -235,14 +246,5 @@ public class HelperFunc {
     }
 
 
-    public static void updateDate(List<Checking> checkingList, List<SavingsAccount> savingsList){
-        Date today = new Date();
-        for(Checking acct : checkingList) {
-            acct.setTodaysDate(today);
-        }
-        for(SavingsAccount acct : savingsList) {
-            acct.setTodaysDate(today);
-        }
-    }
 
 } // end HelperFunc

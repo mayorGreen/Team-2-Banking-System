@@ -19,6 +19,7 @@ public class CustomerPage extends JFrame implements ActionListener {
     private List<SavingsAccount> savingsList;
     private List<CD> cdList;
     private List<Loans> loanList;
+    private List<Check> checkList;
 
     private int workingAcctNum;
     private String workingAcctType;
@@ -120,13 +121,14 @@ public class CustomerPage extends JFrame implements ActionListener {
                         withdrawCustomSubmitButton,backButton,endButton,
                         cardNumButton,cardPinButton,cardPinCancelButton,programEndButton};
     
-    CustomerPage(List<Customer> customerList, List<Checking> checkingList, List<SavingsAccount> savingsList, List<CD> cdList, List<Loans> loanList){
+    CustomerPage(List<Customer> customerList, List<Checking> checkingList, List<SavingsAccount> savingsList, List<CD> cdList, List<Loans> loanList, List<Check> checkList){
 
         this.customerList = customerList;
         this.checkingList = checkingList;
         this.savingsList = savingsList;
         this.cdList = cdList;
         this.loanList = loanList;
+        this.checkList = checkList;
 
         panelContainer.setLayout(cl);
 
@@ -411,7 +413,7 @@ public class CustomerPage extends JFrame implements ActionListener {
         if(e.getSource() == programEndButton){
             mainFrame.dispose();
             IDandPass idAndPasswords = new IDandPass(customerList);
-            new LoginPage(idAndPasswords.getLoginInfo(), customerList, checkingList, savingsList, cdList, loanList);
+            new LoginPage(idAndPasswords.getLoginInfo(), customerList, checkingList, savingsList, cdList, loanList, checkList);
         }
 
         if(e.getSource() == endButton){
@@ -536,6 +538,7 @@ public class CustomerPage extends JFrame implements ActionListener {
             panel1.add(endButton);
             cl.show(panelContainer, "1");
         }
+
 
         // return funds
         if(e.getSource() == returnFundsButton){

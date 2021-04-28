@@ -17,6 +17,7 @@ public class TellerPage extends JFrame implements ActionListener {
     private List<SavingsAccount> savingsList;
     private List<CD> cdList;
     private List<Loans> loanList;
+	private List<Check> checkList;
 
 	String[] listTestData = {"Transaction 1   -    $20.23", 
 							"Transaction 2   -    $122.30", 
@@ -150,13 +151,14 @@ public class TellerPage extends JFrame implements ActionListener {
 	Font labelFont = new Font("Arial", Font.PLAIN, 28); // default label font
 	Font buttonFont = new Font("Arial", Font.PLAIN, 26); // default button font
 
-    TellerPage(String userID, List<Customer> customerList, List<Checking> checkingList, List<SavingsAccount> savingsList, List<CD> cdList, List<Loans> loanList){
+    TellerPage(String userID, List<Customer> customerList, List<Checking> checkingList, List<SavingsAccount> savingsList, List<CD> cdList, List<Loans> loanList, List<Check> checkList){
 
 		this.customerList = customerList;
         this.checkingList = checkingList;
         this.savingsList = savingsList;
         this.cdList = cdList;
         this.loanList = loanList;
+		this.checkList = checkList;
 
 		panelContainer.setLayout(cl);
 
@@ -386,7 +388,7 @@ public class TellerPage extends JFrame implements ActionListener {
 		if(e.getSource() == logoutButton) {
 			mainFrame.dispose();
             IDandPass idAndPasswords = new IDandPass(customerList);
-            new LoginPage(idAndPasswords.getLoginInfo(), customerList, checkingList, savingsList, cdList, loanList);
+            new LoginPage(idAndPasswords.getLoginInfo(), customerList, checkingList, savingsList, cdList, loanList, checkList);
 		}
 		
 		// checks account number, if valid, move to panel 2 options screen

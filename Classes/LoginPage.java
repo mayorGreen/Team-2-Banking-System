@@ -35,8 +35,9 @@ public class LoginPage extends JFrame implements ActionListener{
     private List<SavingsAccount> savingsList;
     private List<CD> cdList;
     private List<Loans> loanList;
+    private List<Check> checkList;
 
-    public LoginPage(List<HashMap<String, String>> list, List<Customer> customerList, List<Checking> checkingList, List<SavingsAccount> savingsList, List<CD> cdList, List<Loans> loanList) {
+    public LoginPage(List<HashMap<String, String>> list, List<Customer> customerList, List<Checking> checkingList, List<SavingsAccount> savingsList, List<CD> cdList, List<Loans> loanList, List<Check> checkList) {
 
         // FIRST UPDATE TIME FOR ALL ACCOUNTS
         HelperFunc.updateDate(checkingList, savingsList);
@@ -49,6 +50,7 @@ public class LoginPage extends JFrame implements ActionListener{
         this.savingsList = savingsList;
         this.cdList = cdList;
         this.loanList = loanList;
+        this.checkList = checkList;
 
         customerLoginInfo = list.get(0);
         tellerLoginInfo = list.get(1);
@@ -119,7 +121,7 @@ public class LoginPage extends JFrame implements ActionListener{
         }
         if(e.getSource() == atmButton){
             frame.dispose();
-            CustomerPage customerPage = new CustomerPage(customerList, checkingList, savingsList, cdList, loanList);
+            CustomerPage customerPage = new CustomerPage(customerList, checkingList, savingsList, cdList, loanList, checkList);
         }
 
         if(e.getSource() == loginButton && tellerButton.isSelected()){
@@ -131,7 +133,7 @@ public class LoginPage extends JFrame implements ActionListener{
                     messageLabel.setForeground(Color.green);
                     messageLabel.setText("Login Successful");
                     frame.dispose();
-                    TellerPage tellerPage = new TellerPage(userID, customerList, checkingList, savingsList, cdList, loanList);
+                    TellerPage tellerPage = new TellerPage(userID, customerList, checkingList, savingsList, cdList, loanList, checkList);
                 } else {
                     messageLabel.setForeground(Color.red);
                     messageLabel.setText("Incorrect Password");
@@ -151,7 +153,7 @@ public class LoginPage extends JFrame implements ActionListener{
                     messageLabel.setForeground(Color.green);
                     messageLabel.setText("Login Successful");
                     frame.dispose();
-                    ManagerPage managerPage = new ManagerPage(userID, customerList, checkingList, savingsList, cdList, loanList);
+                    ManagerPage managerPage = new ManagerPage(userID, customerList, checkingList, savingsList, cdList, loanList, checkList);
                 } else {
                     messageLabel.setForeground(Color.red);
                     messageLabel.setText("Incorrect Password");

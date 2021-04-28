@@ -27,6 +27,7 @@ class Main{
         List<SavingsAccount> savingsList;
         List<CD> cdList;
         List<Loans> loanList;
+        List<Check> checkList;
 
         // check if no prior record for customers exists
         if(!(new File("customerObj.txt").exists())){
@@ -103,6 +104,12 @@ class Main{
             loanList = Parser.readObjectRecords("loansObj.txt");
         }
 
+        if(new File("checkObj.txt").exists()){
+            checkList = Parser.readObjectRecords("checkObj.txt");
+        } else {
+            checkList = new ArrayList<>();
+        }
+
         //HelperFunc.updateCustomers(customerList);
 
         // data manip demoo
@@ -116,7 +123,7 @@ class Main{
         IDandPass idAndPasswords = new IDandPass(customerList); // initialize id and passwords --- this can be replaced for simply acct numbers instead
         //idAndPasswords.listUsers(); // debug
         
-        LoginPage loginPage = new LoginPage(idAndPasswords.getLoginInfo(),customerList, checkingList, savingsList, cdList, loanList); // generate login page
+        LoginPage loginPage = new LoginPage(idAndPasswords.getLoginInfo(),customerList, checkingList, savingsList, cdList, loanList,checkList); // generate login page
         System.out.println(customerList.get(0).toString()); // print first cust
 
         /* // withdrawCheckingWithbackup test - works!
