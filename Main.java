@@ -124,17 +124,17 @@ class Main{
         //idAndPasswords.listUsers(); // debug
         
         LoginPage loginPage = new LoginPage(idAndPasswords.getLoginInfo(),customerList, checkingList, savingsList, cdList, loanList,checkList); // generate login page
-        System.out.println(customerList.get(0).toString()); // print first cust
 
-        /* // withdrawCheckingWithbackup test - works!
-        HelperFunc.withdrawCheckingWithSafety(checkingList, savingsList, 1, 300);
-        HelperFunc.withdrawCheckingWithSafety(checkingList, savingsList, 1, 1000);
-        HelperFunc.withdrawCheckingWithSafety(checkingList, savingsList, 1, 20);
-
-        // withdrawSavings Test - works!
-        HelperFunc.withdrawSavings(savingsList, 1, 20);
-        HelperFunc.withdrawSavings(savingsList, 1, 20);
-        HelperFunc.withdrawSavings(savingsList, 1, 20);
-        */
+        // debug print log
+        System.out.println("Printing customers");
+        HelperFunc.printList(customerList);
+        System.out.println("\nPrinting Savings Accounts");
+        HelperFunc.printList(savingsList);
+        System.out.println("\nPrinting CDs");
+        HelperFunc.printList(cdList);
+        System.out.println("\nPrinting loans");
+        HelperFunc.printList(loanList);
+        System.out.println("\nPrinting Checks");
+        HelperFunc.printList(checkList);
     } // end main method
 } // end Main class

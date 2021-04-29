@@ -1,4 +1,5 @@
 package Classes;
+import java.nio.charset.CharsetDecoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,8 +29,12 @@ public class HelperFunc {
             }
         }
     }
-    
-    
+
+    // functions for printing data as plaintext
+    public static <T> void printList(List<T> list) {
+        for(T obj : list) System.out.println(obj);
+    }
+
     // update functions for saving changed data -- call these after every change in data
     public static void updateCustomers(List<Customer> custList){
         Parser.writeObjectRecords(custList, "customerObj.txt");
@@ -150,7 +155,18 @@ public class HelperFunc {
         }
         return balance;
     }
+    // DEPOSIT FUNCTIONS FOR CUSTOMERS
+    // used by customers via atm, accounts for implicit transaction fees
+    public static void depositToChecking(List<Checking> checkingList, int accountNum, double depositAmount){
+        int accountIndex = getChecking(checkingList, accountNum);
+        checkingList.get(accountIndex).depositAmt(depositAmount);
+    }
+    public static void depositToSavings(List<SavingsAccount> savingsList, int accountNum, double depositAmount){
+        int accountIndex = getSavings(savingsList, accountNum);
+        savingsList.get(accountIndex).depositAmt(depositAmount);
+    }
 
+    // WITHDRAW FUNCTIONS FOR CUSTOMERS
     // this method withdraws the requested amount from the given savings account
     // the date is checked to ensure that money is withdrawn a maximum amount of 2 times per day
     public static void withdrawSavings(List<SavingsAccount> savingsList, int accountNum, double withdrawAmt){
@@ -180,14 +196,6 @@ public class HelperFunc {
         }
     }
 
-    public static void depositToChecking(List<Checking> checkingList, int accountNum, double depositAmount){
-        int accountIndex = getChecking(checkingList, accountNum);
-        checkingList.get(accountIndex).depositAmt(depositAmount);
-    }
-    public static void depositToSavings(List<SavingsAccount> savingsList, int accountNum, double depositAmount){
-        int accountIndex = getSavings(savingsList, accountNum);
-        savingsList.get(accountIndex).depositAmt(depositAmount);
-    }
 
 
     // this method withdraws an amount from a checking account and does multiple checks for backup accounts and overdraft protection
@@ -233,24 +241,32 @@ public class HelperFunc {
 
 
 
-
+    // CREDIT FUNCTIONS FOR TELLER/MANAGER
     // These functions can be used by teller and manager
+    // used by tellers and managers via banking panel. Differs from previous methods in that it ignores transaction fees
+    public static void creditCheckingAccount(List<Checking> checkingList, int workingAcctNum, double amount) {
+        int acctIndex = getChecking(checkingList, workingAcctNum);
+        checkingList.get(acctIndex).creditAccount(amount);
+    }
+    public static void creditSavingsAccount(List<SavingsAccount> savingsList, int workingAcctNum, double amount) {
+        int acctIndex = getSavings(savingsList, workingAcctNum);
+        savingsList.get(acctIndex).creditAccount(amount);
+    }
 
-    public static void creditAccount(String custID, Checking account, double amount) {
-        account.creditAccount(amount);
-    }
-    public static void creditAccount(String custID, SavingsAccount account, double amount) {
-        account.creditAccount(amount);
-    }
-    public static void createCheck(List<Check> checkList, String accountNum, String checkNum, String checkAmount) {
-        checkList.add(new Check(Integer.parseInt(accountNum), Integer.parseInt(checkNum), Double.parseDouble(checkAmount)));
+    // CREATE AND STOP CHECK FUNCTIONS FOR TELLER/MANAGER
+    public static void createCheck(List<Check> checkList, int accountNum, int routingNum, int checkNum, double checkAmount, int workingAcctNum, String workingAcctType) {
+        Check checkToAdd = new Check(accountNum, routingNum, checkNum, checkAmount);
+        checkToAdd.setAccountTypeDeposit(workingAcctType);
+        checkToAdd.setAccountNumDeposit(workingAcctNum);
+        checkToAdd.setIncomingCheck(true);
+        checkList.add(checkToAdd);
     }
     public static void stopCheck(List<Check> checkList, String accountNumber, String checkNumber){
         // stops check
         int accountNum = Integer.parseInt(accountNumber);
         int checkNum = Integer.parseInt(checkNumber);
         for(Check check : checkList){
-            if(check.getAccountNum() == accountNum && check.getCheckNum() == checkNum){
+            if(check.getAccountNum() == accountNum && check.getCheckNum() == checkNum && check.getRoutingNum() == 123456789){
                 check.setCheckStopped(true);
                 return;
             }
@@ -258,6 +274,8 @@ public class HelperFunc {
 
     } // end stopCheck
 
+
+    // Account lookup process for teller and manager pages
     public static List<String> accountsLookup(List<Checking> checkingList, List<SavingsAccount> savingsList, String custID){
         ArrayList<String> accounts = new ArrayList<>();
         for(Checking acct : checkingList){
@@ -273,7 +291,19 @@ public class HelperFunc {
         return accounts; // return list of accounts
     }
 
-
-
+    // pass in string, determine if it's a parsable value
+    public static boolean isParsableNumber(String str){
+        boolean parsable = true;
+        int decimalPoints = 0;
+        for(char character : str.toCharArray()){
+            if (character == '.') decimalPoints++;
+            if (!(character >= '0' && character <= '9' || character == '.')) {
+                System.out.println("incompatible character");
+                parsable = false;
+            }
+        }
+        if (decimalPoints > 1) parsable = false;
+        return parsable;
+    }
 
 } // end HelperFunc

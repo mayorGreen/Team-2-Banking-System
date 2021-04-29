@@ -104,7 +104,7 @@ public class TellerPage extends JFrame implements ActionListener {
 	// panel 3 elements -- stop payment
 	JLabel stopPaymentLabel = new JLabel("Stop Payment");
 	JLabel stopCheckNumLabel = new JLabel("Check #");
-	JTextField checkNumField = new JTextField();
+	JTextField stopCheckNumField = new JTextField();
 	JButton submitStopButton = new JButton("Submit");
 
 	// panel 4 elements -- balance inquiry
@@ -129,8 +129,12 @@ public class TellerPage extends JFrame implements ActionListener {
 
 	// panel 7 elements -- credit check to account
 	JLabel checkDepositLabel = new JLabel("Check Deposit");
+	JLabel checkAccountLabel = new JLabel("Account Number:");
+	JLabel checkRoutingLabel = new JLabel("Routing Number:");
 	JLabel checkAmtLabel = new JLabel("Amount on Check:");
 	JLabel checkNumLabel =new JLabel("Check Number:");
+	JTextField checkAccountField = new JTextField();
+	JTextField checkRoutingField = new JTextField();
 	JTextField checkAmountField = new JTextField();
 	JTextField checkNumberField = new JTextField();
 	JButton checkDepositSubmitButton = new JButton("Submit");
@@ -294,13 +298,13 @@ public class TellerPage extends JFrame implements ActionListener {
 		stopCheckNumLabel.setBounds(200,250,175,50);
 		stopCheckNumLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 
-		checkNumField.setBounds(center);
+		stopCheckNumField.setBounds(center);
 		submitStopButton.setBounds(bottomRight);
 		
 		// add elements to panel 3
 		panel3.add(stopCheckNumLabel);
 		panel3.add(stopPaymentLabel);
-		panel3.add(checkNumField);
+		panel3.add(stopCheckNumField);
 		panel3.add(submitStopButton);
 
 		// define panel 4 elements
@@ -344,23 +348,35 @@ public class TellerPage extends JFrame implements ActionListener {
 		checkAmtLabel.setFont(labelFont);
 		checkNumLabel.setFont(labelFont);
 		checkDepositLabel.setFont(labelFont);
+		checkAccountLabel.setFont(labelFont);
+		checkRoutingLabel.setFont(labelFont);
+		checkAccountLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		checkRoutingLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 		checkAmtLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 		checkNumLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 		checkDepositLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
 		checkDepositLabel.setBounds(header);
-		checkAmountField.setBounds(400,225,200,50);
-		checkNumberField.setBounds(400,325,200,50);
-		checkAmtLabel.setBounds(100,225,275,50);
-		checkNumLabel.setBounds(100,325,275,50);
+		checkAccountField.setBounds(400,50,200,50);
+		checkAccountLabel.setBounds(100,50,275,50);
+		checkRoutingField.setBounds(400,150,200,50);
+		checkRoutingLabel.setBounds(100,150,275,50);
+		checkAmountField.setBounds(400,250,200,50);
+		checkNumberField.setBounds(400,350,200,50);
+		checkAmtLabel.setBounds(100,250,275,50);
+		checkNumLabel.setBounds(100,350,275,50);
 		checkDepositSubmitButton.setBounds(bottomRight);
 
 		// add elements to panel 7
+		panel7.add(checkAccountField);
+		panel7.add(checkAccountLabel);
+		panel7.add(checkRoutingField);
+		panel7.add(checkRoutingLabel);
 		panel7.add(checkAmtLabel);
-		panel7.add(checkNumLabel);
-		panel7.add(checkDepositLabel);
 		panel7.add(checkAmountField);
+		panel7.add(checkNumLabel);
 		panel7.add(checkNumberField);
+		panel7.add(checkDepositLabel);
 		panel7.add(checkDepositSubmitButton);
 
 		// define panel 8 elements
@@ -554,20 +570,46 @@ public class TellerPage extends JFrame implements ActionListener {
 		if(e.getSource() == creditSubmitButton) {
 			// check if amt in box > 0
 			// credit account for amount in box
-
-			// send user to confirmation page
-			panel10.add(backButton);
-			cl.show(panelContainer, "10");
+			boolean parsable = HelperFunc.isParsableNumber(checkAmountField.getText());
+			if(parsable){
+				double credAmount = Double.parseDouble(checkNumberField.getText());
+				if(workingAcctType.equals("Checking")){
+					HelperFunc.creditCheckingAccount(checkingList, workingAcctNum, credAmount);
+					HelperFunc.updateChecking(checkingList);
+				} else if (workingAcctType.equals("Savings")){
+					HelperFunc.creditSavingsAccount(savingsList, workingAcctNum, credAmount);
+					HelperFunc.updateSavings(savingsList);
+				}
+				// send user to confirmation page
+				panel10.add(backButton);
+				cl.show(panelContainer, "10");
+			} else {
+				System.out.println("Non parsable number in TellerPage for value: " + creditAmountField.getText());
+			}
 		}
 
 		// panel 7 buttons (credit check to account page)
 		if(e.getSource() == checkDepositSubmitButton) {
 			// check if amount > 0
 			// credit account for amount on check
+			String checkAcct = checkAccountField.getText();
+			String routingNum = checkRoutingField.getText();
+			String checkAmt = checkAmountField.getText();
+			String checkNum = checkNumberField.getText();
+			boolean parsable = true;
+			parsable = HelperFunc.isParsableNumber(checkAcct);
+			if(parsable) parsable = HelperFunc.isParsableNumber(routingNum);
+			if(parsable) parsable = HelperFunc.isParsableNumber(checkAmt);
+			if(parsable) parsable = HelperFunc.isParsableNumber(checkNum);
+			if(parsable) {
+				HelperFunc.createCheck(checkList, Integer.parseInt(checkAcct), Integer.parseInt(routingNum), Integer.parseInt(checkNum),
+				Double.parseDouble(checkAmt), workingAcctNum, workingAcctType);
+				HelperFunc.updateChecks(checkList);
 
-			// send to confirmation page
-			panel10.add(backButton);
-			cl.show(panelContainer, "10");
+				// send to confirmation page
+				panel10.add(backButton);
+				cl.show(panelContainer, "10");
+			}
 		}
 
 		// panel 8 buttons (debit account)
