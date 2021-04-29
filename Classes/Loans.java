@@ -23,6 +23,8 @@ public class Loans extends Account
     int months; //months for the loan based on years
     int years; // years of loan based on "Long Term" and "Short Term"
     int specialInfo;
+    int numberOfCharges;
+    double financeCharge;
 
     // Constructor
     public Loans(List<String> list) {
@@ -42,6 +44,10 @@ public class Loans extends Account
         amountDue = Double.parseDouble(list.get(6));
         type = list.get(7);
         specialInfo = Integer.parseInt(list.get(10));
+        if((list.get(11)).equals("N/A"))
+            numberOfCharges = 0;
+        else numberOfCharges = Integer.parseInt(list.get(11));
+
 
         switch (type)// sets the number of years on a loan and sets loan to true or false based on if it is a loan or credit card
         {
@@ -50,7 +56,6 @@ public class Loans extends Account
                 years = specialInfo;
                 break;
             case "Credit Card":
-                limit = specialInfo;
                 card = new CreditCard(accountCustID, 2, (accountNumber + accountCustID.substring(0,2)));
                 setLimit(specialInfo);
                 break;
@@ -63,22 +68,37 @@ public class Loans extends Account
             missedPayment = false;
         }
 
-        months = years * 12;
-        System.out.println(specialInfo);
-        calculateMonthlyPayment();
+        //System.out.println(numberOfCharges);
+        calculateMonthlyPayment(type);
     }
 
     //method to calculate the monthly payment of each loan or credit card
-    double calculateMonthlyPayment()
+    double calculateMonthlyPayment(String type)
     {
-            amountDue = (balance/months) + ((balance/2)*years*interestRate/months);
+        switch (type)// sets the number of years on a loan and sets loan to true or false based on if it is a loan or credit card
+        {
+            case "Short Term":
+            case "Long Term":
+                months = years * 12;
+                amountDue = (balance/months) + ((balance/2)*years*interestRate/months);
 
-            if (missedPayment = true)
-            {
-                amountDue += 75;
-            }
+                if (missedPayment)
+                {
+                    amountDue += 75;
+                }
+                break;
+            case "Credit Card":
+                //credit card balance is based on the total of monthly charges
+                //finance charge is based on the average balance of the bill through
+                // the month. I believe this is the balance/number of charges.
+                amountDue = balance;
+                financeCharge = amountDue/numberOfCharges;
+                if(missedPayment) {amountDue += financeCharge;}
+                break;
+            default: break;
+        }
 
-        //System.out.println(amountDue);
+        System.out.println(type +" "+ amountDue);
             return amountDue;
     }
 
