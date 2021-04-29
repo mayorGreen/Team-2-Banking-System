@@ -98,7 +98,7 @@ public class Loans extends Account
             default: break;
         }
 
-        System.out.println(type +" "+ amountDue);
+        //System.out.println(type +" "+ amountDue);
             return amountDue;
     }
 
@@ -159,6 +159,12 @@ public class Loans extends Account
     }
     public void setLimit(double limit) {
         this.limit = limit;
+    }
+
+    public String toString()
+    {
+        return "LoanID: "+loanID+" CustID: "+accountCustID+" Balance: "+balance+" Interest Rate: "+interestRate+" Due Date: "+dueDate+" Last payment Date: "+" Payment Notification Date: "+
+                paymentNotificationDate+" Amount Due: "+amountDue+" Loan Type: "+type+" Special Info: "+ specialInfo+" Number of Charges: "+numberOfCharges;
     }
 
 } // end Loans

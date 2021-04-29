@@ -69,8 +69,6 @@ public class Customer implements Serializable{
         return  "CustID: " + ssn + " Street Address: " + streetAddress + " City: " + city
         + " State: " + state + " Zip Code: " + zip + " First Name: " + firstName + " Last Name: " + lastName
         + " Username: " + loginUsername + " Password: " + loginPassword;
-
-
     }
 
 } // end Customer
