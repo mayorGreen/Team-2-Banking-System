@@ -25,7 +25,6 @@ public class Loans extends Account
     int specialInfo;
     int numberOfCharges;
     double financeCharge;
-    double charge;
 
     // Constructor
     public Loans(List<String> list) {
@@ -120,7 +119,6 @@ public class Loans extends Account
     @Override
     void depositAmt(double amt) {
         // TODO Auto-generated method stub
-        
     }
 
     // getters
