@@ -22,7 +22,9 @@ public class Loans extends Account
     double limit; // if account type is credit card then a limit will be set
     int months; //months for the loan based on years
     int years; // years of loan based on "Long Term" and "Short Term"
-    String specialInfo;
+    int specialInfo;
+    int numberOfCharges;
+    double financeCharge;
 
     // Constructor
     public Loans(List<String> list) {
@@ -41,18 +43,20 @@ public class Loans extends Account
         }
         amountDue = Double.parseDouble(list.get(6));
         type = list.get(7);
-        specialInfo = list.get(10);
+        specialInfo = Integer.parseInt(list.get(10));
+        if((list.get(11)).equals("N/A"))
+            numberOfCharges = 0;
+        else numberOfCharges = Integer.parseInt(list.get(11));
 
         switch (type)// sets the number of years on a loan and sets loan to true or false based on if it is a loan or credit card
         {
             case "Short Term":
-                years = Integer.parseInt(specialInfo);
-                break;
             case "Long Term":
-                years = Integer.parseInt(specialInfo);
+                years = specialInfo;
                 break;
             case "Credit Card":
-                limit = Integer.parseInt(specialInfo);
+                card = new CreditCard(accountCustID, 2, loanID,(accountNumber + accountCustID.substring(0,2)));
+                setLimit(specialInfo);
                 break;
             default: break;
         }
@@ -63,33 +67,51 @@ public class Loans extends Account
             missedPayment = false;
         }
 
-        if (type.equals("Credit Card")){
-            card = new CreditCard(accountCustID, 2, loanID, ("2" + loanID + accountCustID.substring(0,2)));
-            setLimit(Double.parseDouble(list.get(10)));
-        }
-
-        months = years * 12;
-        //System.out.println();
-        calculateMonthlyPayment();
+        calculateMonthlyPayment(type);
     }
 
     //method to calculate the monthly payment of each loan or credit card
-    void calculateMonthlyPayment()
+    double calculateMonthlyPayment(String type)
     {
-            amountDue = (balance/months) + ((balance/2)*years*interestRate/months);
+        switch (type)// sets the number of years on a loan and sets loan to true or false based on if it is a loan or credit card
+        {
+            case "Short Term":
+            case "Long Term":
+                months = years * 12;
+                amountDue = (balance/months) + ((balance/2)*years*interestRate/months);
 
-            if (missedPayment = true)
-            {
-                amountDue += 75;
-            }
+                if (missedPayment)
+                {
+                    amountDue += 75;
+                }
+                break;
+            case "Credit Card":
+                //credit card balance is based on the total of monthly charges
+                //finance charge is based on the average balance of the bill through
+                // the month. I believe this is the balance/number of charges.
+                amountDue = balance;
+                financeCharge = amountDue/numberOfCharges;
+                if(missedPayment) {amountDue += financeCharge;}
+                break;
+            default: break;
+        }
 
-        System.out.println(amountDue);
+        //System.out.println(type +" "+ amountDue);
+            return amountDue;
     }
 
     @Override
     void withdrawAmt(double amt) {
         // TODO Auto-generated method stub
-        // TODO override atm withdraw for CC
+        if(type.equals("Credit Card"))
+        {
+            if((balance + amt) > limit)
+            {
+                //will need to add functionality to this to allow for the bank to reject the amount.
+                System.out.println("Sorry you can't make that purchase you are over the limit");
+            }
+            else balance+=amt; numberOfCharges ++; // adds the amount to the balance of the card, and adds 1 to the number of charges this month
+        }
     }
 
     @Override
@@ -136,6 +158,12 @@ public class Loans extends Account
     }
     public void setLimit(double limit) {
         this.limit = limit;
+    }
+
+    public String toString()
+    {
+        return "LoanID: "+loanID+" CustID: "+accountCustID+" Balance: "+balance+" Interest Rate: "+interestRate+" Due Date: "+dueDate+" Last payment Date: "+" Payment Notification Date: "+
+                paymentNotificationDate+" Amount Due: "+amountDue+" Loan Type: "+type+" Special Info: "+ specialInfo+" Number of Charges: "+numberOfCharges;
     }
 
 } // end Loans
