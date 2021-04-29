@@ -307,7 +307,7 @@ public class TellerPage extends JFrame implements ActionListener {
 		balanceInquiryLabel.setFont(labelFont);
 		balanceInquiryLabel.setBounds(header);
 		balanceInquiryLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		balanceAmountLabel.setBounds(center);
+		balanceAmountLabel.setBounds(300,250,400,50);
 		balanceAmountLabel.setFont(labelFont);
 		balanceAmountLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
@@ -430,7 +430,7 @@ public class TellerPage extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		if(e.getSource() == custIDSubmitButton){
+		if((e.getSource() == custIDSubmitButton) && !(custIdField.getText().equals(""))){
 			accountList = HelperFunc.accountsLookup(checkingList, savingsList, custIdField.getText());
 			accountArray = new String[accountList.size()];
 			accounts = new ArrayList<>();
@@ -448,14 +448,9 @@ public class TellerPage extends JFrame implements ActionListener {
 			int accountSelectIndex = accountJList.getSelectedIndex();
 			if(accountSelectIndex != -1){
 				System.out.println(accounts.get(accountSelectIndex)[0]);
-				workingAcctType = accounts.get(accountSelectIndex)[0];
+				workingAcctType = accounts.get(accountSelectIndex)[0]; // set selected account type
 				System.out.println(accounts.get(accountSelectIndex)[1]);
-				workingAcctNum = Integer.parseInt(accounts.get(accountSelectIndex)[1]);
-				if(workingAcctType.equals("Checking")){
-					
-				} else if (workingAcctType.equals("Savings")){
-
-				}
+				workingAcctNum = Integer.parseInt(accounts.get(accountSelectIndex)[1]); // set selected accout num
 				cl.show(panelContainer, "2");
 			}
 		}
@@ -496,7 +491,8 @@ public class TellerPage extends JFrame implements ActionListener {
 					return;
 				}
 			});
-			cl.show(panelContainer, "1");
+			custIdField.setText("");
+			cl.show(panelContainer, "11");
 		}
 
 		// panel 2 buttons
@@ -507,6 +503,11 @@ public class TellerPage extends JFrame implements ActionListener {
 
 		if(e.getSource() == balanceInquiryButton){
 			panel4.add(backButton);
+			if(workingAcctType.equals("Checking")){
+				balanceAmountLabel.setText("Balance: $" + HelperFunc.getCheckingBalance(checkingList, workingAcctNum));
+			} else if(workingAcctType.equals("Savings")){
+				balanceAmountLabel.setText("Balance: $" + HelperFunc.getSavingsBalance(savingsList, workingAcctNum));
+			}
 			cl.show(panelContainer, "4");
 		}
 
