@@ -41,7 +41,7 @@ class Main{
                 customerList.add(new Customer(customers.get(i)));
             }
         } else {
-            // import records
+            // import records.
             customerList = Parser.readObjectRecords("customerObj.txt");
         }
 
