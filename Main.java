@@ -128,6 +128,8 @@ class Main{
         // debug print log
         System.out.println("Printing customers");
         HelperFunc.printList(customerList);
+        System.out.println("\nPrinting Checking Accounts");
+        HelperFunc.printList(checkingList);
         System.out.println("\nPrinting Savings Accounts");
         HelperFunc.printList(savingsList);
         System.out.println("\nPrinting CDs");

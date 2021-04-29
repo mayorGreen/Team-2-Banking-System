@@ -130,7 +130,7 @@ public class Checking extends Account
     public String toString(){
         return "Account Number: " + accountNumber + " CustID: " + accountCustID + " Balance: " 
         + balance + " Current Interest Rate: " + interestRate + " Number of Overdrafts: " + numOfOverdrafts + 
-        " Date Account Opened: " + dateCreated;
+        " Date Account Opened: " + dateCreated + " ATM card num: " + card.getCardNumber() + " ATM card PIN: " + card.getPinNum();
     }
 
 }
