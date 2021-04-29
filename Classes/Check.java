@@ -36,4 +36,10 @@ public class Check implements Serializable {
         return routingNum;
     }
 
+    // setters
+
+    public void setCheckStopped(boolean checkStopped) {
+        this.checkStopped = checkStopped;
+    }
+
 } // end Check

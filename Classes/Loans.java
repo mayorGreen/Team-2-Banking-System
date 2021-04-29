@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-// TODO implement credit card
+
 // TODO implement compounding interest methods
 // class for loans. extends account
 public class Loans extends Account
@@ -89,7 +89,7 @@ public class Loans extends Account
     @Override
     void withdrawAmt(double amt) {
         // TODO Auto-generated method stub
-        
+        // TODO override atm withdraw for CC
     }
 
     @Override

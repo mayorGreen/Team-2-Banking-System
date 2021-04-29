@@ -1,4 +1,5 @@
 package Classes;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -241,9 +242,37 @@ public class HelperFunc {
     public static void creditAccount(String custID, SavingsAccount account, double amount) {
         account.creditAccount(amount);
     }
-    public static void stopCheck(int accountNumber, int checkNumber){
-        // stops check
+    public static void createCheck(List<Check> checkList, String accountNum, String checkNum, String checkAmount) {
+        checkList.add(new Check(Integer.parseInt(accountNum), Integer.parseInt(checkNum), Double.parseDouble(checkAmount)));
     }
+    public static void stopCheck(List<Check> checkList, String accountNumber, String checkNumber){
+        // stops check
+        int accountNum = Integer.parseInt(accountNumber);
+        int checkNum = Integer.parseInt(checkNumber);
+        for(Check check : checkList){
+            if(check.getAccountNum() == accountNum && check.getCheckNum() == checkNum){
+                check.setCheckStopped(true);
+                return;
+            }
+        }
+
+    } // end stopCheck
+
+    public static List<String> accountsLookup(List<Checking> checkingList, List<SavingsAccount> savingsList, String custID){
+        ArrayList<String> accounts = new ArrayList<>();
+        for(Checking acct : checkingList){
+            if (acct.getAccountCustID().equals(custID)){
+                accounts.add("Checking " + acct.getAccountNumber());
+            }
+        }
+        for(SavingsAccount acct : savingsList){
+            if (acct.getAccountCustID().equals(custID)){
+                accounts.add("Savings " + acct.getAccountNumber());
+            }
+        }
+        return accounts; // return list of accounts
+    }
+
 
 
 

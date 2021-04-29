@@ -2,6 +2,7 @@ package Classes;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.awt.CardLayout;
@@ -18,6 +19,10 @@ public class TellerPage extends JFrame implements ActionListener {
     private List<CD> cdList;
     private List<Loans> loanList;
 	private List<Check> checkList;
+	private List<String> accountList = new ArrayList<>();
+
+	private int workingAcctNum;
+    private String workingAcctType;
 
 	String[] listTestData = {"Transaction 1   -    $20.23", 
 							"Transaction 2   -    $122.30", 
@@ -47,6 +52,9 @@ public class TellerPage extends JFrame implements ActionListener {
 
 	JFrame mainFrame = new JFrame();
 	JPanel panelContainer = new JPanel();
+	
+	JPanel lookupPanel = new JPanel(); // customer id lookup panel
+	JPanel accountSelectPanel = new JPanel();
 	JPanel panel1 = new JPanel(); // Teller landing page. enter acct number lookup here.
 	JPanel panel2 = new JPanel(); // Account Lookup Successful
 	JPanel panel3 = new JPanel(); // stop payment page
@@ -58,14 +66,29 @@ public class TellerPage extends JFrame implements ActionListener {
 	JPanel panel9 = new JPanel(); // account transfer page
 	JPanel panel10 = new JPanel(); // confirmation page
 
-	JPanel[] panels = {panel1,panel2,panel3,panel4,panel5,panel6,panel7,panel8,panel9,panel10};
+	JPanel[] panels = {panel1,panel2,panel3,panel4,panel5,panel6,panel7,panel8,panel9,panel10,lookupPanel,accountSelectPanel};
 
+	// utility elements
 	JLabel bankNameLabel = new JLabel("My Bank");
 	JButton backButton = new JButton("Back"); // sends teller back to option panel 2
 	JButton exitButton = new JButton("Exit"); // sends teller back to account lookup
 	JButton logoutButton = new JButton("Logout"); // logs teller out
 
+	// lookupPanel -- teller looks up custoemr id
+	JLabel custIDLabel = new JLabel("Enter User ID");
+	JTextField custIdField = new JTextField();
+	JButton custIDSubmitButton = new JButton("Submit");
+	String[] accountArray;
+	ArrayList<String[]> accounts;
+	
+	// acountSelectPanel
+	JList<String> accountJList = new  JList<>();
+	JScrollPane acctScrollPane = new JScrollPane(accountJList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
+													ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	JButton accountSubmitButton = new JButton("Submit");
+
 	// panel 1 elements -- teller login
+	JScrollPane accountsListPane = new JScrollPane();
 	JTextField acctNumLookupField = new JTextField();
 	JButton acctNumLookupButton = new JButton("Submit");
 	JLabel acctNumLookupFailLabel = new JLabel(); // used if account number lookup fails
@@ -144,7 +167,8 @@ public class TellerPage extends JFrame implements ActionListener {
 						debitAccountButton,transferCashButton,
 						submitStopButton,checkDepositButton,
 						creditSubmitButton,checkDepositSubmitButton,
-						debitSubmitButton,transferSubmitButton};
+						debitSubmitButton,transferSubmitButton,
+						custIDSubmitButton,accountSubmitButton};
 
 	
 	CardLayout cl = new CardLayout();
@@ -184,6 +208,28 @@ public class TellerPage extends JFrame implements ActionListener {
 
 		// define utility elements
 		exitButton.setBounds(bottomRight);
+
+		// define lookuppanel
+		custIDLabel.setBounds(header);
+		custIDLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		custIDLabel.setFont(labelFont);
+		custIdField.setBounds(center);
+		custIDSubmitButton.setBounds(bottomRight);
+
+		// add elements to lookuppanel
+		lookupPanel.add(custIDLabel);
+		lookupPanel.add(custIdField);
+		lookupPanel.add(custIDSubmitButton);
+
+		// define account select panel
+		acctScrollPane.setBounds(100,100,800,400);
+		accountSubmitButton.setBounds(bottomRight);
+
+
+		// add elements to account select panel
+		accountSelectPanel.add(acctScrollPane);
+		accountSelectPanel.add(accountSubmitButton);
+
 
 
 		// define panel 1 elements
@@ -376,13 +422,43 @@ public class TellerPage extends JFrame implements ActionListener {
 			i++;
 		}
 
-		cl.show(panelContainer, "1");
+		cl.show(panelContainer, "11");
 
     }
 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
+		if(e.getSource() == custIDSubmitButton){
+			accountList = HelperFunc.accountsLookup(checkingList, savingsList, custIdField.getText());
+			accountArray = new String[accountList.size()];
+			accounts = new ArrayList<>();
+			for(int i=0; i<accountList.size(); i++){
+				accountArray[i] = accountList.get(i);
+				String[] values = accountArray[i].split(" ");
+				accounts.add(values);
+			}
+
+			accountJList.setListData(accountArray);
+			cl.show(panelContainer, "12");
+		}
+
+		if(e.getSource() == accountSubmitButton){
+			int accountSelectIndex = accountJList.getSelectedIndex();
+			if(accountSelectIndex != -1){
+				System.out.println(accounts.get(accountSelectIndex)[0]);
+				workingAcctType = accounts.get(accountSelectIndex)[0];
+				System.out.println(accounts.get(accountSelectIndex)[1]);
+				workingAcctNum = Integer.parseInt(accounts.get(accountSelectIndex)[1]);
+				if(workingAcctType.equals("Checking")){
+					
+				} else if (workingAcctType.equals("Savings")){
+
+				}
+				cl.show(panelContainer, "2");
+			}
+		}
 
 		// logout button pressed
 		if(e.getSource() == logoutButton) {

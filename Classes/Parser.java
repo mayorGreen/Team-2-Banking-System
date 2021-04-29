@@ -56,7 +56,8 @@ public abstract class Parser{
             readList = (ArrayList)oin.readObject();
             oin.close();
         } catch (Exception e) {
-            //TODO: handle exception
+            System.out.println("Error in readObjectRecords");
+            e.printStackTrace();
         }
         return readList;
     }
