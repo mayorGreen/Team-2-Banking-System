@@ -25,6 +25,7 @@ public class Loans extends Account
     int specialInfo;
     int numberOfCharges;
     double financeCharge;
+    double charge;
 
     // Constructor
     public Loans(List<String> list) {
@@ -105,7 +106,15 @@ public class Loans extends Account
     @Override
     void withdrawAmt(double amt) {
         // TODO Auto-generated method stub
-        
+        if(type.equals("Credit Card"))
+        {
+            if((balance += amt) > limit)
+            {
+                //will need to add functionality to this to allow for the bank to reject the amount.
+                System.out.println("Sorry you can't make that purchase you are over the limit");
+            }
+            else balance+=amt; numberOfCharges ++; // adds the amount to the balance of the card, and adds 1 to the number of charges this month
+        }
     }
 
     @Override
