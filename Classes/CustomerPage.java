@@ -549,13 +549,7 @@ public class CustomerPage extends JFrame implements ActionListener {
         // user selects submit button on DEPOSIT screen
         if(e.getSource() == depositSubmitButton) {
             // UPDATE ACCOUNT BALANCE
-            boolean parsable = true;
-            for(char character : depositAmtField.getText().toCharArray()){
-                if (!(character >= '0' && character <= '9' || character == '.')) {
-                    System.out.println("incompatible character");
-                    parsable = false;
-                }
-            }
+            boolean parsable = HelperFunc.isParsableNumber(depositAmtField.getText());
             if(parsable){
                 depositAmt = Double.parseDouble(depositAmtField.getText());
                 if(workingAcctType.equals("Checking")){
