@@ -603,7 +603,7 @@ public class TellerPage extends JFrame implements ActionListener {
 			if(parsable) parsable = HelperFunc.isParsableNumber(checkNum);
 			if(parsable) {
 				HelperFunc.createCheck(checkList, Integer.parseInt(checkAcct), Integer.parseInt(routingNum), Integer.parseInt(checkNum),
-				Double.parseDouble(checkAmt), workingAcctNum, workingAcctType);
+										Double.parseDouble(checkAmt), workingAcctNum, workingAcctType);
 				HelperFunc.updateChecks(checkList);
 
 				// send to confirmation page

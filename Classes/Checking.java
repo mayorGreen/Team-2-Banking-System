@@ -11,7 +11,7 @@ public class Checking extends Account
 {
     private boolean goldDiamondAccount; // raised if account balance > $1000.00
     private double interestRate; // interest rate for account, only goldDiamond accounts accrue interest
-    private ArrayList<Check> checksList = new ArrayList<>(); // list of checks tied to this account
+    //private ArrayList<Check> checksList = new ArrayList<>(); // list of checks tied to this account
     private int nextCheckNumber; // next check number associated with account
     private boolean hasBackupAccount; // raised if account has backup account associated for overdrdaft protection
     private int backupAccountNumber; // account number of backup account
