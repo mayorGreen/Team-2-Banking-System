@@ -8,8 +8,10 @@ import java.awt.CardLayout;
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.Rectangle;
-
 // TODO add 'create new account' to first page, add radio button group for checking, savings, etc (loans may not be neccessary as its on the next screen)
+// TODO add loan functions
+// from create account button, send to the short term or long term panels,
+// we can do all from this create acount, checking, savings, cd, short loan, long loan, credit card
 
 public class ManagerPage extends JFrame implements ActionListener {
 
@@ -54,6 +56,8 @@ public class ManagerPage extends JFrame implements ActionListener {
 	JPanel panelContainer = new JPanel();
 	JPanel lookupPanel = new JPanel(); // customer id lookup panel
 	JPanel accountSelectPanel = new JPanel();	
+	JPanel newCustomerPanel = new JPanel();
+	JPanel newAccountPanel = new JPanel();
 	JPanel panel1 = new JPanel(); // Teller landing page. enter acct number lookup here.
 	JPanel panel2 = new JPanel(); // Account Lookup Successful
 	JPanel panel3 = new JPanel(); // stop payment page
@@ -68,12 +72,14 @@ public class ManagerPage extends JFrame implements ActionListener {
     JPanel panel12 = new JPanel(); // long term loan page
     JPanel panel13 = new JPanel(); // loan payment page
 
-	JPanel[] panels = {panel1,panel2,panel3,panel4,panel5,panel6,panel7,panel8,panel9,panel10,panel11,panel12,panel13,lookupPanel,accountSelectPanel};
+	JPanel[] panels = {panel1,panel2,panel3,panel4,panel5,panel6,panel7,panel8,panel9,panel10,panel11,panel12,panel13,
+						lookupPanel,accountSelectPanel,newCustomerPanel,newAccountPanel};
 
 	JLabel bankNameLabel = new JLabel("My Bank");
 	JButton backButton = new JButton("Back"); // sends teller back to option panel 2
 	JButton exitButton = new JButton("Exit"); // sends teller back to account lookup
 	JButton logoutButton = new JButton("Logout"); // logs teller out
+	JButton lookupReturnButton = new JButton("Back"); // returns manager to account lookup page
 
 	// lookupPanel -- teller looks up custoemr id
 	JLabel custIDLabel = new JLabel("Enter Customer ID");
@@ -81,6 +87,34 @@ public class ManagerPage extends JFrame implements ActionListener {
 	JButton custIDSubmitButton = new JButton("Submit");
 	String[] accountArray;
 	ArrayList<String[]> accounts;
+
+	// create new cust
+	JButton createCustomerButton = new JButton("New Customer");
+	// create new acct
+	JButton createAccountButton = new JButton("New Account");
+	// process checks
+	JButton processChecksButton = new JButton("Process Checks");
+
+	// newCustomerPanel -- enter customer data here, add to customer list
+	JTextField ssnField = new JTextField();
+	JTextField streetAddressField = new JTextField();
+	JTextField cityField = new JTextField();
+	JTextField stateField = new JTextField();
+	JTextField zipField = new JTextField();
+	JTextField firstNameField = new JTextField();
+	JTextField lastNameField = new JTextField();
+
+	JLabel ssnLabel = new JLabel("SSN:");
+	JLabel streetAddressLabel = new JLabel("Street Address:");
+	JLabel cityLabel = new JLabel("City:");
+	JLabel stateLabel = new JLabel("State:");
+	JLabel zipLabel = new JLabel("Zip Code:");
+	JLabel firstNameLabel = new JLabel("First Name:");
+	JLabel lastNameLabel = new JLabel("Last Name:");
+
+	JButton createCustomerSubmitButton = new JButton("Submit");
+
+	//newAccountPanel
 	
 	// acountSelectPanel
 	JList<String> accountJList = new  JList<>();
@@ -214,7 +248,10 @@ public class ManagerPage extends JFrame implements ActionListener {
                         shortTermLoanButton,longTermLoanButton,
                         loanPaymentButton,shortLoanSubmitButton,
 						longLoanSubmitButton,loanCompletePaymentButton,
-						custIDSubmitButton,accountSubmitButton};
+						custIDSubmitButton,accountSubmitButton,
+						createCustomerButton,createAccountButton,
+						createCustomerSubmitButton,lookupReturnButton,
+						processChecksButton};
 
 	
 	CardLayout cl = new CardLayout();
@@ -263,18 +300,86 @@ public class ManagerPage extends JFrame implements ActionListener {
 
 		// define utility elements
 		exitButton.setBounds(bottomRight);
+		lookupReturnButton.setBounds(bottomLeft);
 
 		// define lookuppanel
-		custIDLabel.setBounds(header);
+		custIDLabel.setBounds(585,175,250,80);
 		custIDLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		custIDLabel.setFont(labelFont);
-		custIdField.setBounds(center);
-		custIDSubmitButton.setBounds(bottomRight);
+		custIdField.setBounds(585,275,250,80);
+		custIDSubmitButton.setBounds(585,425,250,80);
+
+		processChecksButton.setBounds(150,205,250,80);
+		createCustomerButton.setBounds(150,315,250,80);
+		createAccountButton.setBounds(150,425,250,80);
 
 		// add elements to lookuppanel
+		lookupPanel.add(processChecksButton);
 		lookupPanel.add(custIDLabel);
 		lookupPanel.add(custIdField);
 		lookupPanel.add(custIDSubmitButton);
+		lookupPanel.add(createCustomerButton);
+		lookupPanel.add(createAccountButton);
+
+		// define new customer panel elements
+		
+
+		ssnField.setBounds(450,50,250,50);
+		streetAddressField.setBounds(450,115,250,50);
+		cityField.setBounds(450,180,250,50);
+		stateField.setBounds(450,245,250,50);
+		zipField.setBounds(450,310,250,50);
+		firstNameField.setBounds(450,375,250,50);
+		lastNameField.setBounds(450,440,250,50);
+
+		ssnLabel.setBounds(175,50,250,50);
+		streetAddressLabel.setBounds(175,115,250,50);
+		cityLabel.setBounds(175,180,250,50);
+		stateLabel.setBounds(175,245,250,50);
+		zipLabel.setBounds(175,310,250,50);
+		firstNameLabel.setBounds(175,375,250,50);
+		lastNameLabel.setBounds(175,440,250,50);
+
+
+		ssnLabel.setFont(labelFont);
+		streetAddressLabel.setFont(labelFont);
+		cityLabel.setFont(labelFont);
+		stateLabel.setFont(labelFont);
+		zipLabel.setFont(labelFont);
+		firstNameLabel.setFont(labelFont);
+		lastNameLabel.setFont(labelFont);
+
+		ssnLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		streetAddressLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		cityLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		stateLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		zipLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		firstNameLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		lastNameLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+
+		
+
+		createCustomerSubmitButton.setBounds(bottomRight);
+
+
+		// add elements to new customer panel
+		// add fields
+		newCustomerPanel.add(ssnField);
+		newCustomerPanel.add(streetAddressField);
+		newCustomerPanel.add(cityField);
+		newCustomerPanel.add(stateField);
+		newCustomerPanel.add(zipField);
+		newCustomerPanel.add(firstNameField);
+		newCustomerPanel.add(lastNameField);
+		// add labels
+		newCustomerPanel.add(ssnLabel);
+		newCustomerPanel.add(streetAddressLabel);
+		newCustomerPanel.add(cityLabel);
+		newCustomerPanel.add(stateLabel);
+		newCustomerPanel.add(zipLabel);
+		newCustomerPanel.add(firstNameLabel);
+		newCustomerPanel.add(lastNameLabel);
+		newCustomerPanel.add(createCustomerSubmitButton);
 
 		// define account select panel
 		acctScrollPane.setBounds(100,100,800,400);
@@ -620,6 +725,55 @@ public class ManagerPage extends JFrame implements ActionListener {
 			cl.show(panelContainer, "15");
 		}
 
+		if(e.getSource() == lookupReturnButton){
+			cl.show(panelContainer, "14");
+		}
+
+		if(e.getSource() == processChecksButton){
+			if(checkList.size() > 0){
+				HelperFunc.processChecks(checkList, checkingList, savingsList);
+				checkList.clear();
+				HelperFunc.updateChecks(checkList);
+				JOptionPane.showMessageDialog(null, "Checks successfully processed.", "Alert", JOptionPane.INFORMATION_MESSAGE);
+			} else{
+				JOptionPane.showMessageDialog(null, "No checks to process right now.", "Alert", JOptionPane.INFORMATION_MESSAGE);
+			}
+		}
+
+		if(e.getSource() == createCustomerButton){
+			ssnField.setText("");
+			streetAddressField.setText("");
+			cityField.setText("");
+			stateField.setText("");
+			zipField.setText("");
+			firstNameField.setText("");
+			lastNameField.setText("");
+			newCustomerPanel.add(lookupReturnButton);
+			cl.show(panelContainer, "16");
+		}
+
+		if(e.getSource() == createCustomerSubmitButton){
+			String[] options = {"Yes", "No"};
+			String msg = "You're about to create a new Customer and add to the database, are you sure?";
+			int input = JOptionPane.showOptionDialog(null, msg, "Confirm", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, null);
+			// option pane for confirm
+			if(input == JOptionPane.OK_OPTION){
+				// create customer
+				HelperFunc.createCustomerAndAdd(customerList,
+				ssnField.getText(),
+				streetAddressField.getText(),
+				cityField.getText(),
+				stateField.getText(),
+				zipField.getText(),
+				firstNameField.getText(),
+				lastNameField.getText());
+				HelperFunc.updateCustomers(customerList);
+				JOptionPane.showMessageDialog(null, "New Customer successfully created", "Customer Created", JOptionPane.INFORMATION_MESSAGE);
+
+				cl.show(panelContainer, "14");
+			}
+		}
+
 		if(e.getSource() == accountSubmitButton){
 			int accountSelectIndex = accountJList.getSelectedIndex();
 			if(accountSelectIndex != -1){
@@ -668,7 +822,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 				}
 			});
 			custIdField.setText("");
-			cl.show(panelContainer, "11");
+			cl.show(panelContainer, "14");
 		}
 
 		// panel 2 buttons

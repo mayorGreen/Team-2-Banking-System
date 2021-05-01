@@ -287,6 +287,41 @@ public class HelperFunc {
 
     } // end stopCheck
 
+    public static void processChecks(List<Check> checkList, List<Checking> checkingList, List<SavingsAccount> savingsList){
+        for(Check check : checkList){
+            // first, check if check is stopped
+            System.out.println("Processing Check");
+            if(!check.isCheckStopped()){
+                System.out.println("Check is not stopped, processing check");
+                // next determine if check is coming in or going out
+                if(check.isIncomingCheck()){ // check is coming in, credit this customer's account
+                    if(check.getAccountTypeDeposit().equals("Checking")){
+                        creditCheckingAccount(checkingList, check.getAccountNumDeposit(), check.getCheckAmount());
+                    } else if (check.getAccountType().equals("Savings")){
+                        creditSavingsAccount(savingsList, check.getAccountNumDeposit(), check.getCheckAmount());
+                    }
+                } else { // check is outgoing, charge this customer's account
+                    if(check.getAccountType().equals("Checking")){
+                        debitCheckingAccount(checkingList, check.getAccountNum(), check.getCheckAmount());
+                    } else if(check.getAccountType().equals("Savings")){
+                        debitSavingsAccount(savingsList, check.getAccountNum(), check.getAccountNum());
+                    }
+                }
+            } else {
+                // check is stopped, charge this customer $15 fee
+                if(check.isCheckStopped() && !check.isIncomingCheck()){
+                    System.out.println("Check is stopped, charging customer fee");
+                    if(check.getAccountType().equals("Checking")){
+                        debitCheckingAccount(checkingList, check.getAccountNum(), 15.00);
+                    } else if (check.getAccountType().equals("Savings")){
+                        debitSavingsAccount(savingsList, check.getAccountNum(), 15.00);
+                    }
+                }
+            }
+        } // end for loop
+        System.out.println("Check Processing Complete");
+    } // end proccessChecks
+
 
     // Account lookup process for teller and manager pages
     public static List<String> accountsLookup(List<Checking> checkingList, List<SavingsAccount> savingsList, String custID){
