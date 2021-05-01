@@ -109,17 +109,7 @@ class Main{
         } else {
             checkList = new ArrayList<>();
         }
-
-        //HelperFunc.updateCustomers(customerList);
-
-        // data manip demoo
-        System.out.println("checking balance for first account");
-        System.out.println("Balance: " + checkingList.get(0).getAccountBalance());
-        System.out.println("Depositing $3");
-        checkingList.get(0).depositAmt(3);
-        System.out.println("New Balance is: " + checkingList.get(0).getAccountBalance());
-        System.out.println("Updating System");
-        HelperFunc.updateChecking(checkingList);
+        
         IDandPass idAndPasswords = new IDandPass(customerList); // initialize id and passwords --- this can be replaced for simply acct numbers instead
         //idAndPasswords.listUsers(); // debug
         
@@ -136,6 +126,10 @@ class Main{
         HelperFunc.printList(cdList);
         System.out.println("\nPrinting loans");
         HelperFunc.printList(loanList);
+        System.out.println("\nPrinting Checks");
+        HelperFunc.printList(checkList);
+        
+        //HelperFunc.createCheck(checkList, 16, 123, 50.00, "Checking");
         System.out.println("\nPrinting Checks");
         HelperFunc.printList(checkList);
     } // end main method

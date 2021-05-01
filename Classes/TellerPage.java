@@ -122,6 +122,7 @@ public class TellerPage extends JFrame implements ActionListener {
 											ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
 	// panel 6 elements -- credit account
+	JLabel enterCreditAmtLabel = new JLabel("Enter Credit Amount:");
 	JLabel creditAcctLabel = new JLabel("Credit Account");
 	JTextField creditAmountField = new JTextField();
 	JButton checkDepositButton = new JButton("Deposit Check Instead");
@@ -154,6 +155,10 @@ public class TellerPage extends JFrame implements ActionListener {
 	JLabel transferAmountLabel = new JLabel("Amount:");
 	JTextField transferAmountField = new JTextField();
 	JButton transferSubmitButton = new JButton("Submit");
+
+	// experiment
+	JComboBox<String> selectFromAccount = new JComboBox<>();
+	JComboBox<String> selectToAccount = new JComboBox<>();
 
 	// panel 10 -- transaction complete, return to panel 2
 	JLabel confirmationLabel = new JLabel("Transction Complete");
@@ -331,6 +336,9 @@ public class TellerPage extends JFrame implements ActionListener {
 		panel5.add(debitListLabel);
 
 		// define panel 6 elements
+		enterCreditAmtLabel.setFont(labelFont);
+		enterCreditAmtLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		enterCreditAmtLabel.setBounds(center);
 		creditAcctLabel.setFont(labelFont);
 		creditAcctLabel.setBounds(header);
 		creditAcctLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -343,6 +351,7 @@ public class TellerPage extends JFrame implements ActionListener {
 		panel6.add(creditAmountField);
 		panel6.add(checkDepositButton);
 		panel6.add(creditSubmitButton);
+		panel6.add(enterCreditAmtLabel);
 
 		// define panel 7 elements
 		checkAmtLabel.setFont(labelFont);
@@ -415,12 +424,24 @@ public class TellerPage extends JFrame implements ActionListener {
 		// add elements to panel 9
 		panel9.add(transferLabel);
 		panel9.add(fromAcctLabel);
-		panel9.add(targetAccountField);
+		//panel9.add(targetAccountField);
 		panel9.add(toAcctLabel);
-		panel9.add(receivingAccountField);
+		//panel9.add(receivingAccountField);
 		panel9.add(transferAmountLabel);
 		panel9.add(transferAmountField);
 		panel9.add(transferSubmitButton);
+
+		// experiment
+		selectFromAccount.setBounds(400,225,200,50);
+		selectFromAccount.addActionListener(this);
+		selectFromAccount.setVisible(true);
+		selectToAccount.setBounds(400,300,200,50);
+		selectToAccount.addActionListener(this);
+		selectToAccount.setVisible(true);
+
+		panel9.add(selectFromAccount);
+		panel9.add(selectToAccount);
+		
 
 		// define panel 10 elements
 		confirmationLabel.setFont(labelFont);
@@ -543,17 +564,26 @@ public class TellerPage extends JFrame implements ActionListener {
 		}
 
 		if(e.getSource() == transferCashButton) {
+			// repopulate combo boxes
+			selectFromAccount.removeAllItems();
+			selectToAccount.removeAllItems();
+			for(int i = 0; i<accountList.size(); i++){
+				selectFromAccount.addItem(accountList.get(i));
+				selectToAccount.addItem(accountList.get(i));
+			}
 			panel9.add(backButton);
 			cl.show(panelContainer, "9");
 		}
 
 		// panel 3 buttons (stop payment)
 		if(e.getSource() == submitStopButton) {
-			// ADD STOP PAYMENT METHOD CALL HERE LATER
-
-			// send teller to confirmation page
-			panel10.add(backButton);
-			cl.show(panelContainer, "10");
+			if(HelperFunc.isParsableNumber(stopCheckNumField.getText())){
+				HelperFunc.stopCheck(checkList, workingAcctNum, stopCheckNumField.getText(), workingAcctType);
+				HelperFunc.updateChecks(checkList);
+				// send teller to confirmation page
+				panel10.add(backButton);
+				cl.show(panelContainer, "10");
+			}
 		}
 
 		// panel 4 buttons (balance inquiry) N/A
@@ -570,21 +600,19 @@ public class TellerPage extends JFrame implements ActionListener {
 		if(e.getSource() == creditSubmitButton) {
 			// check if amt in box > 0
 			// credit account for amount in box
-			boolean parsable = HelperFunc.isParsableNumber(checkAmountField.getText());
-			if(parsable){
-				double credAmount = Double.parseDouble(checkNumberField.getText());
+			if(HelperFunc.isParsableNumber(creditAmountField.getText())){
+				double creditAmt = Double.parseDouble(creditAmountField.getText());
 				if(workingAcctType.equals("Checking")){
-					HelperFunc.creditCheckingAccount(checkingList, workingAcctNum, credAmount);
+					HelperFunc.creditCheckingAccount(checkingList, workingAcctNum, creditAmt);
 					HelperFunc.updateChecking(checkingList);
 				} else if (workingAcctType.equals("Savings")){
-					HelperFunc.creditSavingsAccount(savingsList, workingAcctNum, credAmount);
+					HelperFunc.creditSavingsAccount(savingsList, workingAcctNum, creditAmt);
 					HelperFunc.updateSavings(savingsList);
 				}
-				// send user to confirmation page
 				panel10.add(backButton);
 				cl.show(panelContainer, "10");
 			} else {
-				System.out.println("Non parsable number in TellerPage for value: " + creditAmountField.getText());
+				JOptionPane.showMessageDialog(this, "Given input is incorrect! Enter numbers only", "Parse Error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 
@@ -603,7 +631,7 @@ public class TellerPage extends JFrame implements ActionListener {
 			if(parsable) parsable = HelperFunc.isParsableNumber(checkNum);
 			if(parsable) {
 				HelperFunc.createCheck(checkList, Integer.parseInt(checkAcct), Integer.parseInt(routingNum), Integer.parseInt(checkNum),
-				Double.parseDouble(checkAmt), workingAcctNum, workingAcctType);
+										Double.parseDouble(checkAmt), workingAcctNum, workingAcctType);
 				HelperFunc.updateChecks(checkList);
 
 				// send to confirmation page
@@ -616,19 +644,58 @@ public class TellerPage extends JFrame implements ActionListener {
 		if(e.getSource() == debitSubmitButton) {
 			// check if amount > 0
 			// debit account for the amount
+			if(HelperFunc.isParsableNumber(debitAmountField.getText())){
+				double depositAmount = Double.parseDouble(debitAmountField.getText());
+				if(workingAcctType.equals("Checking")){
+					HelperFunc.debitCheckingAccount(checkingList, workingAcctNum, depositAmount);
+					HelperFunc.updateChecking(checkingList);
+				} else if (workingAcctType.equals("Savings")){
+					HelperFunc.debitSavingsAccount(savingsList, workingAcctNum, depositAmount);
+					HelperFunc.updateSavings(savingsList);
+				}
+			}
 
 			// send to confirmation page
+			debitAmountField.setText("");
 			panel10.add(backButton);
 			cl.show(panelContainer, "10");
 		}
 
 		// panel 9 button (transfer page)
 		if(e.getSource() == transferSubmitButton) {
-			// transfer funds between accounts
+			
+			// get combo box selections and perform transfer
+			int fromAccountSelected = selectFromAccount.getSelectedIndex();
+			int toAccountSelected = selectToAccount.getSelectedIndex();
+			if(fromAccountSelected != -1 && toAccountSelected != -1 && !transferAmountField.getText().equals("")){
+				if(HelperFunc.isParsableNumber(transferAmountField.getText())){
+					String fromAccountType = accounts.get(fromAccountSelected)[0]; // get source account type
+					int fromAccountNum = Integer.parseInt(accounts.get(fromAccountSelected)[1]); // get source account number
 
-			// send user to confirmation page
-			panel10.add(backButton);
-			cl.show(panelContainer, "10");
+					String toAccountType = accounts.get(toAccountSelected)[0];// get destination account type
+					int toAccountNum = Integer.parseInt(accounts.get(toAccountSelected)[1]); // destination account number
+					
+					String msg = HelperFunc.transferMoney(checkingList, savingsList, 
+						fromAccountType, fromAccountNum,
+						toAccountType, toAccountNum, 
+						Double.parseDouble(transferAmountField.getText()));
+					// add updates
+					HelperFunc.updateChecking(checkingList);
+					HelperFunc.updateSavings(savingsList);
+					String[] options = {"OK", "Back"};
+					int input = JOptionPane.showOptionDialog(null, msg, "Transfer Status", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, null);
+
+					if(input == JOptionPane.OK_OPTION){
+						// send back a page
+						cl.show(panelContainer, "2");
+						transferAmountField.setText("");
+					} else {
+						transferAmountField.setText("");
+					}
+
+				}
+
+			}
 		}
 
 	} // end actionPerformed

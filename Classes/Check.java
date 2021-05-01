@@ -2,7 +2,6 @@ package Classes;
 
 import java.io.Serializable;
 
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 
 // class for Checks
 public class Check implements Serializable {
@@ -15,20 +14,24 @@ public class Check implements Serializable {
     String accountTypeDeposit; // type of account foreign check is to be deposited to
     int accountNumDeposit; // account number foreign check is to be deposited to
     boolean incomingCheck;
+    String accountType;
 
-    public Check(int accountNum, int checkNum, double checkAmount){
+    public Check(int accountNum, int checkNum, double checkAmount, String accountType){
         this.accountNum = accountNum;
         this.checkNum = checkNum;
         this.checkAmount = checkAmount;
+        this.accountType = accountType;
         checkStopped = false;
         incomingCheck = false;
     }
 
-    public Check(int accountNum, int routingNum, int checkNum, double checkAmount){
+    public Check(int accountNum, int routingNum, int checkNum, double checkAmount, String accountType){
         this.accountNum = accountNum;
         this.checkNum = checkNum;
         this.checkAmount = checkAmount;
         this.routingNum = routingNum;
+        this.accountType = accountType;
+        accountTypeDeposit = accountType;
         checkStopped = false;
         incomingCheck = false;
     }
@@ -58,6 +61,9 @@ public class Check implements Serializable {
     public boolean isIncomingCheck() {
         return incomingCheck;
     }
+    public String getAccountType() {
+        return accountType;
+    }
 
     // setters
 
@@ -85,5 +91,19 @@ public class Check implements Serializable {
     public void setIncomingCheck(boolean incomingCheck) {
         this.incomingCheck = incomingCheck;
     }
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
+    }
 
+    @Override
+    public String toString() {
+        return "Account Number: " + accountNum +
+        " Check Number: " + checkNum +
+        " Check Amount: "+ checkAmount +
+        " Check Stopped: " + checkStopped +
+        " Account type of check: " + accountType+
+        " Is outside check?: " + incomingCheck +
+        " Account type to be deposited to: " + accountTypeDeposit + 
+        " Number of depositing account: " + accountNumDeposit;
+    }
 } // end Check

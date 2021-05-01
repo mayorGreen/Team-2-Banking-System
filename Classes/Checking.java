@@ -106,6 +106,10 @@ public class Checking extends Account
         }
     }
 
+    public void addCheck(Check check){
+        checksList.add(check);
+    }
+
     public Date getDateCreated() {
         return dateCreated;
     }

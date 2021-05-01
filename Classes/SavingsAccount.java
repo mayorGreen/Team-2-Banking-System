@@ -91,6 +91,7 @@ public class SavingsAccount extends Account{
             balance -= amt;
         } else {
             System.out.println("Insufficient Funds in savings account");
+            balance -= 20.00;
         }
     }
 
