@@ -28,8 +28,12 @@ public class HelperFunc {
             }
         }
     }
-    
-    
+
+    // functions for printing data as plaintext
+    public static <T> void printList(List<T> list) {
+        for(T obj : list) System.out.println(obj);
+    }
+
     // update functions for saving changed data -- call these after every change in data
     public static void updateCustomers(List<Customer> custList){
         Parser.writeObjectRecords(custList, "customerObj.txt");
@@ -150,7 +154,18 @@ public class HelperFunc {
         }
         return balance;
     }
+    // DEPOSIT FUNCTIONS FOR CUSTOMERS
+    // used by customers via atm, accounts for implicit transaction fees
+    public static void depositToChecking(List<Checking> checkingList, int accountNum, double depositAmount){
+        int accountIndex = getChecking(checkingList, accountNum);
+        checkingList.get(accountIndex).depositAmt(depositAmount);
+    }
+    public static void depositToSavings(List<SavingsAccount> savingsList, int accountNum, double depositAmount){
+        int accountIndex = getSavings(savingsList, accountNum);
+        savingsList.get(accountIndex).depositAmt(depositAmount);
+    }
 
+    // WITHDRAW FUNCTIONS FOR CUSTOMERS
     // this method withdraws the requested amount from the given savings account
     // the date is checked to ensure that money is withdrawn a maximum amount of 2 times per day
     public static void withdrawSavings(List<SavingsAccount> savingsList, int accountNum, double withdrawAmt){
@@ -163,7 +178,7 @@ public class HelperFunc {
             System.out.println("Withdrawals today: " + savingsList.get(savingsIndex).getWithdrawalsToday());
             savingsList.get(savingsIndex).setWithdrawalsToday(0);
         }
-
+        // TODO: MOVE THIS TO CHECKING TOO
         // check if at max withdrawals today
         if(savingsList.get(savingsIndex).getWithdrawalsToday() == 2){
             System.out.println("Maximum amount of withdrawals today");
@@ -180,18 +195,11 @@ public class HelperFunc {
         }
     }
 
-    public static void depositToChecking(List<Checking> checkingList, int accountNum, double depositAmount){
-        int accountIndex = getChecking(checkingList, accountNum);
-        checkingList.get(accountIndex).depositAmt(depositAmount);
-    }
-    public static void depositToSavings(List<SavingsAccount> savingsList, int accountNum, double depositAmount){
-        int accountIndex = getSavings(savingsList, accountNum);
-        savingsList.get(accountIndex).depositAmt(depositAmount);
-    }
 
 
     // this method withdraws an amount from a checking account and does multiple checks for backup accounts and overdraft protection
     public static void withdrawCheckingWithSafety(List<Checking> checkingList, List<SavingsAccount> savingsList, int accountNum, double withdrawAmt){
+        // TODO: ADD WITHDRAWAL CHECK
         double amountToWithdraw = withdrawAmt; // amount remaining to be withdrawn
         int accountIndex = getChecking(checkingList, accountNum); // index of account in list
         int savingsIndex = -1;
@@ -233,24 +241,45 @@ public class HelperFunc {
 
 
 
-
+    // CREDIT FUNCTIONS FOR TELLER/MANAGER
     // These functions can be used by teller and manager
+    // used by tellers and managers via banking panel. Differs from previous methods in that it ignores transaction fees
+    public static void creditCheckingAccount(List<Checking> checkingList, int workingAcctNum, double amount) {
+        int acctIndex = getChecking(checkingList, workingAcctNum);
+        checkingList.get(acctIndex).creditAccount(amount);
+    }
+    public static void creditSavingsAccount(List<SavingsAccount> savingsList, int workingAcctNum, double amount) {
+        int acctIndex = getSavings(savingsList, workingAcctNum);
+        savingsList.get(acctIndex).creditAccount(amount);
+    }
 
-    public static void creditAccount(String custID, Checking account, double amount) {
-        account.creditAccount(amount);
+    // DEBIT FUNCTIONS FOR TELLER/MANAGER
+    public static void debitCheckingAccount(List<Checking> checkingList, int workingAcctNum, double amount) {
+        int acctIndex = getChecking(checkingList, workingAcctNum);
+        checkingList.get(acctIndex).debitAccount(amount);
     }
-    public static void creditAccount(String custID, SavingsAccount account, double amount) {
-        account.creditAccount(amount);
+    public static void debitSavingsAccount(List<SavingsAccount> savingsList, int workingAcctNum, double amount) {
+        int acctIndex = getSavings(savingsList, workingAcctNum);
+        savingsList.get(acctIndex).debitAccount(amount);
     }
-    public static void createCheck(List<Check> checkList, String accountNum, String checkNum, String checkAmount) {
-        checkList.add(new Check(Integer.parseInt(accountNum), Integer.parseInt(checkNum), Double.parseDouble(checkAmount)));
+
+    // CREATE AND STOP CHECK FUNCTIONS FOR TELLER/MANAGER
+    public static void createCheck(List<Check> checkList, int accountNum, int checkNum, double checkAmount, String workingAcountType) {
+        Check checkToAdd = new Check(accountNum, checkNum, checkAmount, workingAcountType);
+        checkList.add(checkToAdd);
     }
-    public static void stopCheck(List<Check> checkList, String accountNumber, String checkNumber){
+    public static void createCheck(List<Check> checkList, int accountNum, int routingNum, int checkNum, double checkAmount, int workingAcctNum, String workingAcctType) {
+        Check checkToAdd = new Check(accountNum, routingNum, checkNum, checkAmount, workingAcctType);
+        checkToAdd.setAccountNumDeposit(workingAcctNum);
+        checkToAdd.setIncomingCheck(true);
+        checkList.add(checkToAdd);
+    }
+    public static void stopCheck(List<Check> checkList, int accountNumber, String checkNumber, String accountType){
         // stops check
-        int accountNum = Integer.parseInt(accountNumber);
+        int accountNum = accountNumber;
         int checkNum = Integer.parseInt(checkNumber);
         for(Check check : checkList){
-            if(check.getAccountNum() == accountNum && check.getCheckNum() == checkNum){
+            if(check.getAccountNum() == accountNum && check.getCheckNum() == checkNum && check.getRoutingNum() == 123456789 && check.getAccountType().equals(accountType)){
                 check.setCheckStopped(true);
                 return;
             }
@@ -258,6 +287,8 @@ public class HelperFunc {
 
     } // end stopCheck
 
+
+    // Account lookup process for teller and manager pages
     public static List<String> accountsLookup(List<Checking> checkingList, List<SavingsAccount> savingsList, String custID){
         ArrayList<String> accounts = new ArrayList<>();
         for(Checking acct : checkingList){
@@ -273,7 +304,76 @@ public class HelperFunc {
         return accounts; // return list of accounts
     }
 
+    // pass in string, determine if it's a parsable value
+    public static boolean isParsableNumber(String str){
+        boolean parsable = true;
+        int decimalPoints = 0;
+        for(char character : str.toCharArray()){
+            if (character == '.') decimalPoints++;
+            if (!(character >= '0' && character <= '9' || character == '.')) {
+                System.out.println("incompatible character");
+                parsable = false;
+            }
+        }
+        if (decimalPoints > 1) parsable = false;
+        return parsable;
+    }
 
 
+    public static String transferMoney(List<Checking> checkingList, List<SavingsAccount> savingsList, 
+    String fromAccountType, int fromAccountNum, String toAccountType, int toAccountNum, double transferAmount){
+        String confirmationMessage = "";
+        int accIndex1;
+        int accIndex2;
+
+        if(fromAccountType.equals("Checking") && toAccountType.equals("Checking")){ // transfer from a checking to checking
+            // find accounts
+            accIndex1 = getChecking(checkingList, fromAccountNum);
+            accIndex2 = getChecking(checkingList, toAccountNum);
+            if(checkingList.get(accIndex1).getAccountBalance() < transferAmount){
+                confirmationMessage = fromAccountType + " account " + fromAccountNum + " does not have enough funds to cover this transaction.";
+            } else {
+                checkingList.get(accIndex1).debitAccount(transferAmount); //take money out of source account
+                checkingList.get(accIndex2).creditAccount(transferAmount); // put money into destination account
+                confirmationMessage = "Transfer of $" + transferAmount + " from " + fromAccountType + " account " + fromAccountNum + " to " + toAccountType + " account " + toAccountNum + " complete.";
+            }
+
+        } else if(fromAccountType.equals("Checking") && toAccountType.equals("Savings")){ // transfer from a checking to savings
+            accIndex1 = getChecking(checkingList, fromAccountNum);
+            accIndex2 = getSavings(savingsList, toAccountNum);
+            if(checkingList.get(accIndex1).getAccountBalance() < transferAmount){
+                confirmationMessage = fromAccountType + " account " + fromAccountNum + " does not have enough funds to cover this transaction.";
+            } else {
+                checkingList.get(accIndex1).debitAccount(transferAmount); //take money out of source account
+                savingsList.get(accIndex2).creditAccount(transferAmount); // put money into destination account
+                confirmationMessage = "Transfer of $" + transferAmount + " from " + fromAccountType + " account " + fromAccountNum + " to " + toAccountType + " account " + toAccountNum + " complete.";
+            }
+
+        } else if(fromAccountType.equals("Savings") && toAccountType.equals("Checking")){ // transfer from a savings to checking
+            accIndex1 = getSavings(savingsList, fromAccountNum);
+            accIndex2 = getChecking(checkingList, toAccountNum);
+            if(savingsList.get(accIndex1).getAccountBalance() < transferAmount){
+                confirmationMessage = fromAccountType + " account " + fromAccountNum + " does not have enough funds to cover this transaction.";
+            } else {
+                savingsList.get(accIndex1).debitAccount(transferAmount); //take money out of source account
+                checkingList.get(accIndex2).creditAccount(transferAmount); // put money into destination account
+                confirmationMessage = "Transfer of $" + transferAmount + " from " + fromAccountType + " account " + fromAccountNum + " to " + toAccountType + " account " + toAccountNum + " complete.";
+            }
+
+        } else if(fromAccountType.equals("Savings") && toAccountType.equals("Savings")){ // transfer from a savings to savings
+            accIndex1 = getSavings(savingsList, fromAccountNum);
+            accIndex2 = getSavings(savingsList, toAccountNum);
+            if(savingsList.get(accIndex1).getAccountBalance() < transferAmount){
+                confirmationMessage = fromAccountType + " account " + fromAccountNum + " does not have enough funds to cover this transaction.";
+            } else {
+                savingsList.get(accIndex1).debitAccount(transferAmount); //take money out of source account
+                savingsList.get(accIndex2).creditAccount(transferAmount); // put money into destination account
+                confirmationMessage = "Transfer of $" + transferAmount + " from " + fromAccountType + " account " + fromAccountNum + " to " + toAccountType + " account " + toAccountNum + " complete.";
+            }
+        }
+        
+        System.out.println(confirmationMessage);
+        return confirmationMessage;
+    }
 
 } // end HelperFunc

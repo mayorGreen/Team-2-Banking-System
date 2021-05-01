@@ -109,32 +109,28 @@ class Main{
         } else {
             checkList = new ArrayList<>();
         }
-
-        //HelperFunc.updateCustomers(customerList);
-
-        // data manip demoo
-        System.out.println("checking balance for first account");
-        System.out.println("Balance: " + checkingList.get(0).getAccountBalance());
-        System.out.println("Depositing $3");
-        checkingList.get(0).depositAmt(3);
-        System.out.println("New Balance is: " + checkingList.get(0).getAccountBalance());
-        System.out.println("Updating System");
-        HelperFunc.updateChecking(checkingList);
+        
         IDandPass idAndPasswords = new IDandPass(customerList); // initialize id and passwords --- this can be replaced for simply acct numbers instead
         //idAndPasswords.listUsers(); // debug
         
         LoginPage loginPage = new LoginPage(idAndPasswords.getLoginInfo(),customerList, checkingList, savingsList, cdList, loanList,checkList); // generate login page
-        System.out.println(customerList.get(0).toString()); // print first cust
 
-        /* // withdrawCheckingWithbackup test - works!
-        HelperFunc.withdrawCheckingWithSafety(checkingList, savingsList, 1, 300);
-        HelperFunc.withdrawCheckingWithSafety(checkingList, savingsList, 1, 1000);
-        HelperFunc.withdrawCheckingWithSafety(checkingList, savingsList, 1, 20);
-
-        // withdrawSavings Test - works!
-        HelperFunc.withdrawSavings(savingsList, 1, 20);
-        HelperFunc.withdrawSavings(savingsList, 1, 20);
-        HelperFunc.withdrawSavings(savingsList, 1, 20);
-        */
+        // debug print log
+        System.out.println("Printing customers");
+        HelperFunc.printList(customerList);
+        System.out.println("\nPrinting Checking Accounts");
+        HelperFunc.printList(checkingList);
+        System.out.println("\nPrinting Savings Accounts");
+        HelperFunc.printList(savingsList);
+        System.out.println("\nPrinting CDs");
+        HelperFunc.printList(cdList);
+        System.out.println("\nPrinting loans");
+        HelperFunc.printList(loanList);
+        System.out.println("\nPrinting Checks");
+        HelperFunc.printList(checkList);
+        
+        //HelperFunc.createCheck(checkList, 16, 123, 50.00, "Checking");
+        System.out.println("\nPrinting Checks");
+        HelperFunc.printList(checkList);
     } // end main method
 } // end Main class
