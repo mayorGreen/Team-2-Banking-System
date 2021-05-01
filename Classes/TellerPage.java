@@ -3,7 +3,6 @@ package Classes;
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.awt.CardLayout;
 import java.awt.Font;
@@ -52,7 +51,6 @@ public class TellerPage extends JFrame implements ActionListener {
 
 	JFrame mainFrame = new JFrame();
 	JPanel panelContainer = new JPanel();
-	
 	JPanel lookupPanel = new JPanel(); // customer id lookup panel
 	JPanel accountSelectPanel = new JPanel();
 	JPanel panel1 = new JPanel(); // Teller landing page. enter acct number lookup here.
@@ -75,7 +73,7 @@ public class TellerPage extends JFrame implements ActionListener {
 	JButton logoutButton = new JButton("Logout"); // logs teller out
 
 	// lookupPanel -- teller looks up custoemr id
-	JLabel custIDLabel = new JLabel("Enter User ID");
+	JLabel custIDLabel = new JLabel("Enter Customer ID");
 	JTextField custIdField = new JTextField();
 	JButton custIDSubmitButton = new JButton("Submit");
 	String[] accountArray;
@@ -156,7 +154,7 @@ public class TellerPage extends JFrame implements ActionListener {
 	JTextField transferAmountField = new JTextField();
 	JButton transferSubmitButton = new JButton("Submit");
 
-	// experiment
+	// combo boxes
 	JComboBox<String> selectFromAccount = new JComboBox<>();
 	JComboBox<String> selectToAccount = new JComboBox<>();
 
@@ -207,7 +205,7 @@ public class TellerPage extends JFrame implements ActionListener {
 		mainFrame.setResizable(false);
 		mainFrame.setVisible(true);
 
-		// set button fonts
+		// set button fonts, action listeners
 		for(JButton button : buttons){
 			button.setFont(buttonFont);
 			button.setFocusable(false);
@@ -238,8 +236,6 @@ public class TellerPage extends JFrame implements ActionListener {
 		// add elements to account select panel
 		accountSelectPanel.add(acctScrollPane);
 		accountSelectPanel.add(accountSubmitButton);
-
-
 
 		// define panel 1 elements
 		bankNameLabel.setBounds(header);
@@ -276,7 +272,7 @@ public class TellerPage extends JFrame implements ActionListener {
 		panel1.add(logoutButton);
 
 
-		// define panel 2 elements
+		// define panel 2 elements -- this is the navigation panel
 		stopPaymentButton.setBounds(125,150,250,80);
 		balanceInquiryButton.setBounds(125,250,250,80);
 		debitsInquiryButton.setBounds(125,350,250,80);
@@ -431,7 +427,7 @@ public class TellerPage extends JFrame implements ActionListener {
 		panel9.add(transferAmountField);
 		panel9.add(transferSubmitButton);
 
-		// experiment
+		// combo boxes
 		selectFromAccount.setBounds(400,225,200,50);
 		selectFromAccount.addActionListener(this);
 		selectFromAccount.setVisible(true);
