@@ -13,14 +13,16 @@ public class SavingsAccount extends Account{
     private ATMCard card; // ATM card associated with the account
     private Date lastWithdrawal; // time of last withdrawal
     private Date todaysDate; // todays date
-
     private int withdrawalsToday;
+
     // TODO: implement a method to update the time for all accounts upon load
     // generic constructor
     public SavingsAccount(){
         super();
         interestRate = 0.0;
+        withdrawalsToday = 0;
         dateCreated = new Date();
+        todaysDate = new Date();
     }
 
     public SavingsAccount(List<String> savAcc){
@@ -41,6 +43,12 @@ public class SavingsAccount extends Account{
         // create an atm card for this account
         card = new ATMCard(accountCustID, 1, accountNumber, ("1" + accountNumber + accountCustID.substring(0,2)), accountCustID.substring(accountCustID.length()-4));
 
+    }
+
+
+    public void createCard(){
+        // create an atm card for this account
+        card = new ATMCard(accountCustID, 1, accountNumber, ("1" + accountNumber + accountCustID.substring(0,2)), accountCustID.substring(accountCustID.length()-4));
     }
     // setters
     public void setInterestRate(double interestRate) {

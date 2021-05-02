@@ -29,7 +29,9 @@ public class Checking extends Account
         hasBackupAccount = false;
         numOfOverdrafts = 0;
         dateCreated = new Date();
+        todaysDate = new Date();
     }
+
 
     // Constructor
     public Checking(List<String> acct){
@@ -106,6 +108,11 @@ public class Checking extends Account
         }
     }
 
+    public void createCard(){
+        // create an atm card for this account
+        card = new ATMCard(accountCustID, 0, accountNumber, ("0" +accountNumber + accountCustID.substring(0,2)), accountCustID.substring(accountCustID.length()-4));
+    }
+
     public void addCheck(Check check){
         checksList.add(check);
     }
@@ -128,6 +135,20 @@ public class Checking extends Account
     }
     public void setTodaysDate(Date today){
         todaysDate = today;
+    }
+    public void setCard(ATMCard card) {
+        this.card = card;
+    }
+    public void setInterestRate(double interestRate) {
+        this.interestRate = interestRate;
+    }
+    public void setHasBackupAccount(boolean hasBackupAccount) {
+        this.hasBackupAccount = hasBackupAccount;
+    }
+    public void setBackupAccountNumber(int backupAccountNumber) {
+        this.backupAccountNumber = backupAccountNumber;
+        setHasBackupAccount(true);
+
     }
 
     @Override

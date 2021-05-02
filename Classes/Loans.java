@@ -26,6 +26,13 @@ public class Loans extends Account
     int numberOfCharges;
     double financeCharge;
 
+    public Loans(){
+        super();
+        missedPayment = false;
+        numberOfCharges = 0;
+
+    }
+
     // Constructor
     public Loans(List<String> list) {
         loanID = Integer.parseInt(list.get(0));
@@ -55,7 +62,7 @@ public class Loans extends Account
                 years = specialInfo;
                 break;
             case "Credit Card":
-                card = new CreditCard(accountCustID, 2, loanID,(accountNumber + accountCustID.substring(0,2)));
+                card = new CreditCard(accountCustID, 2, loanID,("2" + loanID + accountCustID.substring(0,2)));
                 setLimit(specialInfo);
                 break;
             default: break;
@@ -120,6 +127,10 @@ public class Loans extends Account
         
     }
 
+    public void createCreditCard(){
+        card = new CreditCard(accountCustID, 2, loanID, (accountNumber + accountCustID.substring(0,2)));
+    }
+
     // getters
     public double getLimit() {
         return limit;
@@ -141,6 +152,9 @@ public class Loans extends Account
     }
 
     // setters
+    public void setLoanID(int loanID) {
+        this.loanID = loanID;
+    }
     public void setAmountDue(double amountDue) {
         this.amountDue = amountDue;
     }
@@ -156,8 +170,20 @@ public class Loans extends Account
     public void setMissedPayment(boolean missedPayment) {
         this.missedPayment = missedPayment;
     }
+    public void setType(String type) {
+        this.type = type;
+    }
     public void setLimit(double limit) {
         this.limit = limit;
+    }
+    public void setSpecialInfo(int specialInfo) {
+        this.specialInfo = specialInfo;
+    }
+    public void setYears(int years) {
+        this.years = years;
+    }
+    public void setCard(CreditCard card) {
+        this.card = card;
     }
 
     public String toString()

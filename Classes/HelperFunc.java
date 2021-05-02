@@ -1,4 +1,5 @@
 package Classes;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +28,127 @@ public class HelperFunc {
                 break;
             }
         }
+    }
+
+    // creates a new checking account and adds it to checking list
+    public static String createCheckingAndAdd(List<Checking> checkingList, String customerID, int accountNum, double balance, double interestRate){
+        String message = "";
+        Checking accountToAdd = new Checking();
+        // make sure account number is unique
+        boolean uniqueID = true;
+        for(Checking account : checkingList) {
+            if (account.getAccountNumber() == accountNum) {
+                uniqueID = false;}
+        }
+        if(uniqueID){
+            accountToAdd.setAccountCustID(customerID);
+            accountToAdd.setAccountNumber(accountNum);
+            accountToAdd.setBalance(balance);
+            accountToAdd.setInterestRate(interestRate);
+            accountToAdd.balanceCheck();
+            accountToAdd.createCard();
+            checkingList.add(accountToAdd);
+            message = "Account successfully created";
+        } else {
+            message = "This account number is already taken, please choose another";
+        }
+        return message;
+    }
+
+    // creates a new savings account and adds it to checking list
+    public static String createSavingsAndAdd(List<SavingsAccount> savingsList, String customerID, int accountNum, double balance, double interestRate){
+        String message = "";
+        SavingsAccount accountToAdd = new SavingsAccount();
+        // make sure account number is unique
+        boolean uniqueID = true;
+        for(SavingsAccount account : savingsList) {
+            if (account.getAccountNumber() == accountNum) {
+                uniqueID = false;
+            }
+        }
+
+        if(uniqueID){
+            accountToAdd.setAccountCustID(customerID);
+            accountToAdd.setAccountNumber(accountNum);
+            accountToAdd.setBalance(balance);
+            accountToAdd.setInterestRate(interestRate);
+            accountToAdd.createCard();
+            savingsList.add(accountToAdd);
+            message = "Account successfully created";
+        } else {
+            message = "This account number is already taken, please choose another";
+        }
+        return message;
+    }
+    
+    public static String createCDAndAdd(List<CD> cdList, String customerID, String dueDate, int accountNum, double balance, double interestRate){
+        String message = "";
+        CD accountToAdd = new CD();
+        // make sure account number is unique
+        boolean uniqueID = true;
+        for(CD account : cdList) {
+            if (account.getAccountNumber() == accountNum) {
+                uniqueID = false;
+            }
+        }
+        
+        if(uniqueID){
+            try {
+                // check if date is formatted correctly
+                accountToAdd.setDueDate(new SimpleDateFormat("MM/dd/yyyy").parse(dueDate));
+                accountToAdd.setDateCreated(new Date());
+                accountToAdd.setAccountCustID(customerID);
+
+                accountToAdd.setBalance(balance);
+                accountToAdd.setInterestRate(interestRate);
+                cdList.add(accountToAdd);
+                message = "CD successfully created.";
+            } catch (Exception e) {
+                System.out.println("Error in trying to parse date in CD const for createCDAndAdd()");
+                message = "Unable to create this account";
+                e.printStackTrace();
+            }
+        }
+        return message;
+    }
+
+    public static void createLoanAndAdd(List<Loans> loanList, int loanID, String accountCustID, double balance, double interestRate, String type, int specialInfo){
+        Loans loanToAdd = new Loans();
+        loanToAdd.setLoanID(loanID);
+        loanToAdd.setAccountCustID(accountCustID);
+        loanToAdd.setBalance(balance);
+        loanToAdd.setInterestRate(interestRate);
+        loanToAdd.setType(type);
+        loanToAdd.setSpecialInfo(specialInfo);
+        switch (type)// sets the number of years on a loan and sets loan to true or false based on if it is a loan or credit card
+        {
+            case "Short Term":
+            case "Long Term":
+                loanToAdd.setYears(specialInfo);
+                break;
+            case "Credit Card":
+                CreditCard card = new CreditCard(accountCustID, 2, loanID,("2" + loanID + accountCustID.substring(0,2)));
+                loanToAdd.setCard(card);
+                loanToAdd.setLimit(specialInfo);
+                break;
+            default: break;
+        }
+        loanToAdd.calculateMonthlyPayment(type);
+
+        loanList.add(loanToAdd);
+    }
+    
+    public static String assignBackupAccount(List<Checking> checkingList, List<SavingsAccount> savingsList, int accountNum, int backupAccountNum){
+        String message = "";
+        int c = getChecking(checkingList, accountNum);
+        if(c == -1) return "The checking account " + accountNum + " does not exist"; // check if account exists
+
+        int s = getSavings(savingsList, backupAccountNum);
+        if(s == -1) return "The savings account " + backupAccountNum + " does not exist"; // check if account exists
+
+        checkingList.get(accountNum).setBackupAccountNumber(backupAccountNum);
+        message = "Account " + accountNum + " successfully assigned backup savings acocunt with account number: " + backupAccountNum;
+        return message;
     }
 
     // functions for printing data as plaintext
