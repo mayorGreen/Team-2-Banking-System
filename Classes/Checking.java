@@ -29,7 +29,9 @@ public class Checking extends Account
         hasBackupAccount = false;
         numOfOverdrafts = 0;
         dateCreated = new Date();
+        todaysDate = new Date();
     }
+
 
     // Constructor
     public Checking(List<String> acct){
@@ -62,10 +64,12 @@ public class Checking extends Account
     // if withdraw is greater
     @Override
     public void withdrawAmt(double amt) {
+        System.out.println("Now withdrawing $" + amt + " from checking account " + this.getAccountNumber());
         balance -= Math.abs(amt);
         if(!goldDiamondAccount)balance -= 0.5;
         balanceCheck();
         if(balance < 0 && (!hasBackupAccount)) {
+            System.out.println("Checking account " + this.getAccountNumber() + " has been overdrafted");
             numOfOverdrafts++;
             balance -= 20.0;
         }
@@ -75,6 +79,7 @@ public class Checking extends Account
     // deposit method, charges account a fee if it is not GD. calls balanceCheck
     @Override
     public void depositAmt(double amt) {
+        System.out.println("Depositing $" + amt + " into checking account " + this.getAccountNumber());
         balance += Math.abs(amt);
         if(!goldDiamondAccount)balance -= 0.5;
         balanceCheck();
@@ -83,12 +88,14 @@ public class Checking extends Account
     // credit account method, ignores transaction fee
     @Override
     public void creditAccount(double amt) {
+        System.out.println("Crediting $" + amt + " to checking account " + this.getAccountNumber());
         super.creditAccount(amt);
         balanceCheck();
     }
     // debit account method, ignores transaction fee
     @Override
     public void debitAccount(double amt) {
+        System.out.println("Debiting $" + amt + " from checking account " + this.getAccountNumber());
         super.debitAccount(amt);
         balanceCheck();
         if(balance < 0) {
@@ -101,9 +108,16 @@ public class Checking extends Account
     public void balanceCheck(){
         if(balance < 1000.00){
             goldDiamondAccount = false;
+            System.out.println("Checking account: " + this.getAccountNumber() + " is a TMB account");
         } else{
             goldDiamondAccount = true;
+            System.out.println("Checking account: " + this.getAccountNumber() + " is a Gold/Diamond account");
         }
+    }
+
+    public void createCard(){
+        // create an atm card for this account
+        card = new ATMCard(accountCustID, 0, accountNumber, ("0" +accountNumber + accountCustID.substring(0,2)), accountCustID.substring(accountCustID.length()-4));
     }
 
     public void addCheck(Check check){
@@ -122,12 +136,32 @@ public class Checking extends Account
     public boolean hasBackupAccount() {
         return hasBackupAccount;
     }
+    public int getNextCheckNumber() {
+        return nextCheckNumber;
+    }
+    public boolean isGoldDiamondAccount() {
+        return goldDiamondAccount;
+    }
 
     public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
     public void setTodaysDate(Date today){
         todaysDate = today;
+    }
+    public void setCard(ATMCard card) {
+        this.card = card;
+    }
+    public void setInterestRate(double interestRate) {
+        this.interestRate = interestRate;
+    }
+    public void setHasBackupAccount(boolean hasBackupAccount) {
+        this.hasBackupAccount = hasBackupAccount;
+    }
+    public void setBackupAccountNumber(int backupAccountNumber) {
+        this.backupAccountNumber = backupAccountNumber;
+        setHasBackupAccount(true);
+
     }
 
     @Override

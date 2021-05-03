@@ -255,7 +255,7 @@ public class CustomerPage extends JFrame implements ActionListener {
 
         withdrawPlusButton.setBounds(625, 300, 50,50);
 
-        withdrawCustomSubmitButton.setBounds(450, 375, 100, 50);
+        withdrawCustomSubmitButton.setBounds(400, 375, 200, 50);
 
         // define panel 7 elements
         confirmationLabel.setBounds(0,0,mainFrame.getWidth(),500);
@@ -534,7 +534,6 @@ public class CustomerPage extends JFrame implements ActionListener {
         if(e.getSource() == depositBackButton){
             // return money
             depositAmtField.setText("0.00");
-            panel1.add(backButton);
             panel1.add(endButton);
             cl.show(panelContainer, "1");
         }

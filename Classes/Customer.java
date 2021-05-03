@@ -37,7 +37,7 @@ public class Customer implements Serializable{
         this.firstName = firstName;
         this.lastName = lastName;
         if(lastName != null && firstName != null) this.loginUsername = lastName + firstName.charAt(0);
-        if(ssn != null) this.loginPassword = ssn.substring(ssn.length()-4, ssn.length()-1);
+        if(ssn != null && ssn.length() > 3)this.loginPassword = ssn.substring(ssn.length()-4, ssn.length()-1);
     }
 
     

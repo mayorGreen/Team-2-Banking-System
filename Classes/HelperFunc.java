@@ -1,4 +1,5 @@
 package Classes;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +28,175 @@ public class HelperFunc {
                 break;
             }
         }
+    }
+
+    // creates a new checking account and adds it to checking list
+    public static String createCheckingAndAdd(List<Checking> checkingList, String customerID, int accountNum, double balance, double interestRate){
+        String message = "";
+        Checking accountToAdd = new Checking();
+        // make sure account number is unique
+        boolean uniqueID = true;
+        for(Checking account : checkingList) {
+            if (account.getAccountNumber() == accountNum) {
+                uniqueID = false;}
+        }
+        if(uniqueID){
+            accountToAdd.setAccountCustID(customerID);
+            accountToAdd.setAccountNumber(accountNum);
+            accountToAdd.setBalance(balance);
+            accountToAdd.setInterestRate(interestRate);
+            accountToAdd.balanceCheck();
+            accountToAdd.createCard();
+            checkingList.add(accountToAdd);
+            message = "Account successfully created";
+        } else {
+            message = "This account number is already taken, please choose another";
+        }
+        return message;
+    }
+
+    public static String createCheckingAndAddWithBackup(List<Checking> checkingList, String customerID, int accountNum, double balance, double interestRate, int backupAccountNum){
+        String message = "";
+        Checking accountToAdd = new Checking();
+        // make sure account number is unique
+        boolean uniqueID = true;
+        for(Checking account : checkingList) {
+            if (account.getAccountNumber() == accountNum) {
+                uniqueID = false;}
+        }
+        if(uniqueID){
+            accountToAdd.setAccountCustID(customerID);
+            accountToAdd.setAccountNumber(accountNum);
+            accountToAdd.setBackupAccountNumber(backupAccountNum);
+            accountToAdd.setBalance(balance);
+            accountToAdd.setInterestRate(interestRate);
+            accountToAdd.balanceCheck();
+            accountToAdd.createCard();
+            checkingList.add(accountToAdd);
+            if(accountToAdd.isGoldDiamondAccount())
+                message = "Gold/Diamond Account successfully created";
+            else {
+                message = "TMB Account successfully created";
+            }
+        } else {
+            message = "This account number is already taken, please choose another";
+        }
+        return message;
+    }
+
+    // creates a new savings account and adds it to checking list
+    public static String createSavingsAndAdd(List<SavingsAccount> savingsList, String customerID, int accountNum, double balance, double interestRate){
+        String message = "";
+        SavingsAccount accountToAdd = new SavingsAccount();
+        // make sure account number is unique
+        boolean uniqueID = true;
+        for(SavingsAccount account : savingsList) {
+            if (account.getAccountNumber() == accountNum) {
+                uniqueID = false;
+                message = "This account number is already taken, please choose another";
+            }
+        }
+
+        if(uniqueID){
+            accountToAdd.setAccountCustID(customerID);
+            accountToAdd.setAccountNumber(accountNum);
+            accountToAdd.setBalance(balance);
+            accountToAdd.setInterestRate(interestRate);
+            accountToAdd.createCard();
+            savingsList.add(accountToAdd);
+            message = "Account successfully created";
+        }
+        return message;
+    }
+    
+    public static String createCDAndAdd(List<CD> cdList, String customerID, String dueDate, int accountNum, double balance, double interestRate){
+        String message = "";
+        CD accountToAdd = new CD();
+        // make sure account number is unique
+        boolean uniqueID = true;
+        for(CD account : cdList) {
+            if (account.getAccountNumber() == accountNum) {
+                uniqueID = false;
+                message = "This account number is already tied to an account";
+            }
+        }
+        
+        if(uniqueID){
+            try {
+                // check if date is formatted correctly
+                accountToAdd.setDueDate(new SimpleDateFormat("MM/dd/yyyy").parse(dueDate));
+                accountToAdd.setDateCreated(new Date());
+                accountToAdd.setAccountCustID(customerID);
+                accountToAdd.setAccountNumber(accountNum);
+                accountToAdd.setBalance(balance);
+                accountToAdd.setInterestRate(interestRate);
+                cdList.add(accountToAdd);
+                message = "CD successfully created.";
+            } catch (Exception e) {
+                System.out.println("Error in trying to parse date in CD const for createCDAndAdd()");
+                message = "Unable to create this account";
+                e.printStackTrace();
+            }
+        }
+        return message;
+    }
+
+    public static String createLoanAndAdd(List<Loans> loanList, int loanID, String accountCustID, double balance, double interestRate, String type, int specialInfo){
+        String message = "";
+        boolean uniqueID = true;
+        // check if loanid is unique
+        for(Loans loan : loanList){
+            if(loan.getLoanID() == loanID){
+                uniqueID = false;
+                message = "This account number is already taken, please choose another";
+            }
+        }
+        if(uniqueID){
+            Loans loanToAdd = new Loans();
+            Date dueDate = new Date();
+            dueDate.setMonth((dueDate.getMonth()+1)%12);
+            dueDate.setHours(0);
+            dueDate.setMinutes(0);
+            dueDate.setSeconds(0);
+            loanToAdd.setLoanID(loanID);
+            loanToAdd.setAccountCustID(accountCustID);
+            loanToAdd.setBalance(balance);
+            loanToAdd.setInterestRate(interestRate);
+            loanToAdd.setType(type);
+            loanToAdd.setSpecialInfo(specialInfo);
+            switch (type)// sets the number of years on a loan and sets loan to true or false based on if it is a loan or credit card
+            {
+                case "Short Term":
+                case "Long Term":
+                    loanToAdd.setYears(specialInfo);
+                    break;
+                case "Credit Card":
+                    CreditCard card = new CreditCard(accountCustID, 2, loanID,("2" + loanID + accountCustID.substring(0,2)));
+                    loanToAdd.setCard(card);
+                    loanToAdd.setLimit(specialInfo);
+                    break;
+                default: break;
+            }
+            loanToAdd.calculateMonthlyPayment(type);
+            loanToAdd.setDueDate(dueDate);
+
+            message = "Loan successfully created for loanID: " + loanID;
+            loanList.add(loanToAdd);
+        }
+        return message;
+    }
+    
+    public static String assignBackupAccount(List<Checking> checkingList, List<SavingsAccount> savingsList, int accountNum, int backupAccountNum){
+        String message = "";
+        int c = getChecking(checkingList, accountNum);
+        if(c == -1) return "The checking account " + accountNum + " does not exist"; // check if account exists
+
+        int s = getSavings(savingsList, backupAccountNum);
+        if(s == -1) return "The savings account " + backupAccountNum + " does not exist"; // check if account exists
+
+        checkingList.get(accountNum).setBackupAccountNumber(backupAccountNum);
+        message = "Account " + accountNum + " successfully assigned backup savings acocunt with account number: " + backupAccountNum;
+        return message;
     }
 
     // functions for printing data as plaintext
@@ -286,6 +456,41 @@ public class HelperFunc {
         }
 
     } // end stopCheck
+
+    public static void processChecks(List<Check> checkList, List<Checking> checkingList, List<SavingsAccount> savingsList){
+        for(Check check : checkList){
+            // first, check if check is stopped
+            System.out.println("Processing Check");
+            if(!check.isCheckStopped()){
+                System.out.println("Check is not stopped, processing check");
+                // next determine if check is coming in or going out
+                if(check.isIncomingCheck()){ // check is coming in, credit this customer's account
+                    if(check.getAccountTypeDeposit().equals("Checking")){
+                        creditCheckingAccount(checkingList, check.getAccountNumDeposit(), check.getCheckAmount());
+                    } else if (check.getAccountType().equals("Savings")){
+                        creditSavingsAccount(savingsList, check.getAccountNumDeposit(), check.getCheckAmount());
+                    }
+                } else { // check is outgoing, charge this customer's account
+                    if(check.getAccountType().equals("Checking")){
+                        debitCheckingAccount(checkingList, check.getAccountNum(), check.getCheckAmount());
+                    } else if(check.getAccountType().equals("Savings")){
+                        debitSavingsAccount(savingsList, check.getAccountNum(), check.getAccountNum());
+                    }
+                }
+            } else {
+                // check is stopped, charge this customer $15 fee
+                if(check.isCheckStopped() && !check.isIncomingCheck()){
+                    System.out.println("Check is stopped, charging customer fee");
+                    if(check.getAccountType().equals("Checking")){
+                        debitCheckingAccount(checkingList, check.getAccountNum(), 15.00);
+                    } else if (check.getAccountType().equals("Savings")){
+                        debitSavingsAccount(savingsList, check.getAccountNum(), 15.00);
+                    }
+                }
+            }
+        } // end for loop
+        System.out.println("Check Processing Complete");
+    } // end proccessChecks
 
 
     // Account lookup process for teller and manager pages
