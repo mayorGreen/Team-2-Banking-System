@@ -55,6 +55,35 @@ public class HelperFunc {
         return message;
     }
 
+    public static String createCheckingAndAddWithBackup(List<Checking> checkingList, String customerID, int accountNum, double balance, double interestRate, int backupAccountNum){
+        String message = "";
+        Checking accountToAdd = new Checking();
+        // make sure account number is unique
+        boolean uniqueID = true;
+        for(Checking account : checkingList) {
+            if (account.getAccountNumber() == accountNum) {
+                uniqueID = false;}
+        }
+        if(uniqueID){
+            accountToAdd.setAccountCustID(customerID);
+            accountToAdd.setAccountNumber(accountNum);
+            accountToAdd.setBackupAccountNumber(backupAccountNum);
+            accountToAdd.setBalance(balance);
+            accountToAdd.setInterestRate(interestRate);
+            accountToAdd.balanceCheck();
+            accountToAdd.createCard();
+            checkingList.add(accountToAdd);
+            if(accountToAdd.isGoldDiamondAccount())
+                message = "Gold/Diamond Account successfully created";
+            else {
+                message = "TMB Account successfully created";
+            }
+        } else {
+            message = "This account number is already taken, please choose another";
+        }
+        return message;
+    }
+
     // creates a new savings account and adds it to checking list
     public static String createSavingsAndAdd(List<SavingsAccount> savingsList, String customerID, int accountNum, double balance, double interestRate){
         String message = "";
@@ -98,7 +127,7 @@ public class HelperFunc {
                 accountToAdd.setDueDate(new SimpleDateFormat("MM/dd/yyyy").parse(dueDate));
                 accountToAdd.setDateCreated(new Date());
                 accountToAdd.setAccountCustID(customerID);
-
+                accountToAdd.setAccountNumber(accountNum);
                 accountToAdd.setBalance(balance);
                 accountToAdd.setInterestRate(interestRate);
                 cdList.add(accountToAdd);

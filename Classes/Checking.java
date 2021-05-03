@@ -139,6 +139,9 @@ public class Checking extends Account
     public int getNextCheckNumber() {
         return nextCheckNumber;
     }
+    public boolean isGoldDiamondAccount() {
+        return goldDiamondAccount;
+    }
 
     public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
