@@ -64,6 +64,7 @@ public class HelperFunc {
         for(SavingsAccount account : savingsList) {
             if (account.getAccountNumber() == accountNum) {
                 uniqueID = false;
+                message = "This account number is already taken, please choose another";
             }
         }
 
@@ -75,8 +76,6 @@ public class HelperFunc {
             accountToAdd.createCard();
             savingsList.add(accountToAdd);
             message = "Account successfully created";
-        } else {
-            message = "This account number is already taken, please choose another";
         }
         return message;
     }
@@ -89,6 +88,7 @@ public class HelperFunc {
         for(CD account : cdList) {
             if (account.getAccountNumber() == accountNum) {
                 uniqueID = false;
+                message = "This account number is already tied to an account";
             }
         }
         
@@ -112,30 +112,49 @@ public class HelperFunc {
         return message;
     }
 
-    public static void createLoanAndAdd(List<Loans> loanList, int loanID, String accountCustID, double balance, double interestRate, String type, int specialInfo){
-        Loans loanToAdd = new Loans();
-        loanToAdd.setLoanID(loanID);
-        loanToAdd.setAccountCustID(accountCustID);
-        loanToAdd.setBalance(balance);
-        loanToAdd.setInterestRate(interestRate);
-        loanToAdd.setType(type);
-        loanToAdd.setSpecialInfo(specialInfo);
-        switch (type)// sets the number of years on a loan and sets loan to true or false based on if it is a loan or credit card
-        {
-            case "Short Term":
-            case "Long Term":
-                loanToAdd.setYears(specialInfo);
-                break;
-            case "Credit Card":
-                CreditCard card = new CreditCard(accountCustID, 2, loanID,("2" + loanID + accountCustID.substring(0,2)));
-                loanToAdd.setCard(card);
-                loanToAdd.setLimit(specialInfo);
-                break;
-            default: break;
+    public static String createLoanAndAdd(List<Loans> loanList, int loanID, String accountCustID, double balance, double interestRate, String type, int specialInfo){
+        String message = "";
+        boolean uniqueID = true;
+        // check if loanid is unique
+        for(Loans loan : loanList){
+            if(loan.getLoanID() == loanID){
+                uniqueID = false;
+                message = "This account number is already taken, please choose another";
+            }
         }
-        loanToAdd.calculateMonthlyPayment(type);
+        if(uniqueID){
+            Loans loanToAdd = new Loans();
+            Date dueDate = new Date();
+            dueDate.setMonth((dueDate.getMonth()+1)%12);
+            dueDate.setHours(0);
+            dueDate.setMinutes(0);
+            dueDate.setSeconds(0);
+            loanToAdd.setLoanID(loanID);
+            loanToAdd.setAccountCustID(accountCustID);
+            loanToAdd.setBalance(balance);
+            loanToAdd.setInterestRate(interestRate);
+            loanToAdd.setType(type);
+            loanToAdd.setSpecialInfo(specialInfo);
+            switch (type)// sets the number of years on a loan and sets loan to true or false based on if it is a loan or credit card
+            {
+                case "Short Term":
+                case "Long Term":
+                    loanToAdd.setYears(specialInfo);
+                    break;
+                case "Credit Card":
+                    CreditCard card = new CreditCard(accountCustID, 2, loanID,("2" + loanID + accountCustID.substring(0,2)));
+                    loanToAdd.setCard(card);
+                    loanToAdd.setLimit(specialInfo);
+                    break;
+                default: break;
+            }
+            loanToAdd.calculateMonthlyPayment(type);
+            loanToAdd.setDueDate(dueDate);
 
-        loanList.add(loanToAdd);
+            message = "Loan successfully created for loanID: " + loanID;
+            loanList.add(loanToAdd);
+        }
+        return message;
     }
     
     public static String assignBackupAccount(List<Checking> checkingList, List<SavingsAccount> savingsList, int accountNum, int backupAccountNum){

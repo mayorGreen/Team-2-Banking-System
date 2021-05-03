@@ -147,6 +147,9 @@ public class Loans extends Account
     public double getInterestRate() {
         return interestRate;
     }
+    public int getLoanID() {
+        return loanID;
+    }
     public boolean isMissedPayment() {
         return missedPayment;
     }

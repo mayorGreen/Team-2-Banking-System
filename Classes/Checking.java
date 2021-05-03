@@ -64,10 +64,12 @@ public class Checking extends Account
     // if withdraw is greater
     @Override
     public void withdrawAmt(double amt) {
+        System.out.println("Now withdrawing $" + amt + " from checking account " + this.getAccountNumber());
         balance -= Math.abs(amt);
         if(!goldDiamondAccount)balance -= 0.5;
         balanceCheck();
         if(balance < 0 && (!hasBackupAccount)) {
+            System.out.println("Checking account " + this.getAccountNumber() + " has been overdrafted");
             numOfOverdrafts++;
             balance -= 20.0;
         }
@@ -77,6 +79,7 @@ public class Checking extends Account
     // deposit method, charges account a fee if it is not GD. calls balanceCheck
     @Override
     public void depositAmt(double amt) {
+        System.out.println("Depositing $" + amt + " into checking account " + this.getAccountNumber());
         balance += Math.abs(amt);
         if(!goldDiamondAccount)balance -= 0.5;
         balanceCheck();
@@ -85,12 +88,14 @@ public class Checking extends Account
     // credit account method, ignores transaction fee
     @Override
     public void creditAccount(double amt) {
+        System.out.println("Crediting $" + amt + " to checking account " + this.getAccountNumber());
         super.creditAccount(amt);
         balanceCheck();
     }
     // debit account method, ignores transaction fee
     @Override
     public void debitAccount(double amt) {
+        System.out.println("Debiting $" + amt + " from checking account " + this.getAccountNumber());
         super.debitAccount(amt);
         balanceCheck();
         if(balance < 0) {
@@ -103,8 +108,10 @@ public class Checking extends Account
     public void balanceCheck(){
         if(balance < 1000.00){
             goldDiamondAccount = false;
+            System.out.println("Checking account: " + this.getAccountNumber() + " is a TMB account");
         } else{
             goldDiamondAccount = true;
+            System.out.println("Checking account: " + this.getAccountNumber() + " is a Gold/Diamond account");
         }
     }
 
@@ -128,6 +135,9 @@ public class Checking extends Account
     }
     public boolean hasBackupAccount() {
         return hasBackupAccount;
+    }
+    public int getNextCheckNumber() {
+        return nextCheckNumber;
     }
 
     public void setDateCreated(Date dateCreated) {

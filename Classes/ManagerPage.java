@@ -58,6 +58,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 	JPanel accountSelectPanel = new JPanel();	
 	JPanel newCustomerPanel = new JPanel();
 	JPanel newAccountPanel = new JPanel();
+	JPanel newCCPanel = new JPanel();
 	JPanel panel1 = new JPanel(); // Teller landing page. enter acct number lookup here.
 	JPanel panel2 = new JPanel(); // Account Lookup Successful
 	JPanel panel3 = new JPanel(); // stop payment page
@@ -68,12 +69,12 @@ public class ManagerPage extends JFrame implements ActionListener {
 	JPanel panel8 = new JPanel(); // debit account page
 	JPanel panel9 = new JPanel(); // account transfer page
 	JPanel panel10 = new JPanel(); // confirmation page
-    JPanel panel11 = new JPanel(); // short term loan page
-    JPanel panel12 = new JPanel(); // long term loan page
+    JPanel panel11 = new JPanel(); // create short term loan page
+    JPanel panel12 = new JPanel(); // create long term loan page
     JPanel panel13 = new JPanel(); // loan payment page
 
 	JPanel[] panels = {panel1,panel2,panel3,panel4,panel5,panel6,panel7,panel8,panel9,panel10,panel11,panel12,panel13,
-						lookupPanel,accountSelectPanel,newCustomerPanel,newAccountPanel};
+						lookupPanel,accountSelectPanel,newCustomerPanel,newAccountPanel,newCCPanel};
 
 	JLabel bankNameLabel = new JLabel("My Bank");
 	JButton backButton = new JButton("Back"); // sends teller back to option panel 2
@@ -114,8 +115,24 @@ public class ManagerPage extends JFrame implements ActionListener {
 
 	JButton createCustomerSubmitButton = new JButton("Submit");
 
-	//newAccountPanel
-	
+	// newAccountPanel
+	JButton shortTermLoanButton = new JButton("Short Term Loan");
+    JButton longTermLoanButton = new JButton("Long Term Loan");
+	JButton creditCardButton = new JButton("Credit Card");
+
+	// newCCPanel
+	JLabel ccLoanIDLabel = new JLabel("Loan ID:");
+	JLabel ccCustomerIDLabel = new JLabel("Customer ID:");
+	JLabel ccInterestRateLabel = new JLabel("Interest Rate");
+	JLabel ccLimitLabel = new JLabel("Card Limit:");
+
+	JTextField ccLoanIDField = new JTextField();
+	JTextField ccCustomerIDField = new JTextField();
+	JTextField ccInterestRateField = new JTextField();  
+	JTextField ccLimitField = new JTextField();
+
+	JButton newCCSubmitButton = new JButton("Submit");
+	 
 	// acountSelectPanel
 	JList<String> accountJList = new  JList<>();
 	JScrollPane acctScrollPane = new JScrollPane(accountJList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
@@ -135,8 +152,6 @@ public class ManagerPage extends JFrame implements ActionListener {
 	JButton creditAccountButton = new JButton("Credit Account");
 	JButton debitAccountButton = new JButton("Debit Account");
 	JButton transferCashButton = new JButton("Transfer Cash");
-    JButton shortTermLoanButton = new JButton("Short Term Loan");
-    JButton longTermLoanButton = new JButton("Long Term Loan");
     JButton loanPaymentButton = new JButton("LoanPayment");
 
 	// panel 3 elements -- stop payment
@@ -199,29 +214,35 @@ public class ManagerPage extends JFrame implements ActionListener {
 	JComboBox<String> selectToAccount = new JComboBox<>();	// panel 10 -- transaction complete, return to panel 2
 	JLabel confirmationLabel = new JLabel("Transction Complete");
 
-    // panel 11 -- short term loan page
+    // panel 11 -- new short term loan page
+	JLabel shortLoanIDLabel = new JLabel("Loan ID:");
 	JLabel amountBorrowedLabel = new JLabel("Amount Borrowed:");
 	JLabel interestRateLabel = new JLabel("Interest Rate:");
-	JLabel paymentPlanLabel = new JLabel("Monthly Payment Plan:");
+	JLabel paymentPlanLabel = new JLabel("Years to repay:");
+	JLabel shortLoanCustIDLabel = new JLabel("Customer ID");
 
+	JTextField shortLoanIDField = new JTextField();
 	JTextField amountBorrowedField = new JTextField();
 	JTextField interestRateField = new JTextField();
 	JTextField paymentPlanField = new JTextField();
+	JTextField shortLoanCustIDField = new JTextField();
 
 	JButton shortLoanSubmitButton = new JButton("Submit");
 
     // panel 12 -- long term loan page
+	JLabel longLoanIDLabel = new JLabel("Loan ID:");
 	JLabel longAmountBorrowedLabel = new JLabel("Amount Borrowed");
 	JLabel loanTermSelectLabel = new JLabel("Select Loan Term:");
 	JRadioButton fifteenButton = new JRadioButton("15yr");
 	JRadioButton thirtyButton = new JRadioButton("30yr");
 	ButtonGroup loanButtons = new ButtonGroup();
 	JLabel longInterestRateLabel = new JLabel("Interest Rate:");
-	JLabel longPaymentPlanLabel = new JLabel("Monthly Payment Plan:");
+	JLabel longLoanCustIDLabel = new JLabel("Customer ID:");
 
+	JTextField longLoanIDField = new JTextField();
 	JTextField longAmountBorrowedField = new JTextField();
 	JTextField longInterestRateField = new JTextField();
-	JTextField longPaymentPlanField = new JTextField();
+	JTextField longLoanCustIDField = new JTextField();
 
 	JButton longLoanSubmitButton = new JButton("Submit");
 
@@ -251,7 +272,8 @@ public class ManagerPage extends JFrame implements ActionListener {
 						custIDSubmitButton,accountSubmitButton,
 						createCustomerButton,createAccountButton,
 						createCustomerSubmitButton,lookupReturnButton,
-						processChecksButton};
+						processChecksButton,newCCSubmitButton,
+						creditCardButton};
 
 	
 	CardLayout cl = new CardLayout();
@@ -322,7 +344,6 @@ public class ManagerPage extends JFrame implements ActionListener {
 		lookupPanel.add(createAccountButton);
 
 		// define new customer panel elements
-		
 
 		ssnField.setBounds(450,50,250,50);
 		streetAddressField.setBounds(450,115,250,50);
@@ -357,8 +378,6 @@ public class ManagerPage extends JFrame implements ActionListener {
 		firstNameLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 		lastNameLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 
-		
-
 		createCustomerSubmitButton.setBounds(bottomRight);
 
 
@@ -380,6 +399,52 @@ public class ManagerPage extends JFrame implements ActionListener {
 		newCustomerPanel.add(firstNameLabel);
 		newCustomerPanel.add(lastNameLabel);
 		newCustomerPanel.add(createCustomerSubmitButton);
+
+
+		// define new account select panel elements
+		shortTermLoanButton.setBounds(400,175,250,80);
+        longTermLoanButton.setBounds(400,275,250,80);
+		creditCardButton.setBounds(400,375,250,80);
+
+		// add elements to new account panel
+        newAccountPanel.add(shortTermLoanButton);
+        newAccountPanel.add(longTermLoanButton);
+		newAccountPanel.add(creditCardButton);
+
+		// define new credit card panel elements
+
+		ccCustomerIDLabel.setFont(labelFont);
+		ccInterestRateLabel.setFont(labelFont);
+		ccLoanIDLabel.setFont(labelFont);
+		ccLimitLabel.setFont(labelFont);
+
+		ccCustomerIDLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		ccInterestRateLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		ccLoanIDLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		ccLimitLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+
+		ccLoanIDLabel.setBounds(200,150,250,50);
+		ccCustomerIDLabel.setBounds(200,225,250,50);
+		ccInterestRateLabel.setBounds(200,300,250,50);
+		ccLimitLabel.setBounds(150,375,300,50);
+
+		ccLoanIDField.setBounds(500,150,200,50);
+		ccCustomerIDField.setBounds(500,225,200,50);
+		ccInterestRateField.setBounds(500,300,200,50);
+		ccLimitField.setBounds(500,375,200,50);
+
+		newCCSubmitButton.setBounds(bottomRight);
+
+		newCCPanel.add(ccLoanIDLabel);
+		newCCPanel.add(ccCustomerIDLabel);
+		newCCPanel.add(ccInterestRateLabel);
+		newCCPanel.add(ccLimitLabel);
+		newCCPanel.add(ccLoanIDField);
+		newCCPanel.add(ccCustomerIDField);
+		newCCPanel.add(ccInterestRateField);
+		newCCPanel.add(ccLimitField);
+		newCCPanel.add(newCCSubmitButton);
+
 
 		// define account select panel
 		acctScrollPane.setBounds(100,100,800,400);
@@ -433,8 +498,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 		creditAccountButton.setBounds(600,125,250,80);
 		debitAccountButton.setBounds(600,225,250,80);
 		transferCashButton.setBounds(600,325,250,80);
-        shortTermLoanButton.setBounds(125,425,250,80);
-        longTermLoanButton.setBounds(125,535,250,80);
+
         loanPaymentButton.setBounds(600,425,250,80);
 
 		// add elements to panel 2
@@ -444,8 +508,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 		panel2.add(creditAccountButton);
 		panel2.add(debitAccountButton);
 		panel2.add(transferCashButton);
-        panel2.add(shortTermLoanButton);
-        panel2.add(longTermLoanButton);
+
         panel2.add(loanPaymentButton);
 		panel2.add(exitButton);
 		
@@ -612,24 +675,35 @@ public class ManagerPage extends JFrame implements ActionListener {
 		amountBorrowedLabel.setFont(labelFont);
 		interestRateLabel.setFont(labelFont);
 		paymentPlanLabel.setFont(labelFont);
-
+		shortLoanIDLabel.setFont(labelFont);
+		shortLoanCustIDLabel.setFont(labelFont);
+		
+		shortLoanIDLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 		amountBorrowedLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 		interestRateLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 		paymentPlanLabel.setHorizontalAlignment(SwingConstants.TRAILING);
-
+		shortLoanCustIDLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 		
-		amountBorrowedLabel.setBounds(200,150,250,50);
-		interestRateLabel.setBounds(200,225,250,50);
-		paymentPlanLabel.setBounds(150,300,300,50);
+		shortLoanIDLabel.setBounds(200,125,250,50);
+		amountBorrowedLabel.setBounds(200,200,250,50);
+		interestRateLabel.setBounds(200,275,250,50);
+		paymentPlanLabel.setBounds(150,350,300,50);
+		shortLoanCustIDLabel.setBounds(150,425,300,50);
 		
-		amountBorrowedField.setBounds(500,150,200,50);
-		interestRateField.setBounds(500,225,200,50);
-		paymentPlanField.setBounds(500,300,200,50);
+		shortLoanIDField.setBounds(500,125,200,50);
+		amountBorrowedField.setBounds(500,200,200,50);
+		interestRateField.setBounds(500,275,200,50);
+		paymentPlanField.setBounds(500,350,200,50);
+		shortLoanCustIDField.setBounds(500,425,200,50);
 
 		shortLoanSubmitButton.setBounds(bottomRight);
 		
 		
 		// add elements to panel 11
+		panel11.add(shortLoanIDLabel);
+		panel11.add(shortLoanIDField);
+		panel11.add(shortLoanCustIDLabel);
+		panel11.add(shortLoanCustIDField);
 		panel11.add(amountBorrowedLabel);
 		panel11.add(interestRateLabel);
 		panel11.add(paymentPlanLabel);
@@ -639,43 +713,49 @@ public class ManagerPage extends JFrame implements ActionListener {
 		panel11.add(shortLoanSubmitButton);
 
 		// define panel 12 elements
+		longLoanIDLabel.setFont(labelFont);
 		longAmountBorrowedLabel.setFont(labelFont);
 		loanTermSelectLabel.setFont(labelFont);
 		longInterestRateLabel.setFont(labelFont);
-		longPaymentPlanLabel.setFont(labelFont);
+		longLoanCustIDLabel.setFont(labelFont);
 		longLoanSubmitButton.setFont(buttonFont);
 
+		longLoanIDLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 		longAmountBorrowedLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 		loanTermSelectLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 		longInterestRateLabel.setHorizontalAlignment(SwingConstants.TRAILING);
-		longPaymentPlanLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		longLoanCustIDLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 
 
-		fifteenButton.setBounds(500,225,100,50);
-		thirtyButton.setBounds(600,225,100,50);
+		fifteenButton.setBounds(500,275,100,50);
+		thirtyButton.setBounds(600,275,100,50);
 
-		longAmountBorrowedLabel.setBounds(200,150,250,50);
-		loanTermSelectLabel.setBounds(200,225,250,50);
-		longInterestRateLabel.setBounds(200,300,250,50);
-		longPaymentPlanLabel.setBounds(150,375,300,50);
+		longLoanIDLabel.setBounds(200,125,250,50);
+		longAmountBorrowedLabel.setBounds(200,200,250,50);
+		loanTermSelectLabel.setBounds(200,275,250,50);
+		longInterestRateLabel.setBounds(200,350,250,50);
+		longLoanCustIDLabel.setBounds(150,425,300,50);
 
-		longAmountBorrowedField.setBounds(500,150,200,50);
-		longInterestRateField.setBounds(500,300,200,50);
-		longPaymentPlanField.setBounds(500,375,200,50);
+		longLoanIDField.setBounds(500,125,200,50);
+		longAmountBorrowedField.setBounds(500,200,200,50);
+		longInterestRateField.setBounds(500,350,200,50);
+		longLoanCustIDField.setBounds(500,425,200,50);
 
 		longLoanSubmitButton.setBounds(bottomRight);
 
 
 		// add elements to panel 12
+		panel12.add(longLoanIDLabel);
+		panel12.add(longLoanIDField);
 		panel12.add(longAmountBorrowedLabel);
 		panel12.add(loanTermSelectLabel);
 		panel12.add(fifteenButton);
 		panel12.add(thirtyButton);
 		panel12.add(longInterestRateLabel);
-		panel12.add(longPaymentPlanLabel);
+		panel12.add(longLoanCustIDLabel);
 		panel12.add(longAmountBorrowedField);
 		panel12.add(longInterestRateField);
-		panel12.add(longPaymentPlanField);
+		panel12.add(longLoanCustIDField);
 		panel12.add(longLoanSubmitButton);
 
 
@@ -707,7 +787,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 
     }
 
-
+	// contains all action listener actions
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
@@ -725,6 +805,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 			cl.show(panelContainer, "15");
 		}
 
+		// returns manager to first screen
 		if(e.getSource() == lookupReturnButton){
 			cl.show(panelContainer, "14");
 		}
@@ -739,6 +820,52 @@ public class ManagerPage extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(null, "No checks to process right now.", "Alert", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
+		
+		if(e.getSource() == createAccountButton){
+			newAccountPanel.add(lookupReturnButton);
+			cl.show(panelContainer, "17");
+		}
+
+		if(e.getSource() == shortTermLoanButton){
+			shortLoanCustIDField.setText("");
+			amountBorrowedField.setText("");
+			interestRateField.setText("");
+			paymentPlanField.setText("");
+			panel11.add(lookupReturnButton);
+			cl.show(panelContainer, "11");
+		}
+
+		if(e.getSource() == longTermLoanButton){
+			panel12.add(lookupReturnButton);
+			cl.show(panelContainer, "12");
+		}
+		if(e.getSource() == creditCardButton){
+			newCCPanel.add(lookupReturnButton);
+			cl.show(panelContainer, "18");
+		}
+
+		if(e.getSource() == newCCSubmitButton){
+			boolean parsable = true;
+			parsable = HelperFunc.isParsableNumber(ccLoanIDField.getText());
+			if(parsable) parsable = HelperFunc.isParsableNumber(ccCustomerIDField.getText());
+			if(parsable) parsable = HelperFunc.isParsableNumber(ccInterestRateField.getText());
+			if(parsable) parsable = HelperFunc.isParsableNumber(ccLimitField.getText());
+			if(parsable){
+				String mssg = HelperFunc.createLoanAndAdd(loanList,
+					Integer.parseInt(ccLoanIDField.getText()), // get loanID
+					ccCustomerIDField.getText(), // get customerID
+					0, // start with 0 balance
+					Double.parseDouble(ccInterestRateField.getText()), // get interest rate
+					"Credit Card", // this is a credit card type loan
+					Integer.parseInt(ccLimitField.getText())); // get cc limit
+				
+				HelperFunc.updateLoans(loanList);
+				JOptionPane.showMessageDialog(null, mssg, "New Credit Card", JOptionPane.INFORMATION_MESSAGE);
+				cl.show(panelContainer, "14");
+			} else {
+				JOptionPane.showMessageDialog(this, "Given input is incorrect! Enter numbers only for loanID, Interest Rate, and card limit", "Parse Error", JOptionPane.ERROR_MESSAGE);
+			}
+		}
 
 		if(e.getSource() == createCustomerButton){
 			ssnField.setText("");
@@ -751,7 +878,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 			newCustomerPanel.add(lookupReturnButton);
 			cl.show(panelContainer, "16");
 		}
-
+		
 		if(e.getSource() == createCustomerSubmitButton){
 			String[] options = {"Yes", "No"};
 			String msg = "You're about to create a new Customer and add to the database, are you sure?";
@@ -868,15 +995,6 @@ public class ManagerPage extends JFrame implements ActionListener {
 			cl.show(panelContainer, "9");
 		}
 
-		if(e.getSource() == shortTermLoanButton){
-			panel11.add(backButton);
-			cl.show(panelContainer, "11");
-		}
-
-		if(e.getSource() == longTermLoanButton){
-			panel12.add(backButton);
-			cl.show(panelContainer, "12");
-		}
 
 		if(e.getSource() == loanPaymentButton){
 			panel13.add(backButton);
@@ -1007,14 +1125,55 @@ public class ManagerPage extends JFrame implements ActionListener {
 		}
 
 		// panel 11 button (short term loan page)
+		// create new short term loan
 		if(e.getSource() == shortLoanSubmitButton) {
-			panel10.add(backButton);
-			cl.show(panelContainer, "10");
+			boolean parsable = true;
+			parsable = HelperFunc.isParsableNumber(shortLoanCustIDField.getText());
+			if(parsable) parsable = HelperFunc.isParsableNumber(amountBorrowedField.getText());
+			if(parsable) parsable = HelperFunc.isParsableNumber(interestRateField.getText());
+			if(parsable) parsable = HelperFunc.isParsableNumber(paymentPlanField.getText());
+			if(parsable){
+				String mssg = HelperFunc.createLoanAndAdd(loanList,
+					Integer.parseInt(shortLoanIDField.getText()),
+					shortLoanCustIDField.getText(),
+					Double.parseDouble(amountBorrowedField.getText()),
+					Double.parseDouble(interestRateField.getText()), 
+					"Short Term", 
+					Integer.parseInt(paymentPlanField.getText()));
+				
+				HelperFunc.updateLoans(loanList);
+				JOptionPane.showMessageDialog(null, mssg, "New Loan", JOptionPane.INFORMATION_MESSAGE);
+				cl.show(panelContainer, "14");
+			} else {
+				JOptionPane.showMessageDialog(this, "Given input is incorrect! Enter numbers only for loanID, Amount Borrowed, Interest Rate, and Years to Pay", "Parse Error", JOptionPane.ERROR_MESSAGE);
+			}
 		}
+
 		// panel 12 button (long term loan page)
-		if(e.getSource() == longLoanSubmitButton) {
-			panel10.add(backButton);
-			cl.show(panelContainer, "10");
+		// create new long term loan
+		if(e.getSource() == longLoanSubmitButton && (fifteenButton.isSelected() || thirtyButton.isSelected())){
+			boolean parsable = true;
+			int years = 0;
+			if(fifteenButton.isSelected()) years = 15;
+			if(thirtyButton.isSelected()) years = 30;
+			parsable = HelperFunc.isParsableNumber(shortLoanCustIDField.getText());
+			if(parsable) parsable = HelperFunc.isParsableNumber(amountBorrowedField.getText());
+			if(parsable) parsable = HelperFunc.isParsableNumber(interestRateField.getText());
+			if(parsable){
+				String mssg = HelperFunc.createLoanAndAdd(loanList,
+					Integer.parseInt(longLoanIDField.getText()),
+					longLoanCustIDField.getText(),
+					Double.parseDouble(longAmountBorrowedField.getText()),
+					Double.parseDouble(longInterestRateField.getText()), 
+					"Long Term", 
+					years);
+				
+				HelperFunc.updateLoans(loanList);
+				JOptionPane.showMessageDialog(null, mssg, "New Loan", JOptionPane.INFORMATION_MESSAGE);
+				cl.show(panelContainer, "14");
+			} else {
+				JOptionPane.showMessageDialog(this, "Given input is incorrect! Enter numbers only for loanID, Amount Borrowed, and Interest Rate", "Parse Error", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 
 		// panel 13 button (loan payment page) 
