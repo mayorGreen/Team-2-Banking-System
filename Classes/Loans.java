@@ -200,10 +200,10 @@ public class Loans extends Account {
 
     public String toString() {
         if(card != null){
-        return "LoanID: "+loanID+" CustID: "+accountCustID+" Balance: "+balance+" Interest Rate: "+interestRate+" Due Date: "+dueDate+" Last payment Date: "+" Payment Notification Date: "+
+        return "["+type+"] "+"LoanID: "+loanID+" CustID: "+accountCustID+" Balance: "+balance+" Interest Rate: "+interestRate+" Due Date: "+dueDate+" Last payment Date: "+" Payment Notification Date: "+
                 paymentNotificationDate+" Amount Due: "+amountDue+" Loan Type: "+type+ " Card Number: " + card.getCardNumber() + " Special Info: "+ specialInfo+" Number of Charges: "+numberOfCharges;
         } else {
-            return "LoanID: "+loanID+" CustID: "+accountCustID+" Balance: "+balance+" Interest Rate: "+interestRate+" Due Date: "+dueDate+" Last payment Date: "+" Payment Notification Date: "+
+            return "["+type+"] "+"LoanID: "+loanID+" CustID: "+accountCustID+" Balance: "+balance+" Interest Rate: "+interestRate+" Due Date: "+dueDate+" Last payment Date: "+" Payment Notification Date: "+
             paymentNotificationDate+" Amount Due: "+amountDue+" Loan Type: "+type+" Special Info: "+ specialInfo+" Number of Charges: "+numberOfCharges;
         }
     }

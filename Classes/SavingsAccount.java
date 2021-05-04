@@ -106,7 +106,7 @@ public class SavingsAccount extends Account{
 
     @Override
     public String toString() {
-        return "Account Number: " + accountNumber + " CustID: " + accountCustID + " Balance: " 
+        return "[Savings Account] " + "Account Number: " + accountNumber + " CustID: " + accountCustID + " Balance: " 
         + balance + " Current Interest Rate: " + interestRate + " Date Account Opened: " + dateCreated + " Withdrawals Today: " + withdrawalsToday;
     }
 

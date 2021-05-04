@@ -579,6 +579,29 @@ public class HelperFunc {
         return accounts; // return list of accounts
     } // end accountsLookup
 
+    // returns a list of all accounts in database
+    public static List<String> accountsReport(List<Checking> checkingList, List<SavingsAccount> savingsList, List<CD> cdList){
+        ArrayList<String> accounts = new ArrayList<>();
+        for(Checking acct : checkingList){
+                accounts.add(acct.toString());
+        }
+        for(SavingsAccount acct : savingsList){
+                accounts.add(acct.toString());
+        }
+        for(CD acct : cdList){
+                accounts.add(acct.toString());
+        }
+        return accounts; // return list of accounts
+    } // end accountsReport
+
+    public static List<String> loansReport(List<Loans> loanList){
+        ArrayList<String> accounts = new ArrayList<>();
+        for(Loans loan : loanList){
+            accounts.add(loan.toString());
+        }
+        return accounts;
+    } // end loansReport
+
     // pass in string, determine if it's a parsable value
     public static boolean isParsableNumber(String str){
         boolean parsable = true;
