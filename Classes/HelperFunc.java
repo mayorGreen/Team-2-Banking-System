@@ -252,6 +252,38 @@ public class HelperFunc {
 
     }
 
+    
+    // returns an index location of the checking acocunt with the given card number
+    public static int findCardChecking(List<Checking> checkingList, String cardNum){
+        int cardIndex = -1;
+        for(int i=0; i<checkingList.size(); i++){
+            if(checkingList.get(i).getCard().getCardNumber().equals(cardNum)){
+                cardIndex = i;
+                break;
+            }
+        }
+        return cardIndex;
+    }
+    
+    // returns an index location of the savings account with the given card number
+    public static int findCardSavings(List<SavingsAccount> savingsList, String cardNum){
+        int cardIndex = -1;
+        for(int i=0; i<savingsList.size(); i++){
+            if(savingsList.get(i).getCard().getCardNumber().equals(cardNum)){
+                cardIndex = i;
+                break;
+            }
+        }
+        return cardIndex;
+    }
+    
+    // function for pin verifiaction
+    public static boolean pinCheck(ATMCard workingCard, String pin){
+        boolean isCorrect = false;
+        if(workingCard.getPinNum().equals(pin)) isCorrect = true;
+        return isCorrect;
+    } 
+    
     // returns an index location of the checking account with the given account number
     // returns -1 if account does not exist
     public static int getChecking(List<Checking> checkingList, int accountNumber){
@@ -264,38 +296,6 @@ public class HelperFunc {
         }
         return index;
     }
-
-    // returns an index location of the checking acocunt with the given card number
-    public static int findCardChecking(List<Checking> checkingList, String cardNum){
-        int cardIndex = -1;
-        for(int i=0; i<checkingList.size(); i++){
-            if(checkingList.get(i).getCard().getCardNumber().equals(cardNum)){
-                 cardIndex = i;
-                break;
-            }
-        }
-        return cardIndex;
-    }
-
-    // returns an index location of the savings account with the given card number
-    public static int findCardSavings(List<SavingsAccount> savingsList, String cardNum){
-        int cardIndex = -1;
-        for(int i=0; i<savingsList.size(); i++){
-            if(savingsList.get(i).getCard().getCardNumber().equals(cardNum)){
-                 cardIndex = i;
-                break;
-            }
-        }
-        return cardIndex;
-    }
-
-    // function for pin verifiaction
-    public static boolean pinCheck(ATMCard workingCard, String pin){
-        boolean isCorrect = false;
-        if(workingCard.getPinNum().equals(pin)) isCorrect = true;
-        return isCorrect;
-    } 
-
     // returns an index location of the savings account with the given account number
     // returns -1 if account does not exist
     public static int getSavings(List<SavingsAccount> savingsList, int accountNumber){
@@ -308,6 +308,18 @@ public class HelperFunc {
         }
         return index;
     } // end getSavings
+    // returns an index location of the cd account with the given account number
+    // returns -1 if account does not exist
+    public static int getCD(List<CD> cdList, int accountNumber){
+        int index = -1;
+        for(int i = 0; i<cdList.size(); i++) {
+            if(cdList.get(i).getAccountNumber() == accountNumber){
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
 
     // returns current balance for given checking account
     public static double getCheckingBalance(List<Checking> checkingList, int accountNum){
@@ -332,6 +344,18 @@ public class HelperFunc {
         }
         return balance;
     } // end getSavingsBalance
+
+    // returns balance for given cd account
+    public static double getCDBalance(List<CD> cdList, int accountNum){
+        double balance = 0;
+        for(int i=0; i<cdList.size(); i++){
+            if(cdList.get(i).getAccountNumber() == accountNum) {
+                balance = cdList.get(i).getAccountBalance();
+                break;
+            }
+        }
+        return balance;
+    } // end getCDBalance
     
     // DEPOSIT FUNCTIONS FOR CUSTOMERS
     // used by customers via atm, accounts for implicit transaction fees
@@ -450,6 +474,10 @@ public class HelperFunc {
         int acctIndex = getSavings(savingsList, workingAcctNum);
         savingsList.get(acctIndex).creditAccount(amount);
     }
+    public static void creditCDAccount(List<CD> cdList, int workingAcctNum, double amount){
+        int acctIndex = getCD(cdList, workingAcctNum);
+        cdList.get(acctIndex).creditAccount(amount);
+    }
 
     // DEBIT FUNCTIONS FOR TELLER/MANAGER
     public static void debitCheckingAccount(List<Checking> checkingList, int workingAcctNum, double amount) {
@@ -459,6 +487,10 @@ public class HelperFunc {
     public static void debitSavingsAccount(List<SavingsAccount> savingsList, int workingAcctNum, double amount) {
         int acctIndex = getSavings(savingsList, workingAcctNum);
         savingsList.get(acctIndex).debitAccount(amount);
+    }
+    public static void debitCDAccount(List<CD> cdList, int workingAcctNum, double amount){
+        int acctIndex = getCD(cdList, workingAcctNum);
+        cdList.get(acctIndex).withdrawAmt(amount);
     }
 
     // ------------------------ CREATE AND STOP CHECK FUNCTIONS FOR TELLER/MANAGER ------------------------
@@ -527,7 +559,7 @@ public class HelperFunc {
 
 
     // Account lookup process for teller and manager pages
-    public static List<String> accountsLookup(List<Checking> checkingList, List<SavingsAccount> savingsList, String custID){
+    public static List<String> accountsLookup(List<Checking> checkingList, List<SavingsAccount> savingsList, List<CD> cdList, String custID){
         ArrayList<String> accounts = new ArrayList<>();
         for(Checking acct : checkingList){
             if (acct.getAccountCustID().equals(custID)){
@@ -537,6 +569,11 @@ public class HelperFunc {
         for(SavingsAccount acct : savingsList){
             if (acct.getAccountCustID().equals(custID)){
                 accounts.add("Savings " + acct.getAccountNumber());
+            }
+        }
+        for(CD acct : cdList){
+            if (acct.getAccountCustID().equals(custID)){
+                accounts.add("CD " + acct.getAccountNumber());
             }
         }
         return accounts; // return list of accounts

@@ -441,7 +441,7 @@ public class TellerPage extends JFrame implements ActionListener {
 
 		// lookup customer id, get accounts
 		if((e.getSource() == custIDSubmitButton) && !(custIdField.getText().equals(""))){
-			accountList = HelperFunc.accountsLookup(checkingList, savingsList, custIdField.getText());
+			accountList = HelperFunc.accountsLookup(checkingList, savingsList, cdList, custIdField.getText());
 			accountArray = new String[accountList.size()];
 			accounts = new ArrayList<>();
 			for(int i=0; i<accountList.size(); i++){
@@ -588,6 +588,9 @@ public class TellerPage extends JFrame implements ActionListener {
 				} else if (workingAcctType.equals("Savings")){
 					HelperFunc.creditSavingsAccount(savingsList, workingAcctNum, creditAmt);
 					HelperFunc.updateSavings(savingsList); // save changes
+				} else if (workingAcctType.equals("CD")){
+					HelperFunc.creditCDAccount(cdList, workingAcctNum, creditAmt);
+					HelperFunc.updateCD(cdList);
 				}
 				panel10.add(backButton);
 				cl.show(panelContainer, "10");
@@ -632,6 +635,9 @@ public class TellerPage extends JFrame implements ActionListener {
 				} else if (workingAcctType.equals("Savings")){
 					HelperFunc.debitSavingsAccount(savingsList, workingAcctNum, depositAmount);
 					HelperFunc.updateSavings(savingsList); // save changes
+				} else if (workingAcctType.equals("CD")){
+					HelperFunc.debitCDAccount(cdList, workingAcctNum, depositAmount);
+					HelperFunc.updateCD(cdList);
 				}
 			}
 			// send to confirmation page

@@ -932,7 +932,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 
 		// lookup customer id, get accounts
 		if((e.getSource() == custIDSubmitButton) && !(custIdField.getText().equals(""))){
-			accountList = HelperFunc.accountsLookup(checkingList, savingsList, custIdField.getText());
+			accountList = HelperFunc.accountsLookup(checkingList, savingsList, cdList, custIdField.getText());
 			accountArray = new String[accountList.size()];
 			accounts = new ArrayList<>();
 			for(int i=0; i<accountList.size(); i++){
@@ -1235,6 +1235,8 @@ public class ManagerPage extends JFrame implements ActionListener {
 				balanceAmountLabel.setText("Balance: $" + HelperFunc.getCheckingBalance(checkingList, workingAcctNum));
 			} else if(workingAcctType.equals("Savings")){
 				balanceAmountLabel.setText("Balance: $" + HelperFunc.getSavingsBalance(savingsList, workingAcctNum));
+			} else if(workingAcctType.equals("CD")){
+				balanceAmountLabel.setText("Balance: $" + HelperFunc.getCDBalance(cdList, workingAcctNum));
 			}
 			cl.show(panelContainer, "4");
 		}
@@ -1309,6 +1311,9 @@ public class ManagerPage extends JFrame implements ActionListener {
 				} else if (workingAcctType.equals("Savings")){
 					HelperFunc.creditSavingsAccount(savingsList, workingAcctNum, creditAmt);
 					HelperFunc.updateSavings(savingsList); // save changes
+				} else if (workingAcctType.equals("CD")){
+					HelperFunc.creditCDAccount(cdList, workingAcctNum, creditAmt);
+					HelperFunc.updateCD(cdList);
 				}
 				panel10.add(backButton);
 				cl.show(panelContainer, "10");
@@ -1353,6 +1358,9 @@ public class ManagerPage extends JFrame implements ActionListener {
 				} else if (workingAcctType.equals("Savings")){
 					HelperFunc.debitSavingsAccount(savingsList, workingAcctNum, depositAmount);
 					HelperFunc.updateSavings(savingsList); // save changes
+				} else if (workingAcctType.equals("CD")){
+					HelperFunc.debitCDAccount(cdList, workingAcctNum, depositAmount);
+					HelperFunc.updateCD(cdList);
 				}
 			}
 			// send to confirmation page
@@ -1391,11 +1399,9 @@ public class ManagerPage extends JFrame implements ActionListener {
 					} else {
 						transferAmountField.setText("");
 					}
-
 				}
-
 			}
-		}
+		} // end transfer submit action
 
 		// panel 11 button (short term loan page)
 		// create new short term loan

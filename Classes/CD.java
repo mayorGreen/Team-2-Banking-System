@@ -57,6 +57,7 @@ public class CD extends SavingsAccount
         // check current time with due date
         if((new Date().compareTo(dueDate)) < 0) {
             earlyWithdrawPenalty = true;
+            System.out.println("Early withdrawal from CD #" + getAccountNumber());
             super.withdrawAmt(amt);
         } else {
             super.withdrawAmt(amt);
