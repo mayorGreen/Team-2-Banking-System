@@ -13,9 +13,8 @@ public class SavingsAccount extends Account{
     private ATMCard card; // ATM card associated with the account
     private Date lastWithdrawal; // time of last withdrawal
     private Date todaysDate; // todays date
-    private int withdrawalsToday;
+    private int withdrawalsToday; // number of withdrawals today, limited to two per day
 
-    // TODO: implement a method to update the time for all accounts upon load
     // generic constructor
     public SavingsAccount(){
         super();
@@ -25,6 +24,7 @@ public class SavingsAccount extends Account{
         todaysDate = new Date();
     }
 
+    // Constructor
     public SavingsAccount(List<String> savAcc){
         super();
         withdrawalsToday = 0;
@@ -39,17 +39,37 @@ public class SavingsAccount extends Account{
             System.out.println("Error in trying to parse date in Savings");
             e.printStackTrace();
         }
-
         // create an atm card for this account
         card = new ATMCard(accountCustID, 1, accountNumber, ("1" + accountNumber + accountCustID.substring(0,2)), accountCustID.substring(accountCustID.length()-4));
-
     }
 
-
+    // create an atm card for this account
     public void createCard(){
-        // create an atm card for this account
         card = new ATMCard(accountCustID, 1, accountNumber, ("1" + accountNumber + accountCustID.substring(0,2)), accountCustID.substring(accountCustID.length()-4));
     }
+
+    // increment withdrawals today
+    public void incrementWithdrawals() {
+        withdrawalsToday++;
+    }
+    
+    // getters
+    public double getInterestRate() {
+        return interestRate;
+    }
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+    public ATMCard getCard() {
+        return card;
+    }
+    public int getWithdrawalsToday() {
+        return withdrawalsToday;
+    }
+    public Date getLastWithdrawal() {
+        return lastWithdrawal;
+    }
+    
     // setters
     public void setInterestRate(double interestRate) {
         this.interestRate = interestRate;
@@ -67,34 +87,9 @@ public class SavingsAccount extends Account{
         this.withdrawalsToday = withdrawalsToday;
     }
 
-    // getters
-    
-    public double getInterestRate() {
-        return interestRate;
-    }
-    public Date getDateCreated() {
-        return dateCreated;
-    }
-    public ATMCard getCard() {
-        return card;
-    }
-    public int getWithdrawalsToday() {
-        return withdrawalsToday;
-    }
-    public Date getLastWithdrawal() {
-        return lastWithdrawal;
-    }
-
-    public void incrementWithdrawals() {
-        withdrawalsToday++;
-    }
-
-    void compoundInterest() {
-        // TODO: compound interest formula
-    }
-    
     @Override
     void withdrawAmt(double amt) {
+        System.out.println("Withdrawing $" + amt + " from Savings account: " + accountNumber);
         if (amt <= balance) {
             balance -= amt;
         } else {
@@ -105,13 +100,14 @@ public class SavingsAccount extends Account{
 
     @Override
     void depositAmt(double amt) {
+        System.out.println("Depositing $" + amt + " to Savings account: " + accountNumber);
         balance += amt;
     }
 
     @Override
     public String toString() {
         return "Account Number: " + accountNumber + " CustID: " + accountCustID + " Balance: " 
-        + balance + " Current Interest Rate: " + interestRate + " Date Account Opened: " + dateCreated;
+        + balance + " Current Interest Rate: " + interestRate + " Date Account Opened: " + dateCreated + " Withdrawals Today: " + withdrawalsToday;
     }
 
 } // end SavingsAccount

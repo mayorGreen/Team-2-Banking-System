@@ -12,7 +12,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 // class for parsing files with a comma delimeter
-
 public abstract class Parser{
 
     // this is the parser for reading csv files. It reads the file line by line,
@@ -21,6 +20,7 @@ public abstract class Parser{
         // create a list that contains lists of strings
         List<List<String>> records = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(fileLocation))){
+            // read each line, separate by comma, insert into string array, insert string array into ArrayList as a list
             String line;
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",");
@@ -30,21 +30,21 @@ public abstract class Parser{
             e.printStackTrace();
         }
         return records;
-    }
+    } // end getRecords
 
     // this method writes any serializable object to a file
     public static <T> void writeObjectRecords(T input, String fileName){
         try(FileOutputStream fout = new FileOutputStream(new File(fileName))) {
-            ObjectOutputStream oout = new ObjectOutputStream(fout);
+            ObjectOutputStream oout = new ObjectOutputStream(fout); // object output stream
 
-            oout.writeObject(input);
-            oout.close();
+            oout.writeObject(input); // write object to output stream
+            oout.close(); // close object stream
             System.out.println("Write to file complete");
         } catch (Exception e) {
             System.out.println("Error in writeObjectRecords");
             e.printStackTrace();
         }
-    }
+    } // end writeObjectRecords
 
     // this method reads list objects from a file and returns a list of type T
     // where T is the stored object type
@@ -53,14 +53,13 @@ public abstract class Parser{
         try (FileInputStream fin = new FileInputStream(new File(fileName))){
             ObjectInputStream oin = new ObjectInputStream(fin);
 
-            readList = (ArrayList)oin.readObject();
+            readList = (ArrayList)oin.readObject(); // cast object to arrayList
             oin.close();
         } catch (Exception e) {
             System.out.println("Error in readObjectRecords");
             e.printStackTrace();
         }
-        return readList;
-    }
+        return readList; // return arrayList
+    } // end readObjectRecords
 
 } //  end Parser
-    

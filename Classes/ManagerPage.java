@@ -9,18 +9,19 @@ import java.awt.Font;
 import java.awt.Color;
 import java.awt.Rectangle;
 
+// This is the manager page, from here the manager can create new accounts, customers, as well as manage customer accounts
 public class ManagerPage extends JFrame implements ActionListener {
 
-	private List<Customer> customerList;
-    private List<Checking> checkingList;
-    private List<SavingsAccount> savingsList;
-    private List<CD> cdList;
-    private List<Loans> loanList;
-	private List<Check> checkList;
-	private List<String> accountList = new ArrayList<>();
+	private List<Customer> customerList; // customer data
+    private List<Checking> checkingList; // checking account data
+    private List<SavingsAccount> savingsList; // savings account data
+    private List<CD> cdList; // CD data
+    private List<Loans> loanList; // loan data
+	private List<Check> checkList; // check data
+	private List<String> accountList = new ArrayList<>(); // account list
 
-	private int workingAcctNum;
-    private String workingAcctType;
+	private int workingAcctNum; // currently selected account's account number
+    private String workingAcctType; // currently selected account's type. i.e. Checking, Savings
 
 	String[] listTestData = {"Transaction 1   -    $20.23", 
 							"Transaction 2   -    $122.30", 
@@ -49,15 +50,15 @@ public class ManagerPage extends JFrame implements ActionListener {
 							"Transaction 25   -    $5.23"};
 
 	JFrame mainFrame = new JFrame();
-	JPanel panelContainer = new JPanel();
+	JPanel panelContainer = new JPanel(); // panel container
 	JPanel lookupPanel = new JPanel(); // customer id lookup panel
 	JPanel accountSelectPanel = new JPanel(); // account selection panel
-	JPanel newCustomerPanel = new JPanel();
-	JPanel newAccountPanel = new JPanel();
-	JPanel newCCPanel = new JPanel();
-	JPanel newCheckingPanel = new JPanel();
-	JPanel newSavingsPanel = new JPanel();
-	JPanel newCDPanel = new JPanel();
+	JPanel newCustomerPanel = new JPanel(); // create new customer panel
+	JPanel newAccountPanel = new JPanel(); // create new account select panel
+	JPanel newCCPanel = new JPanel(); // create new credit card panel
+	JPanel newCheckingPanel = new JPanel(); // create new checking account panel
+	JPanel newSavingsPanel = new JPanel(); // create new savings account panel
+	JPanel newCDPanel = new JPanel(); // create new CD account panel
 	JPanel panel1 = new JPanel(); // Teller landing page. enter acct number lookup here.
 	JPanel panel2 = new JPanel(); // Account Lookup Successful
 	JPanel panel3 = new JPanel(); // stop payment page
@@ -76,92 +77,68 @@ public class ManagerPage extends JFrame implements ActionListener {
 						lookupPanel,accountSelectPanel,newCustomerPanel,newAccountPanel,newCCPanel,newCheckingPanel,newSavingsPanel,newCDPanel};
 
 	JLabel bankNameLabel = new JLabel("My Bank");
-	JButton backButton = new JButton("Back"); // sends teller back to option panel 2
-	JButton exitButton = new JButton("Exit"); // sends teller back to account lookup
-	JButton logoutButton = new JButton("Logout"); // logs teller out
+	JButton backButton = new JButton("Back"); // sends manager back to option panel 2
+	JButton exitButton = new JButton("Exit"); // sends manager back to account lookup
+	JButton logoutButton = new JButton("Logout"); // logs manager out
 	JButton lookupReturnButton = new JButton("Back"); // returns manager to account lookup page
 	
-	// lookupPanel -- teller looks up custoemr id
+	// lookupPanel elements -- manager looks up custoemr id
 	JLabel custIDLabel = new JLabel("Enter Customer ID");
 	JTextField custIdField = new JTextField();
 	JButton custIDSubmitButton = new JButton("Submit");
 	String[] accountArray;
 	ArrayList<String[]> accounts;
+	JButton createCustomerButton = new JButton("New Customer");	// create new cust
+	JButton createAccountButton = new JButton("New Account");// create new acct
+	JButton processChecksButton = new JButton("Process Checks");// process checks
 	
-	// create new cust
-	JButton createCustomerButton = new JButton("New Customer");
-	// create new acct
-	JButton createAccountButton = new JButton("New Account");
-	// process checks
-	JButton processChecksButton = new JButton("Process Checks");
-	
-	
-	// newAccountPanel
+	// newAccountPanel elements
 	JButton shortTermLoanButton = new JButton("Short Term Loan");
 	JButton longTermLoanButton = new JButton("Long Term Loan");
 	JButton creditCardButton = new JButton("Credit Card");
 	JButton checkingButton = new JButton("Checking Account");
 	JButton savingsButton = new JButton("Savings Account");
 	JButton cdButton = new JButton("CD Account");
-	// newCheckingPanel
-						
+
+	// newCheckingPanel elements
 	JLabel chCustIDLabel = new JLabel("Customer ID:");	
 	JLabel chAccountNumLabel = new JLabel("Account Number:");
 	JLabel chBalanceLabel = new JLabel("Balance:");
 	JLabel chInterestRateLabel = new JLabel("Interest Rate:");
 	JLabel chBackupAccountLabel = new JLabel("Backup Account Number:");
 	JCheckBox assignBackupAccount = new JCheckBox("Assign Backup Account?");
-
 	JTextField chCustIDField = new JTextField();
 	JTextField chAccountNumField = new JTextField();
 	JTextField chBalanceField = new JTextField();
 	JTextField chInterestRateField = new JTextField();
 	JTextField chBackupAccountField = new JTextField();
-
 	JButton newCheckingSubmitButton = new JButton("Submit");
 
-	
-	// newSavingsPanel
-
+	// newSavingsPanel elements
 	JLabel saCustIDLabel = new JLabel("Customer ID:");	
 	JLabel saAccountNumLabel = new JLabel("Account Number:");
 	JLabel saBalanceLabel = new JLabel("Balance:");
 	JLabel saInterestRateLabel = new JLabel("Interest Rate:");
-
 	JTextField saCustIDField = new JTextField();
 	JTextField saAccountNumField = new JTextField();
 	JTextField saBalanceField = new JTextField();
 	JTextField saInterestRateField = new JTextField();
-
 	JButton newSavingsSubmitButton = new JButton("Submit");
 
-	// newCDPanel
-
+	// newCDPanel elements
 	JLabel cdCustIDLabel = new JLabel("Customer ID:");	
 	JLabel cdAccountNumLabel = new JLabel("Account Number:");
 	JLabel cdDueDateLabel = new JLabel("Due Date (MM/dd/yyyy):");
 	JLabel cdBalanceLabel = new JLabel("Balance:");
 	JLabel cdInterestRateLabel = new JLabel("Interest Rate:");
-
 	JTextField cdCustIDField = new JTextField();
 	JTextField cdAccountNumField = new JTextField();
 	JTextField cdDueDateField = new JTextField();
 	JTextField cdBalanceField = new JTextField();
 	JTextField cdInterestRateField = new JTextField();
-
 	JButton newCDSubmitButton = new JButton("Submit");
 
-
-
-	// newCustomerPanel -- enter customer data here, add to customer list
-	JTextField ssnField = new JTextField();
-	JTextField streetAddressField = new JTextField();
-	JTextField cityField = new JTextField();
-	JTextField stateField = new JTextField();
-	JTextField zipField = new JTextField();
-	JTextField firstNameField = new JTextField();
-	JTextField lastNameField = new JTextField();
-
+	// newCustomerPanel elements -- enter customer data here, add to customer list
 	JLabel ssnLabel = new JLabel("SSN:");
 	JLabel streetAddressLabel = new JLabel("Street Address:");
 	JLabel cityLabel = new JLabel("City:");
@@ -169,26 +146,27 @@ public class ManagerPage extends JFrame implements ActionListener {
 	JLabel zipLabel = new JLabel("Zip Code:");
 	JLabel firstNameLabel = new JLabel("First Name:");
 	JLabel lastNameLabel = new JLabel("Last Name:");
-
+	JTextField ssnField = new JTextField();
+	JTextField streetAddressField = new JTextField();
+	JTextField cityField = new JTextField();
+	JTextField stateField = new JTextField();
+	JTextField zipField = new JTextField();
+	JTextField firstNameField = new JTextField();
+	JTextField lastNameField = new JTextField();
 	JButton createCustomerSubmitButton = new JButton("Submit");
 
-
-	// newCCPanel
+	// newCCPanel elements
 	JLabel ccLoanIDLabel = new JLabel("Loan ID:");
 	JLabel ccCustomerIDLabel = new JLabel("Customer ID:");
 	JLabel ccInterestRateLabel = new JLabel("Interest Rate");
 	JLabel ccLimitLabel = new JLabel("Card Limit:");
-
 	JTextField ccLoanIDField = new JTextField();
 	JTextField ccCustomerIDField = new JTextField();
 	JTextField ccInterestRateField = new JTextField();  
 	JTextField ccLimitField = new JTextField();
-
 	JButton newCCSubmitButton = new JButton("Submit");
 
-	
-	
-	// acountSelectPanel
+	// acountSelectPanel elements
 	JList<String> accountJList = new  JList<>();
 	JScrollPane acctScrollPane = new JScrollPane(accountJList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
 	ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -220,10 +198,6 @@ public class ManagerPage extends JFrame implements ActionListener {
     JLabel balanceAmountLabel = new JLabel("Balance: $0.00");
 	
 	// panel 5 elements -- debits inquiry
-	// jLists can import data such as arrays and list them as rows
-	// NOTE: jList has support for importing vector arrays, this may be a more useful data type than basic arrays
-	// NOTE 2: Vectors are thread-safe, only one thread may access vector data at a time
-	// NOTE 3: Optionally, ArrayList has a .toArray() method which can convert data to a simple array for import into JList
 	JList<String> debitList = new JList<>();
 	JLabel debitListLabel = new JLabel("Debits Inquiry");
 	JScrollPane scrollPane = new JScrollPane(debitList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
@@ -248,7 +222,6 @@ public class ManagerPage extends JFrame implements ActionListener {
 	JTextField checkNumberField = new JTextField();
 	JButton checkDepositSubmitButton = new JButton("Submit");
 	
-	
 	// panel 8 elements -- debit account
 	JLabel debitAmountLabel = new JLabel("Debit Amount:");
 	JTextField debitAmountField = new JTextField();
@@ -257,14 +230,10 @@ public class ManagerPage extends JFrame implements ActionListener {
 	// panel 9 account transfer
 	JLabel transferLabel = new JLabel("Cash Transfer");
 	JLabel fromAcctLabel = new JLabel("From Account #:");
-	JTextField targetAccountField = new JTextField();
 	JLabel toAcctLabel = new JLabel("To Account #:");
-	JTextField receivingAccountField = new JTextField();
 	JLabel transferAmountLabel = new JLabel("Amount:");
 	JTextField transferAmountField = new JTextField();
 	JButton transferSubmitButton = new JButton("Submit");
-	
-	// combo boxes
 	JComboBox<String> selectFromAccount = new JComboBox<>();
 	JComboBox<String> selectToAccount = new JComboBox<>();	// panel 10 -- transaction complete, return to panel 2
 	JLabel confirmationLabel = new JLabel("Transction Complete");
@@ -275,13 +244,11 @@ public class ManagerPage extends JFrame implements ActionListener {
 	JLabel interestRateLabel = new JLabel("Interest Rate:");
 	JLabel paymentPlanLabel = new JLabel("Years to repay:");
 	JLabel shortLoanCustIDLabel = new JLabel("Customer ID");
-	
 	JTextField shortLoanIDField = new JTextField();
 	JTextField amountBorrowedField = new JTextField();
 	JTextField interestRateField = new JTextField();
 	JTextField paymentPlanField = new JTextField();
 	JTextField shortLoanCustIDField = new JTextField();
-	
 	JButton shortLoanSubmitButton = new JButton("Submit");
 	
     // panel 12 -- long term loan page
@@ -293,20 +260,17 @@ public class ManagerPage extends JFrame implements ActionListener {
 	ButtonGroup loanButtons = new ButtonGroup();
 	JLabel longInterestRateLabel = new JLabel("Interest Rate:");
 	JLabel longLoanCustIDLabel = new JLabel("Customer ID:");
-	
 	JTextField longLoanIDField = new JTextField();
 	JTextField longAmountBorrowedField = new JTextField();
 	JTextField longInterestRateField = new JTextField();
 	JTextField longLoanCustIDField = new JTextField();
-	
 	JButton longLoanSubmitButton = new JButton("Submit");
 	
     // panel 13 -- loan payment page
-	JScrollPane loanListWindow = new JScrollPane(); // TODO use this later?
+	JScrollPane loanListWindow = new JScrollPane();
 	JLabel loanPaymentAmtLabel = new JLabel("Enter Payment Amount");
 	JTextField loanPaymentAmtField = new JTextField();
 	JButton loanCompletePaymentButton = new JButton("Submit");
-	
 	
 	// common button positions and dimensions
 	Rectangle header = new Rectangle(300,25,400,100);
@@ -314,6 +278,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 	Rectangle bottomLeft = new Rectangle(125,535,250,80);
 	Rectangle center = new Rectangle(400,250,200,50);
 	
+	// button array for easy modification
 	JButton[] buttons = {backButton,exitButton,logoutButton,acctNumLookupButton,
 		stopPaymentButton,balanceInquiryButton,
 		debitsInquiryButton,creditAccountButton,
@@ -333,12 +298,27 @@ public class ManagerPage extends JFrame implements ActionListener {
 		checkingButton,savingsButton,
 		cdButton};
 		
-		
 	CardLayout cl = new CardLayout();
 	Font labelFont = new Font("Arial", Font.PLAIN, 28); // default label font
 	Font buttonFont = new Font("Arial", Font.PLAIN, 26); // default button font
-		
+
+	// constructor
 	ManagerPage(String userID, List<Customer> customerList, List<Checking> checkingList, List<SavingsAccount> savingsList, List<CD> cdList, List<Loans> loanList, List<Check> checkList){
+
+		// save all data on window close
+		mainFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                HelperFunc.updateChecking(checkingList);
+                HelperFunc.updateSavings(savingsList);
+                HelperFunc.updateCD(cdList);
+                HelperFunc.updateCustomers(customerList);
+                HelperFunc.updateChecks(checkList);
+                HelperFunc.updateLoans(loanList);
+                System.out.println("Closing");
+                e.getWindow().dispose();
+            }
+        });
 			
 		this.customerList = customerList;
 		this.checkingList = checkingList;
@@ -347,6 +327,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 		this.loanList = loanList;
 		this.checkList = checkList;
 		
+		// add buttons to button group
 		loanButtons.add(fifteenButton);
 		loanButtons.add(thirtyButton);
 		
@@ -377,7 +358,6 @@ public class ManagerPage extends JFrame implements ActionListener {
 		thirtyButton.addActionListener(this);
 		thirtyButton.setFont(new Font("Arial", Font.PLAIN, 22));
 		
-		
 		// define utility elements
 		exitButton.setBounds(bottomRight);
 		lookupReturnButton.setBounds(bottomLeft);
@@ -388,7 +368,6 @@ public class ManagerPage extends JFrame implements ActionListener {
 		custIDLabel.setFont(labelFont);
 		custIdField.setBounds(585,275,250,80);
 		custIDSubmitButton.setBounds(585,425,250,80);
-		
 		processChecksButton.setBounds(150,205,250,80);
 		createCustomerButton.setBounds(150,315,250,80);
 		createAccountButton.setBounds(150,425,250,80);
@@ -402,7 +381,6 @@ public class ManagerPage extends JFrame implements ActionListener {
 		lookupPanel.add(createAccountButton);
 		
 		// define new customer panel elements
-		
 		ssnField.setBounds(450,50,250,50);
 		streetAddressField.setBounds(450,115,250,50);
 		cityField.setBounds(450,180,250,50);
@@ -410,7 +388,6 @@ public class ManagerPage extends JFrame implements ActionListener {
 		zipField.setBounds(450,310,250,50);
 		firstNameField.setBounds(450,375,250,50);
 		lastNameField.setBounds(450,440,250,50);
-		
 		ssnLabel.setBounds(175,50,250,50);
 		streetAddressLabel.setBounds(175,115,250,50);
 		cityLabel.setBounds(175,180,250,50);
@@ -418,7 +395,6 @@ public class ManagerPage extends JFrame implements ActionListener {
 		zipLabel.setBounds(175,310,250,50);
 		firstNameLabel.setBounds(175,375,250,50);
 		lastNameLabel.setBounds(175,440,250,50);
-		
 		
 		ssnLabel.setFont(labelFont);
 		streetAddressLabel.setFont(labelFont);
@@ -457,7 +433,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 		newCustomerPanel.add(lastNameLabel);
 		newCustomerPanel.add(createCustomerSubmitButton);
 		
-		// NEW ACCOUNT PANEL
+		// New account panel
 		// define new account select panel elements
 		checkingButton.setBounds(125,175,250,80);
 		savingsButton.setBounds(125,275,250,80);
@@ -477,7 +453,6 @@ public class ManagerPage extends JFrame implements ActionListener {
 
 		// newCheckingPanel
 		//define newCheckingPanel elements
-		
 		chCustIDLabel.setFont(labelFont);
 		chAccountNumLabel.setFont(labelFont);
 		chBalanceLabel.setFont(labelFont);
@@ -495,7 +470,6 @@ public class ManagerPage extends JFrame implements ActionListener {
 		chBalanceLabel.setBounds(200,275,250,50);
 		chInterestRateLabel.setBounds(200,350,250,50);
 		chBackupAccountLabel.setBounds(100,425,350,50);
-		
 		
 		chCustIDField.setBounds(500,125,200,50);
 		chAccountNumField.setBounds(500,200,200,50);
@@ -525,7 +499,6 @@ public class ManagerPage extends JFrame implements ActionListener {
 
 		// newSavingsPanel
 		// define newSavingsPanel elements
-
 		saCustIDLabel.setFont(labelFont);
 		saAccountNumLabel.setFont(labelFont);
 		saBalanceLabel.setFont(labelFont);
@@ -560,7 +533,6 @@ public class ManagerPage extends JFrame implements ActionListener {
 		newSavingsPanel.add(newSavingsSubmitButton);
 
 		// define newCDPanel elements
-
 		cdCustIDLabel.setFont(labelFont);
 		cdAccountNumLabel.setFont(labelFont);
 		cdDueDateLabel.setFont(labelFont);
@@ -588,7 +560,6 @@ public class ManagerPage extends JFrame implements ActionListener {
 		newCDSubmitButton.setBounds(bottomRight);
 
 		// add newCDPanel elements
-
 		newCDPanel.add(cdCustIDLabel);
 		newCDPanel.add(cdAccountNumLabel);
 		newCDPanel.add(cdDueDateLabel);
@@ -601,11 +572,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 		newCDPanel.add(cdInterestRateField);
 		newCDPanel.add(newCDSubmitButton);
 
-
-		
-		
 		// define new credit card panel elements
-		
 		ccCustomerIDLabel.setFont(labelFont);
 		ccInterestRateLabel.setFont(labelFont);
 		ccLoanIDLabel.setFont(labelFont);
@@ -628,6 +595,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 
 		newCCSubmitButton.setBounds(bottomRight);
 
+		// add newCCPanel elements
 		newCCPanel.add(ccLoanIDLabel);
 		newCCPanel.add(ccCustomerIDLabel);
 		newCCPanel.add(ccInterestRateLabel);
@@ -638,11 +606,9 @@ public class ManagerPage extends JFrame implements ActionListener {
 		newCCPanel.add(ccLimitField);
 		newCCPanel.add(newCCSubmitButton);
 
-
 		// define account select panel
 		acctScrollPane.setBounds(100,100,800,400);
 		accountSubmitButton.setBounds(bottomRight);
-
 
 		// add elements to account select panel
 		accountSelectPanel.add(acctScrollPane);
@@ -662,10 +628,8 @@ public class ManagerPage extends JFrame implements ActionListener {
 				source.setText("");
 				source.removeFocusListener(this);
 			}
-
 			@Override
 			public void focusLost(FocusEvent e) {
-				// TODO Auto-generated method stub
 				return;
 			}
 		});
@@ -682,17 +646,14 @@ public class ManagerPage extends JFrame implements ActionListener {
 		panel1.add(acctNumLookupFailLabel);
 		panel1.add(logoutButton);
 
-
 		// define panel 2 elements -- this is the navigation panel
-		// TODO: shift these for new buttons
 		stopPaymentButton.setBounds(125,125,250,80);
 		balanceInquiryButton.setBounds(125,225,250,80);
 		debitsInquiryButton.setBounds(125,325,250,80);
 		creditAccountButton.setBounds(600,125,250,80);
 		debitAccountButton.setBounds(600,225,250,80);
 		transferCashButton.setBounds(600,325,250,80);
-
-        loanPaymentButton.setBounds(600,425,250,80);
+        //loanPaymentButton.setBounds(600,425,250,80);
 
 		// add elements to panel 2
 		panel2.add(stopPaymentButton);
@@ -701,9 +662,8 @@ public class ManagerPage extends JFrame implements ActionListener {
 		panel2.add(creditAccountButton);
 		panel2.add(debitAccountButton);
 		panel2.add(transferCashButton);
-
-        //panel2.add(loanPaymentButton);
 		panel2.add(exitButton);
+        //panel2.add(loanPaymentButton);
 		
 		// define panel 3 elements
 		stopPaymentLabel.setFont(labelFont);
@@ -828,21 +788,8 @@ public class ManagerPage extends JFrame implements ActionListener {
 		toAcctLabel.setBounds(100,300,275,50);
 		transferAmountLabel.setBounds(100,375,275,50);
 		transferSubmitButton.setBounds(bottomRight);
-
-		targetAccountField.setBounds(400,225,200,50);
-		receivingAccountField.setBounds(400,300,200,50);
 		transferAmountField.setBounds(400,375,200,50);;
 		
-		// add elements to panel 9
-		panel9.add(transferLabel);
-		panel9.add(fromAcctLabel);
-		//panel9.add(targetAccountField);
-		panel9.add(toAcctLabel);
-		//panel9.add(receivingAccountField);
-		panel9.add(transferAmountLabel);
-		panel9.add(transferAmountField);
-		panel9.add(transferSubmitButton);
-
 		// combo boxes
 		selectFromAccount.setBounds(400,225,200,50);
 		selectFromAccount.addActionListener(this);
@@ -851,9 +798,15 @@ public class ManagerPage extends JFrame implements ActionListener {
 		selectToAccount.addActionListener(this);
 		selectToAccount.setVisible(true);
 
+		// add elements to panel 9
+		panel9.add(transferLabel);
+		panel9.add(fromAcctLabel);
+		panel9.add(toAcctLabel);
+		panel9.add(transferAmountLabel);
+		panel9.add(transferAmountField);
+		panel9.add(transferSubmitButton);
 		panel9.add(selectFromAccount);
 		panel9.add(selectToAccount);
-
 
 		// define panel 10 elements
 		confirmationLabel.setFont(labelFont);
@@ -890,7 +843,6 @@ public class ManagerPage extends JFrame implements ActionListener {
 		shortLoanCustIDField.setBounds(500,425,200,50);
 
 		shortLoanSubmitButton.setBounds(bottomRight);
-		
 		
 		// add elements to panel 11
 		panel11.add(shortLoanIDLabel);
@@ -936,7 +888,6 @@ public class ManagerPage extends JFrame implements ActionListener {
 
 		longLoanSubmitButton.setBounds(bottomRight);
 
-
 		// add elements to panel 12
 		panel12.add(longLoanIDLabel);
 		panel12.add(longLoanIDField);
@@ -951,15 +902,11 @@ public class ManagerPage extends JFrame implements ActionListener {
 		panel12.add(longLoanCustIDField);
 		panel12.add(longLoanSubmitButton);
 
-
 		// define panel 13 elements
 		loanPaymentAmtLabel.setFont(labelFont);
 		loanPaymentAmtLabel.setBounds(150,300,300,50);
 		loanPaymentAmtLabel.setHorizontalAlignment(SwingConstants.TRAILING);
-
 		loanPaymentAmtField.setBounds(500,300,200,50);
-
-
 		loanCompletePaymentButton.setBounds(bottomRight);
 
 		// add elements to panel 13
@@ -968,7 +915,6 @@ public class ManagerPage extends JFrame implements ActionListener {
 		panel13.add(loanPaymentAmtField);
 		panel13.add(loanCompletePaymentButton);
 	
-		
 		// add panels to container
 		int i = 1;
 		for(JPanel panel : panels){
@@ -984,6 +930,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
+		// lookup customer id, get accounts
 		if((e.getSource() == custIDSubmitButton) && !(custIdField.getText().equals(""))){
 			accountList = HelperFunc.accountsLookup(checkingList, savingsList, custIdField.getText());
 			accountArray = new String[accountList.size()];
@@ -993,34 +940,37 @@ public class ManagerPage extends JFrame implements ActionListener {
 				String[] values = accountArray[i].split(" ");
 				accounts.add(values);
 			}
-
 			accountJList.setListData(accountArray);
 			accountSelectPanel.add(lookupReturnButton);
 			cl.show(panelContainer, "15");
 		}
-
 		// returns manager to first screen
 		if(e.getSource() == lookupReturnButton){
 			custIdField.setText("");
 			cl.show(panelContainer, "14");
 		}
 
+		// process checks in queue
 		if(e.getSource() == processChecksButton){
 			if(checkList.size() > 0){
 				HelperFunc.processChecks(checkList, checkingList, savingsList);
-				checkList.clear();
-				HelperFunc.updateChecks(checkList);
+				checkList.clear(); // remove checks from list
+				HelperFunc.updateChecks(checkList); // save changes
+				HelperFunc.updateChecking(checkingList); // save changes
+				HelperFunc.updateSavings(savingsList); // save changes
 				JOptionPane.showMessageDialog(null, "Checks successfully processed.", "Alert", JOptionPane.INFORMATION_MESSAGE);
 			} else{
 				JOptionPane.showMessageDialog(null, "No checks to process right now.", "Alert", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 		
+		// send to create account page
 		if(e.getSource() == createAccountButton){
 			newAccountPanel.add(lookupReturnButton);
 			cl.show(panelContainer, "17");
 		}
 
+		// send to short term loan creation page
 		if(e.getSource() == shortTermLoanButton){
 			shortLoanCustIDField.setText("");
 			amountBorrowedField.setText("");
@@ -1030,6 +980,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 			cl.show(panelContainer, "11");
 		}
 
+		// send to long term loan creation page
 		if(e.getSource() == longTermLoanButton){
 			longLoanIDField.setText("");
 			longAmountBorrowedField.setText("");
@@ -1038,6 +989,8 @@ public class ManagerPage extends JFrame implements ActionListener {
 			panel12.add(lookupReturnButton);
 			cl.show(panelContainer, "12");
 		}
+
+		// send to credit card creation page
 		if(e.getSource() == creditCardButton){
 			ccLoanIDField.setText("");
 			ccCustomerIDField.setText("");
@@ -1047,6 +1000,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 			cl.show(panelContainer, "18");
 		}
 
+		// send to checking account creation page
 		if(e.getSource() == checkingButton){
 			chCustIDField.setText("");
 			chAccountNumField.setText("");
@@ -1056,6 +1010,8 @@ public class ManagerPage extends JFrame implements ActionListener {
 			newCheckingPanel.add(lookupReturnButton);
 			cl.show(panelContainer, "19");
 		}
+
+		// send to savings account creation page
 		if(e.getSource() == savingsButton){
 			saCustIDField.setText("");
 			saAccountNumField.setText("");
@@ -1064,6 +1020,8 @@ public class ManagerPage extends JFrame implements ActionListener {
 			newSavingsPanel.add(lookupReturnButton);
 			cl.show(panelContainer, "20");
 		}
+
+		// send to cd account creation page
 		if(e.getSource() == cdButton){
 			cdCustIDField.setText("");
 			cdAccountNumField.setText("");
@@ -1074,7 +1032,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 			cl.show(panelContainer, "21");
 		}
 
-
+		// create new checking account for entered data
 		if(e.getSource() == newCheckingSubmitButton){
 			boolean parsable = true;
 			parsable = HelperFunc.isParsableNumber(chAccountNumField.getText());
@@ -1088,7 +1046,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 				Double.parseDouble(chBalanceField.getText()),
 				Double.parseDouble(chInterestRateField.getText()));
 
-				HelperFunc.updateChecking(checkingList);
+				HelperFunc.updateChecking(checkingList); // save changes
 				JOptionPane.showMessageDialog(null, mssg, "New Checking Account", JOptionPane.INFORMATION_MESSAGE);
 				cl.show(panelContainer, "14");
 			} else if(assignBackupAccount.isSelected()){
@@ -1101,7 +1059,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 					Double.parseDouble(chInterestRateField.getText()),
 					Integer.parseInt(chBackupAccountField.getText()));
 
-					HelperFunc.updateChecking(checkingList);
+					HelperFunc.updateChecking(checkingList); // save changes
 					JOptionPane.showMessageDialog(null, mssg, "New Checking Account", JOptionPane.INFORMATION_MESSAGE);
 					cl.show(panelContainer, "14");
 				} else {
@@ -1110,19 +1068,19 @@ public class ManagerPage extends JFrame implements ActionListener {
 			}
 		}
 
+		// create new savings account for entered data
 		if(e.getSource() == newSavingsSubmitButton){
 			boolean parsable = true;
 			parsable = HelperFunc.isParsableNumber(saAccountNumField.getText());
 			if(parsable) parsable = HelperFunc.isParsableNumber(saBalanceField.getText());
 			if(parsable) parsable = HelperFunc.isParsableNumber(saInterestRateField.getText());
-			
 			if(parsable){
 				String mssg = HelperFunc.createSavingsAndAdd(savingsList,
 				saCustIDField.getText(),
 				Integer.parseInt(saAccountNumField.getText()),
 				Double.parseDouble(saBalanceField.getText()),
 				Double.parseDouble(saInterestRateField.getText()));
-				HelperFunc.updateSavings(savingsList);
+				HelperFunc.updateSavings(savingsList); // save changes
 				JOptionPane.showMessageDialog(null, mssg, "New Savings Account", JOptionPane.INFORMATION_MESSAGE);
 				cl.show(panelContainer, "14");
 
@@ -1131,6 +1089,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 			}
 		}
 
+		// create new cd from entered data
 		if(e.getSource() == newCDSubmitButton){
 			boolean parsable = true;
 			parsable = HelperFunc.isParsableNumber(cdAccountNumField.getText());
@@ -1144,7 +1103,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 				Integer.parseInt(cdAccountNumField.getText()),
 				Double.parseDouble(cdBalanceField.getText()),
 				Double.parseDouble(cdInterestRateField.getText()));
-				HelperFunc.updateCD(cdList);
+				HelperFunc.updateCD(cdList); // save changes
 				JOptionPane.showMessageDialog(null, mssg, "New CD Account", JOptionPane.INFORMATION_MESSAGE);
 				cl.show(panelContainer, "14");
 			} else {
@@ -1152,6 +1111,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 			}
 		}
 
+		// create new credit card from entered data
 		if(e.getSource() == newCCSubmitButton){
 			boolean parsable = true;
 			parsable = HelperFunc.isParsableNumber(ccLoanIDField.getText());
@@ -1167,7 +1127,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 					"Credit Card", // this is a credit card type loan
 					Integer.parseInt(ccLimitField.getText())); // get cc limit
 				
-				HelperFunc.updateLoans(loanList);
+				HelperFunc.updateLoans(loanList); // save changes
 				JOptionPane.showMessageDialog(null, mssg, "New Credit Card", JOptionPane.INFORMATION_MESSAGE);
 				cl.show(panelContainer, "14");
 			} else {
@@ -1175,6 +1135,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 			}
 		}
 
+		// send to customer creation page
 		if(e.getSource() == createCustomerButton){
 			ssnField.setText("");
 			streetAddressField.setText("");
@@ -1187,6 +1148,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 			cl.show(panelContainer, "16");
 		}
 		
+		// create new customer from entered data
 		if(e.getSource() == createCustomerSubmitButton){
 			String[] options = {"Yes", "No"};
 			String msg = "You're about to create a new Customer and add to the database, are you sure?";
@@ -1202,13 +1164,14 @@ public class ManagerPage extends JFrame implements ActionListener {
 				zipField.getText(),
 				firstNameField.getText(),
 				lastNameField.getText());
-				HelperFunc.updateCustomers(customerList);
+				HelperFunc.updateCustomers(customerList); // save changes
 				JOptionPane.showMessageDialog(null, "New Customer successfully created", "Customer Created", JOptionPane.INFORMATION_MESSAGE);
 
 				cl.show(panelContainer, "14");
 			}
 		}
 
+		// get data from selected account
 		if(e.getSource() == accountSubmitButton){
 			int accountSelectIndex = accountJList.getSelectedIndex();
 			if(accountSelectIndex != -1){
@@ -1233,6 +1196,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 			cl.show(panelContainer, "2");
 		}
 
+		// back button is pressed
 		if(e.getSource() == backButton) {
 			cl.show(panelContainer, "2");
 		}
@@ -1249,10 +1213,8 @@ public class ManagerPage extends JFrame implements ActionListener {
 					source.setText("");
 					source.removeFocusListener(this);
 				}
-
 				@Override
 				public void focusLost(FocusEvent e) {
-					// TODO Auto-generated method stub
 					return;
 				}
 			});
@@ -1266,6 +1228,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 			cl.show(panelContainer, "3");
 		}
 
+		// send to balance inquiry page
 		if(e.getSource() == balanceInquiryButton){
 			panel4.add(backButton);
 			if(workingAcctType.equals("Checking")){
@@ -1276,21 +1239,25 @@ public class ManagerPage extends JFrame implements ActionListener {
 			cl.show(panelContainer, "4");
 		}
 
+		// send to debits inquiry page
 		if(e.getSource() == debitsInquiryButton) {
 			panel5.add(backButton);
 			cl.show(panelContainer, "5");
 		}
 
+		// send to credit account page
 		if(e.getSource() == creditAccountButton) {
 			panel6.add(backButton);
 			cl.show(panelContainer, "6");
 		}
 		
+		// send to debit account page
 		if(e.getSource() == debitAccountButton) {
 			panel8.add(backButton);
 			cl.show(panelContainer, "8");
 		}
 
+		// send to cash transfer page
 		if(e.getSource() == transferCashButton) {
 			// repopulate combo boxes
 			selectFromAccount.removeAllItems();
@@ -1303,7 +1270,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 			cl.show(panelContainer, "9");
 		}
 
-
+		// deprecated, no longer used
 		if(e.getSource() == loanPaymentButton){
 			panel13.add(backButton);
 			cl.show(panelContainer, "13");
@@ -1338,10 +1305,10 @@ public class ManagerPage extends JFrame implements ActionListener {
 				double creditAmt = Double.parseDouble(creditAmountField.getText());
 				if(workingAcctType.equals("Checking")){
 					HelperFunc.creditCheckingAccount(checkingList, workingAcctNum, creditAmt);
-					HelperFunc.updateChecking(checkingList);
+					HelperFunc.updateChecking(checkingList); // save changes
 				} else if (workingAcctType.equals("Savings")){
 					HelperFunc.creditSavingsAccount(savingsList, workingAcctNum, creditAmt);
-					HelperFunc.updateSavings(savingsList);
+					HelperFunc.updateSavings(savingsList); // save changes
 				}
 				panel10.add(backButton);
 				cl.show(panelContainer, "10");
@@ -1366,7 +1333,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 			if(parsable) {
 				HelperFunc.createCheck(checkList, Integer.parseInt(checkAcct), Integer.parseInt(routingNum), Integer.parseInt(checkNum),
 										Double.parseDouble(checkAmt), workingAcctNum, workingAcctType);
-				HelperFunc.updateChecks(checkList);
+				HelperFunc.updateChecks(checkList); // save changes
 
 				// send to confirmation page
 				panel10.add(backButton);
@@ -1382,13 +1349,12 @@ public class ManagerPage extends JFrame implements ActionListener {
 				double depositAmount = Double.parseDouble(debitAmountField.getText());
 				if(workingAcctType.equals("Checking")){
 					HelperFunc.debitCheckingAccount(checkingList, workingAcctNum, depositAmount);
-					HelperFunc.updateChecking(checkingList);
+					HelperFunc.updateChecking(checkingList); // save changes
 				} else if (workingAcctType.equals("Savings")){
 					HelperFunc.debitSavingsAccount(savingsList, workingAcctNum, depositAmount);
-					HelperFunc.updateSavings(savingsList);
+					HelperFunc.updateSavings(savingsList); // save changes
 				}
 			}
-
 			// send to confirmation page
 			debitAmountField.setText("");
 			panel10.add(backButton);
@@ -1397,7 +1363,6 @@ public class ManagerPage extends JFrame implements ActionListener {
 
 		// panel 9 button (transfer page)
 		if(e.getSource() == transferSubmitButton) {
-			
 			// get combo box selections and perform transfer
 			int fromAccountSelected = selectFromAccount.getSelectedIndex();
 			int toAccountSelected = selectToAccount.getSelectedIndex();
@@ -1414,8 +1379,8 @@ public class ManagerPage extends JFrame implements ActionListener {
 						toAccountType, toAccountNum, 
 						Double.parseDouble(transferAmountField.getText()));
 					// add updates
-					HelperFunc.updateChecking(checkingList);
-					HelperFunc.updateSavings(savingsList);
+					HelperFunc.updateChecking(checkingList); // save changes
+					HelperFunc.updateSavings(savingsList); // save changes
 					String[] options = {"OK", "Back"};
 					int input = JOptionPane.showOptionDialog(null, msg, "Transfer Status", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, null);
 
@@ -1449,7 +1414,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 					"Short Term", 
 					Integer.parseInt(paymentPlanField.getText()));
 				
-				HelperFunc.updateLoans(loanList);
+				HelperFunc.updateLoans(loanList); // save changes
 				JOptionPane.showMessageDialog(null, mssg, "New Loan", JOptionPane.INFORMATION_MESSAGE);
 				cl.show(panelContainer, "14");
 			} else {
@@ -1476,7 +1441,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 					"Long Term", 
 					years);
 				
-				HelperFunc.updateLoans(loanList);
+				HelperFunc.updateLoans(loanList); // save changes
 				JOptionPane.showMessageDialog(null, mssg, "New Loan", JOptionPane.INFORMATION_MESSAGE);
 				cl.show(panelContainer, "14");
 			} else {
@@ -1484,16 +1449,11 @@ public class ManagerPage extends JFrame implements ActionListener {
 			}
 		}
 
-		// panel 13 button (loan payment page) 
+		// panel 13 button (loan payment page) (Deprecated)
 		if(e.getSource() == loanCompletePaymentButton) {
-			// TODO reduce amount owed from SELECTED loan
-			// TODO maybe add a confirmation prompt here?
 			panel10.add(backButton);
 			cl.show(panelContainer, "10");
 		}
-
-
-
-	} // end actionPerformed
+	} // end button actions
     
-}
+} // end Managerpage

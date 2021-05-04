@@ -2,9 +2,9 @@ package Classes;
 
 // Teller class
 public class Teller {
+    
     private String username;
     private String password;
-
 
     public Teller(String username, String password){
         this.username = username;
@@ -26,4 +26,5 @@ public class Teller {
     public void setPassword(String password) {
         this.password = password;
     }
-}
+
+} // end Teller

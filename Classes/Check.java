@@ -2,7 +2,6 @@ package Classes;
 
 import java.io.Serializable;
 
-
 // class for Checks
 public class Check implements Serializable {
 
@@ -13,9 +12,10 @@ public class Check implements Serializable {
     boolean checkStopped; // raied if a stop payment is put on this check
     String accountTypeDeposit; // type of account foreign check is to be deposited to
     int accountNumDeposit; // account number foreign check is to be deposited to
-    boolean incomingCheck;
-    String accountType;
+    boolean incomingCheck; // flag is raised if this check does not come from this bank
+    String accountType; // account type that this check belongs to
 
+    // Constructor for local checks
     public Check(int accountNum, int checkNum, double checkAmount, String accountType){
         this.accountNum = accountNum;
         this.checkNum = checkNum;
@@ -25,6 +25,7 @@ public class Check implements Serializable {
         incomingCheck = false;
     }
 
+    // Constructor for foreign checks
     public Check(int accountNum, int routingNum, int checkNum, double checkAmount, String accountType){
         this.accountNum = accountNum;
         this.checkNum = checkNum;
@@ -37,9 +38,6 @@ public class Check implements Serializable {
     }
     
     // getters
-    public boolean isCheckStopped() {
-        return checkStopped;
-    }
     public int getAccountNum() {
         return accountNum;
     }
@@ -58,15 +56,17 @@ public class Check implements Serializable {
     public String getAccountTypeDeposit() {
         return accountTypeDeposit;
     }
-    public boolean isIncomingCheck() {
-        return incomingCheck;
-    }
     public String getAccountType() {
         return accountType;
     }
+    public boolean isCheckStopped() {
+        return checkStopped;
+    }
+    public boolean isIncomingCheck() {
+        return incomingCheck;
+    }
 
     // setters
-
     public void setCheckStopped(boolean checkStopped) {
         this.checkStopped = checkStopped;
     }
@@ -106,4 +106,5 @@ public class Check implements Serializable {
         " Account type to be deposited to: " + accountTypeDeposit + 
         " Number of depositing account: " + accountNumDeposit;
     }
+
 } // end Check
