@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-// some helper functions vital for system functionality
+// this class stores vital program functions necessary for data manipulation and account creation
 public class HelperFunc {
 
-    private HelperFunc(){}
+    private HelperFunc(){} // private constructor
 
     // creates a new customer object
     public static Customer createCustomer(String ssn, String streetAddress, String city, String state, String zip, String firstName, String lastName) {
@@ -53,8 +53,9 @@ public class HelperFunc {
             message = "This account number is already taken, please choose another";
         }
         return message;
-    }
+    } // end createCheckingAndAdd
 
+    // create a new checking account with a backup account and add it to the checking list
     public static String createCheckingAndAddWithBackup(List<Checking> checkingList, String customerID, int accountNum, double balance, double interestRate, int backupAccountNum){
         String message = "";
         Checking accountToAdd = new Checking();
@@ -82,7 +83,7 @@ public class HelperFunc {
             message = "This account number is already taken, please choose another";
         }
         return message;
-    }
+    } // end createCheckingAndAddWithBackup
 
     // creates a new savings account and adds it to checking list
     public static String createSavingsAndAdd(List<SavingsAccount> savingsList, String customerID, int accountNum, double balance, double interestRate){
@@ -107,8 +108,9 @@ public class HelperFunc {
             message = "Account successfully created";
         }
         return message;
-    }
+    } // end createSavingsAndAdd
     
+    // creates a new CD account and adds it to the cd database
     public static String createCDAndAdd(List<CD> cdList, String customerID, String dueDate, int accountNum, double balance, double interestRate){
         String message = "";
         CD accountToAdd = new CD();
@@ -139,8 +141,9 @@ public class HelperFunc {
             }
         }
         return message;
-    }
+    } // end createCDAndAdd
 
+    // creates a new loan of given type and adds it to the loan database
     public static String createLoanAndAdd(List<Loans> loanList, int loanID, String accountCustID, double balance, double interestRate, String type, int specialInfo){
         String message = "";
         boolean uniqueID = true;
@@ -184,8 +187,9 @@ public class HelperFunc {
             loanList.add(loanToAdd);
         }
         return message;
-    }
+    } // end createLoanAndAdd
     
+    // function for assigning a backup savings account to a checking account
     public static String assignBackupAccount(List<Checking> checkingList, List<SavingsAccount> savingsList, int accountNum, int backupAccountNum){
         String message = "";
         int c = getChecking(checkingList, accountNum);
@@ -248,6 +252,7 @@ public class HelperFunc {
         return acct;
 
     }
+
     // returns an index location of the checking account with the given account number
     // returns -1 if account does not exist
     public static int getChecking(List<Checking> checkingList, int accountNumber){
@@ -261,7 +266,7 @@ public class HelperFunc {
         return index;
     }
 
-    // finds card if exists, returns index of card in list
+    // returns an index location of the checking acocunt with the given card number
     public static int findCardChecking(List<Checking> checkingList, String cardNum){
         int cardIndex = -1;
         for(int i=0; i<checkingList.size(); i++){
@@ -273,6 +278,7 @@ public class HelperFunc {
         return cardIndex;
     }
 
+    // returns an index location of the savings account with the given card number
     public static int findCardSavings(List<SavingsAccount> savingsList, String cardNum){
         int cardIndex = -1;
         for(int i=0; i<savingsList.size(); i++){
@@ -284,11 +290,12 @@ public class HelperFunc {
         return cardIndex;
     }
 
+    // function for pin verifiaction
     public static boolean pinCheck(ATMCard workingCard, String pin){
         boolean isCorrect = false;
         if(workingCard.getPinNum().equals(pin)) isCorrect = true;
         return isCorrect;
-    }
+    } 
 
     // returns an index location of the savings account with the given account number
     // returns -1 if account does not exist
@@ -301,8 +308,9 @@ public class HelperFunc {
             }
         }
         return index;
-    }
+    } // end getSavings
 
+    // returns current balance for given checking account
     public static double getCheckingBalance(List<Checking> checkingList, int accountNum){
         double balance = 0;
         for(int i=0; i<checkingList.size(); i++){
@@ -312,8 +320,9 @@ public class HelperFunc {
             }
         }
         return balance;
-    }
+    } // end getCheckingBalance
 
+    // returns balance for given savings account
     public static double getSavingsBalance(List<SavingsAccount> savingsList, int accountNum){
         double balance = 0;
         for(int i=0; i<savingsList.size(); i++){
@@ -323,7 +332,8 @@ public class HelperFunc {
             }
         }
         return balance;
-    }
+    } // end getSavingsBalance
+    
     // DEPOSIT FUNCTIONS FOR CUSTOMERS
     // used by customers via atm, accounts for implicit transaction fees
     public static void depositToChecking(List<Checking> checkingList, int accountNum, double depositAmount){
@@ -349,6 +359,7 @@ public class HelperFunc {
             savingsList.get(savingsIndex).setWithdrawalsToday(0);
         }
         // TODO: MOVE THIS TO CHECKING TOO
+        // TODO: Checking accounts must have daily limit too?
         // check if at max withdrawals today
         if(savingsList.get(savingsIndex).getWithdrawalsToday() == 2){
             System.out.println("Maximum amount of withdrawals today");
@@ -363,9 +374,7 @@ public class HelperFunc {
                 savingsList.get(savingsIndex).setLastWithdrawal(new Date());
             }
         }
-    }
-
-
+    } // end withdrawSavings
 
     // this method withdraws an amount from a checking account and does multiple checks for backup accounts and overdraft protection
     public static void withdrawCheckingWithSafety(List<Checking> checkingList, List<SavingsAccount> savingsList, int accountNum, double withdrawAmt){
@@ -409,6 +418,29 @@ public class HelperFunc {
         }
     } // end withdrawCheckingWithSafety
 
+    public static void chargeCreditCard(List<Loans> loanList, String cardNumber, double amount){
+        for(Loans loan : loanList){
+            if(loan.getType().equals("Credit Card")){
+                if(loan.getCard().getCardNumber().equals(cardNumber)){
+                    loan.withdrawAmt(amount);
+                    return;
+                }
+            }
+        }
+    } // add a charge to a credit card
+
+    // prints credit card transaction history
+    public static void printPurchaseHistory(List<Loans> loanList, String cardNumber){
+        for(Loans loan : loanList){
+            if(loan.getType().equals("Credit Card")){
+                if(loan.getCard().getCardNumber().equals(cardNumber)){
+                    loan.getPurchaseHistory().forEach((String s) -> System.out.println(s));
+                    return;
+                }
+            }
+        }
+    } // print purchase history for a credit card
+
 
 
     // CREDIT FUNCTIONS FOR TELLER/MANAGER
@@ -433,17 +465,22 @@ public class HelperFunc {
         savingsList.get(acctIndex).debitAccount(amount);
     }
 
-    // CREATE AND STOP CHECK FUNCTIONS FOR TELLER/MANAGER
+    // ------------------------ CREATE AND STOP CHECK FUNCTIONS FOR TELLER/MANAGER ------------------------
+    // function for creating local checks
     public static void createCheck(List<Check> checkList, int accountNum, int checkNum, double checkAmount, String workingAcountType) {
         Check checkToAdd = new Check(accountNum, checkNum, checkAmount, workingAcountType);
         checkList.add(checkToAdd);
-    }
+    } // end createCheck
+
+    // function for creating foreign checks
     public static void createCheck(List<Check> checkList, int accountNum, int routingNum, int checkNum, double checkAmount, int workingAcctNum, String workingAcctType) {
         Check checkToAdd = new Check(accountNum, routingNum, checkNum, checkAmount, workingAcctType);
         checkToAdd.setAccountNumDeposit(workingAcctNum);
         checkToAdd.setIncomingCheck(true);
         checkList.add(checkToAdd);
-    }
+    } // end createCheck
+
+    // function for stopping a local check
     public static void stopCheck(List<Check> checkList, int accountNumber, String checkNumber, String accountType){
         // stops check
         int accountNum = accountNumber;
@@ -454,9 +491,9 @@ public class HelperFunc {
                 return;
             }
         }
-
     } // end stopCheck
 
+    // function for processing checks currently in check queue
     public static void processChecks(List<Check> checkList, List<Checking> checkingList, List<SavingsAccount> savingsList){
         for(Check check : checkList){
             // first, check if check is stopped
@@ -507,7 +544,7 @@ public class HelperFunc {
             }
         }
         return accounts; // return list of accounts
-    }
+    } // end accountsLookup
 
     // pass in string, determine if it's a parsable value
     public static boolean isParsableNumber(String str){
@@ -522,9 +559,9 @@ public class HelperFunc {
         }
         if (decimalPoints > 1) parsable = false;
         return parsable;
-    }
+    } // end isParsableNumber
 
-
+    // transfer money between two accounts
     public static String transferMoney(List<Checking> checkingList, List<SavingsAccount> savingsList, 
     String fromAccountType, int fromAccountNum, String toAccountType, int toAccountNum, double transferAmount){
         String confirmationMessage = "";
@@ -579,6 +616,6 @@ public class HelperFunc {
         
         System.out.println(confirmationMessage);
         return confirmationMessage;
-    }
+    } // end transferMoney
 
 } // end HelperFunc

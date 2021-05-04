@@ -12,6 +12,7 @@ public class CD extends SavingsAccount
     protected Date dueDate; // date that the customer may begin to withdraw money from CD
     boolean earlyWithdrawPenalty; //  raises true when customer withdraws money before the due date
 
+    // generic constructor
     public CD(){
         super();
         earlyWithdrawPenalty = false;
@@ -34,18 +35,20 @@ public class CD extends SavingsAccount
         }
     }
 
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
-    }
-    public void setEarlyWithdrawPenalty(boolean earlyWithdrawPenalty) {
-        this.earlyWithdrawPenalty = earlyWithdrawPenalty;
-    }
-
+    // getters
     public Date getDueDate() {
         return dueDate;
     }
     public boolean isEarlyWithdrawPenalty() {
         return earlyWithdrawPenalty;
+    }
+
+    // setters
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
+    public void setEarlyWithdrawPenalty(boolean earlyWithdrawPenalty) {
+        this.earlyWithdrawPenalty = earlyWithdrawPenalty;
     }
 
     // checks current time against due date, if withdraw date is before due date, penalizes account
@@ -70,7 +73,7 @@ public class CD extends SavingsAccount
     public String toString() {
         // TODO complete tostring method
         return "AccountID: "+accountNumber+" CustID: "+accountCustID+" Account Balance: "+balance+" Interest Rate: "+interestRate+
-        " Account Opened: "+dateCreated+" Due Date: "+ dueDate;
+        " Account Opened: "+dateCreated+" Due Date: "+ dueDate + " Early Withdrawal? " + earlyWithdrawPenalty;
     }
 
 } // end CD

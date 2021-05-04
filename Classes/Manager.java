@@ -26,4 +26,4 @@ public class Manager {
         this.password = password;
     }
 
-}
+} // end Manager

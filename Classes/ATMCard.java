@@ -5,11 +5,12 @@ import java.io.Serializable;
 // class for ATM cards
 // ATM cards may be assigned to checking accounts or savings accounts
 public class ATMCard implements Serializable {
-    String accountCustID;
-    String accountType;
-    private int accountNumber;
-    private String cardNumber;
-    private String pinNum;
+
+    String accountCustID; // id of customer linked to this ATM card
+    String accountType; // type of account this card is linked to
+    private int accountNumber; // account number of the acocunt this card is linked to
+    private String cardNumber; // this card's number
+    private String pinNum; // this cards PIN number
 
     // Constructor
     public ATMCard(String accountCustID, int type, int accountNumber, String cardNumber, String pinNum){
@@ -56,6 +57,5 @@ public class ATMCard implements Serializable {
     public void setPinNum(String pinNum) {
         this.pinNum = pinNum;
     }
-
 
 } // end ATMCard

@@ -6,28 +6,28 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-
 import java.awt.event.*;
 import java.util.List;
 import java.awt.CardLayout;
 import java.awt.Font;
 
+// this is the teller page, from here the teller can perform actions like account debits/credits and money transfers
 public class CustomerPage extends JFrame implements ActionListener {
 
-    private List<Customer> customerList;
-    private List<Checking> checkingList;
-    private List<SavingsAccount> savingsList;
-    private List<CD> cdList;
-    private List<Loans> loanList;
-    private List<Check> checkList;
+    private List<Customer> customerList; // customer data
+    private List<Checking> checkingList; // checking account data
+    private List<SavingsAccount> savingsList; // savings account data
+    private List<CD> cdList; // CD data
+    private List<Loans> loanList; // loan data
+    private List<Check> checkList; // check data
 
-    private int workingAcctNum;
-    private String workingAcctType;
-    private ATMCard workingCard;
+    private int workingAcctNum; // currently selected account's account number
+    private String workingAcctType; // currently selected account's type. i.e. Checking, Savings
+    private ATMCard workingCard; // currently selected account's ATM card -- used for verification and data retrieval
 
     JFrame mainFrame = new JFrame();
 
-    JPanel panelContainer = new JPanel();
+    JPanel panelContainer = new JPanel(); // container for all panels
 
     JPanel initPanel = new JPanel(); // initPanel is the insert card screen, for sim purposes, enter card num
     JPanel panel0 = new JPanel(); // panel 0 is the enter pin screen
@@ -41,27 +41,25 @@ public class CustomerPage extends JFrame implements ActionListener {
 
     JPanel[] panels = {initPanel,panel0,panel1,panel2,panel3,panel4,panel5,panel6,panel7};
  
-
+    // initialize UI elements
+    // init card layout
     CardLayout cl = new CardLayout();
 
-    JLabel welcomeLabel = new JLabel("Hello");
-
-    JLabel selectAmount = new JLabel("Select Amount");
-
+    
     // initPanel elements
     JLabel cardNumLabel = new JLabel("Insert ATM Card");
     JTextField cardNumField = new JTextField();
     JButton cardNumButton = new JButton("Submit");
     JButton programEndButton = new JButton("End");
-
+    
     // panel 0 elements
     JLabel cardPinLabel = new JLabel("Please Enter Pin");
     JTextField cardPinField = new JTextField();
     JButton cardPinButton = new JButton("Submit");
     JButton cardPinCancelButton = new JButton("Cancel");
-
-
+    
     // panel 1 elements
+    JLabel welcomeLabel = new JLabel("Hello");
     JButton checkingButton = new JButton("Checking");
     JButton savingsButton = new JButton("Savings");
 
@@ -75,8 +73,7 @@ public class CustomerPage extends JFrame implements ActionListener {
     JLabel balanceInquiryLabel = new JLabel("Balance Inquiry");
     JLabel balanceAmount = new JLabel("Balance: $0.00");
 
-
-    // panel 4 buttons
+    // panel 4 elements
     JButton twentyButton = new JButton("$20");
     JButton fourtyButton = new JButton("$40");
     JButton sixtyButton = new JButton("$60");
@@ -106,12 +103,13 @@ public class CustomerPage extends JFrame implements ActionListener {
     // panel 7 elements
     JLabel confirmationLabel = new JLabel();
 
-    // utility buttons
+    // utility buttons -- these are reused
     JButton backButton = new JButton("Back");
     JButton endButton = new JButton("End");
     
     Font buttonFont = new Font("Arial", Font.PLAIN, 28); // button font
 
+    // put all buttons in an array for easy modification
     JButton[] buttons = {checkingButton,
                         savingsButton,balanceButton,withdrawButton,
                         depositButton,twentyButton,fourtyButton,
@@ -121,6 +119,7 @@ public class CustomerPage extends JFrame implements ActionListener {
                         withdrawCustomSubmitButton,backButton,endButton,
                         cardNumButton,cardPinButton,cardPinCancelButton,programEndButton};
     
+    // constructor
     CustomerPage(List<Customer> customerList, List<Checking> checkingList, List<SavingsAccount> savingsList, List<CD> cdList, List<Loans> loanList, List<Check> checkList){
 
         this.customerList = customerList;
@@ -132,6 +131,7 @@ public class CustomerPage extends JFrame implements ActionListener {
 
         panelContainer.setLayout(cl);
 
+        // assign panel layouts
         for(JPanel panel : panels){
 			panel.setLayout(null);
 		}
@@ -143,37 +143,9 @@ public class CustomerPage extends JFrame implements ActionListener {
 			button.addActionListener(this);
 		}
 
-        // set button fonts
-        customAmountButton.setFont(new Font("Arial", Font.PLAIN, 22));
-
-        // add ActionListeners and set button bounds
-        
-        checkingButton.setBounds(125,125,250,80); // position 1
-
-        savingsButton.setBounds(125,225,250,80); // postion 2
-     
+        // utility buttons
         endButton.setBounds(600,535,250,80); // end position
-
         backButton.setBounds(125,535,250,80); // back position
-
-        balanceButton.setBounds(125,125,250,80); // position 1
-
-        withdrawButton.setBounds(125,225,250,80); // postion 2
-
-        depositButton.setBounds(125,325,250,80); // position 3
-
-        twentyButton.setBounds(125,125,250,80); // position 1
-
-        fourtyButton.setBounds(125,225,250,80); // position 2
-
-        sixtyButton.setBounds(125,325,250,80); // position 3
-
-        eightyButton.setBounds(600,125,250,80); // position 4
-
-        hundredButton.setBounds(600,225,250,80); // position 5
-
-        customAmountButton.setBounds(600,325,250,100); // position 6
-
         
         // set frame properties
         mainFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -181,7 +153,7 @@ public class CustomerPage extends JFrame implements ActionListener {
         mainFrame.add(panelContainer);
         mainFrame.setSize(1000,700);
         mainFrame.setVisible(true);
-
+        
         // define init panel elements
         cardNumLabel.setBounds(400,200,350,50);
         cardNumLabel.setFont(buttonFont);
@@ -189,33 +161,32 @@ public class CustomerPage extends JFrame implements ActionListener {
         cardNumButton.setBounds(400,375,200,75);
         programEndButton.setBounds(600,535,250,80);
         programEndButton.setFont(buttonFont);
-
+        
         // define panel 0 panel elements
         cardPinLabel.setBounds(400,200,350,50);
         cardPinLabel.setFont(buttonFont);
         cardPinField.setBounds(400,300,200,50);
         cardPinButton.setBounds(600,535,250,80);
         cardPinCancelButton.setBounds(125,535,250,80);
-
-        // set welcome label
+        
+        // define panel 1 elements
         welcomeLabel.setBounds(0,0,mainFrame.getWidth(),100); // position 0
         welcomeLabel.setFont(buttonFont);
         welcomeLabel.setText("MyBank");
         welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
         welcomeLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-
+        checkingButton.setBounds(125,125,250,80); // position 1
+        savingsButton.setBounds(125,225,250,80); // postion 2
+        
+        // define panel 2 elements
         accountLabel.setBounds(0,0,mainFrame.getWidth(),100); // position 0
         accountLabel.setFont(buttonFont);
         accountLabel.setHorizontalAlignment(SwingConstants.CENTER);
         accountLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-
-        selectAmount.setBounds(0,0,mainFrame.getWidth(),100); // position 0
-        selectAmount.setFont(buttonFont);
-        selectAmount.setHorizontalAlignment(SwingConstants.CENTER);
-        selectAmount.setHorizontalTextPosition(SwingConstants.CENTER);
-
+        balanceButton.setBounds(125,125,250,80); // position 1
+        withdrawButton.setBounds(125,225,250,80); // postion 2
+        depositButton.setBounds(125,325,250,80); // position 3
         
-
         // define panel 3 elements
         balanceAmount.setHorizontalAlignment(SwingConstants.CENTER);
         balanceAmount.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -224,10 +195,17 @@ public class CustomerPage extends JFrame implements ActionListener {
         balanceInquiryLabel.setBounds(0,0,mainFrame.getWidth(),100); // position 0
         balanceInquiryLabel.setFont(buttonFont);
         balanceInquiryLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        balanceInquiryLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-
-
-
+        balanceInquiryLabel.setHorizontalTextPosition(SwingConstants.CENTER);        
+        
+        // define panel 4 elements
+        twentyButton.setBounds(125,125,250,80); // position 1
+        fourtyButton.setBounds(125,225,250,80); // position 2
+        sixtyButton.setBounds(125,325,250,80); // position 3
+        eightyButton.setBounds(600,125,250,80); // position 4
+        hundredButton.setBounds(600,225,250,80); // position 5
+        customAmountButton.setBounds(600,325,250,100); // position 6
+        customAmountButton.setFont(new Font("Arial", Font.PLAIN, 22));
+        
         // define panel 5 elements
         returnFundsButton.setBounds(375,350,250,80);
         depositBackButton.setBounds(125,535,250,80);
@@ -239,22 +217,17 @@ public class CustomerPage extends JFrame implements ActionListener {
         depositAmtField.setBounds(400,250,200,100);
         depositAmtField.setHorizontalAlignment(SwingConstants.CENTER);
         depositAmtField.setFont(buttonFont);
-
-
+        
         // define panel 6 elements
         enterAmtLabel.setBounds(0,0,mainFrame.getWidth(),100);
         enterAmtLabel.setFont(buttonFont);
         enterAmtLabel.setHorizontalAlignment(SwingConstants.CENTER);
         enterAmtLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-
         enterAmt.setBounds(400,300,200,50);
         enterAmt.setEditable(false);
-
         withdrawMinusButton.setBounds(325, 300, 50,50);
         withdrawMinusButton.setEnabled(false);
-
         withdrawPlusButton.setBounds(625, 300, 50,50);
-
         withdrawCustomSubmitButton.setBounds(400, 375, 200, 50);
 
         // define panel 7 elements
@@ -263,17 +236,13 @@ public class CustomerPage extends JFrame implements ActionListener {
         confirmationLabel.setHorizontalAlignment(SwingConstants.CENTER);
         confirmationLabel.setHorizontalTextPosition(SwingConstants.CENTER);
 
-
-
         // add elements to initPanel
-
         initPanel.add(cardNumLabel);
         initPanel.add(cardNumField);
         initPanel.add(cardNumButton);
         initPanel.add(programEndButton);
         
         // add elements to panel 0
-        
         panel0.add(cardPinLabel);
         panel0.add(cardPinField);
         panel0.add(cardPinButton);
@@ -281,13 +250,11 @@ public class CustomerPage extends JFrame implements ActionListener {
         panel0.add(endButton);
 
         // add elements to panel 1
-
         panel1.add(welcomeLabel);
         panel1.add(checkingButton);
         panel1.add(savingsButton);
 
         // add elements to panel 2
-
         panel2.add(accountLabel);
         panel2.add(balanceButton);
         panel2.add(withdrawButton);
@@ -295,13 +262,10 @@ public class CustomerPage extends JFrame implements ActionListener {
         panel2.add(backButton);
 
         // add elements to panel 3
-
         panel3.add(balanceInquiryLabel);
         panel3.add(balanceAmount);
 
-
         // add elements to panel 4
-
         panel4.add(twentyButton);
         panel4.add(fourtyButton);
         panel4.add(sixtyButton);
@@ -310,7 +274,6 @@ public class CustomerPage extends JFrame implements ActionListener {
         panel4.add(customAmountButton);
 
         // add elements to panel 5
-
         panel5.add(depositBackButton);
         panel5.add(depositSubmitButton);
         panel5.add(returnFundsButton);
@@ -318,7 +281,6 @@ public class CustomerPage extends JFrame implements ActionListener {
         panel5.add(depositAmtField);
 
         // add elements to panel 6
-
         panel6.add(enterAmtLabel);
         panel6.add(enterAmt);
         panel6.add(withdrawMinusButton);
@@ -326,9 +288,7 @@ public class CustomerPage extends JFrame implements ActionListener {
         panel6.add(withdrawCustomSubmitButton);
 
         // add elements to panel 7
-
         panel7.add(confirmationLabel);
-
 
         // add panels to container
         panelContainer.add(initPanel, "init");
@@ -340,9 +300,10 @@ public class CustomerPage extends JFrame implements ActionListener {
         panelContainer.add(panel5, "5");
         panelContainer.add(panel6, "6");
         panelContainer.add(panel7, "7");
+
         cl.show(panelContainer, "init"); // show init panel
 
-    }
+    } // end constructor
 
     // button actions
     @Override
@@ -380,9 +341,9 @@ public class CustomerPage extends JFrame implements ActionListener {
                     System.out.println("Card does not exist");
                 }
             }
-        }
+        } // end cardNumButton function
 
-
+        // cancels pin entering, releases card, sends back to init panel
         if(e.getSource() == cardPinCancelButton){
             initPanel.add(endButton);
             cardNumField.setText("");
@@ -390,9 +351,12 @@ public class CustomerPage extends JFrame implements ActionListener {
             cl.show(panelContainer, "init");
         }
 
+        // user enters pin and presses submit
         if(e.getSource() == cardPinButton){
+            // check if pin is correct
             if(HelperFunc.pinCheck(workingCard, cardPinField.getText())){
                 panel1.add(endButton);
+                // check what type of account this card belongs to
                 if(workingAcctType.equals("Checking")){
                     savingsButton.setEnabled(false);
                     checkingButton.setEnabled(true);
@@ -409,13 +373,15 @@ public class CustomerPage extends JFrame implements ActionListener {
             panel1.add(endButton);
             cl.show(panelContainer, "1");
         }
-        // User selects end on ATM card screen
+
+        // User selects END on init ATM card screen -- reutrn to login page
         if(e.getSource() == programEndButton){
             mainFrame.dispose();
             IDandPass idAndPasswords = new IDandPass(customerList);
             new LoginPage(idAndPasswords.getLoginInfo(), customerList, checkingList, savingsList, cdList, loanList, checkList);
         }
 
+        // user ends the transaction, releases card, sends to init panel
         if(e.getSource() == endButton){
             cardNumField.setText("");
             cardPinField.setText("");
@@ -458,6 +424,7 @@ public class CustomerPage extends JFrame implements ActionListener {
         }
 
         // withdraw buttons
+        // $20 button
         if(e.getSource() == twentyButton){
             if(workingAcctType.equals("Checking")){
                 HelperFunc.withdrawCheckingWithSafety(checkingList, savingsList, workingAcctNum, 20);
@@ -471,6 +438,7 @@ public class CustomerPage extends JFrame implements ActionListener {
             panel7.add(endButton);
             cl.show(panelContainer, "7");
         }
+        // $40 button
         if(e.getSource() == fourtyButton){
             if(workingAcctType.equals("Checking")){
                 HelperFunc.withdrawCheckingWithSafety(checkingList, savingsList, workingAcctNum, 40);
@@ -484,6 +452,7 @@ public class CustomerPage extends JFrame implements ActionListener {
             panel7.add(endButton);
             cl.show(panelContainer, "7");
         }
+        // $60 button
         if(e.getSource() == sixtyButton){
             if(workingAcctType.equals("Checking")){
                 HelperFunc.withdrawCheckingWithSafety(checkingList, savingsList, workingAcctNum, 60);
@@ -497,6 +466,7 @@ public class CustomerPage extends JFrame implements ActionListener {
             panel7.add(endButton);
             cl.show(panelContainer, "7");
         }
+        // $80 button
         if(e.getSource() == eightyButton){
             if(workingAcctType.equals("Checking")){
                 HelperFunc.withdrawCheckingWithSafety(checkingList, savingsList, workingAcctNum, 80);
@@ -510,6 +480,7 @@ public class CustomerPage extends JFrame implements ActionListener {
             panel7.add(endButton);
             cl.show(panelContainer, "7");
         }
+        // $100 button
         if(e.getSource() == hundredButton){
             if(workingAcctType.equals("Checking")){
                 HelperFunc.withdrawCheckingWithSafety(checkingList, savingsList, workingAcctNum, 100);
@@ -537,7 +508,6 @@ public class CustomerPage extends JFrame implements ActionListener {
             panel1.add(endButton);
             cl.show(panelContainer, "1");
         }
-
 
         // return funds
         if(e.getSource() == returnFundsButton){
@@ -607,6 +577,5 @@ public class CustomerPage extends JFrame implements ActionListener {
             panel7.add(endButton);
             cl.show(panelContainer, "7");
         }
-
-    }
-}
+    } // end button functions
+} // end CustomerPage

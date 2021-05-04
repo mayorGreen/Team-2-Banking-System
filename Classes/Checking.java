@@ -11,7 +11,6 @@ public class Checking extends Account
 {
     private boolean goldDiamondAccount; // raised if account balance > $1000.00
     private double interestRate; // interest rate for account, only goldDiamond accounts accrue interest
-    private ArrayList<Check> checksList = new ArrayList<>(); // list of checks tied to this account
     private int nextCheckNumber; // next check number associated with account
     private boolean hasBackupAccount; // raised if account has backup account associated for overdrdaft protection
     private int backupAccountNumber; // account number of backup account
@@ -31,7 +30,6 @@ public class Checking extends Account
         dateCreated = new Date();
         todaysDate = new Date();
     }
-
 
     // Constructor
     public Checking(List<String> acct){
@@ -60,8 +58,8 @@ public class Checking extends Account
 
     } // end Constructor
 
-    // withdraw method, charges account a fee if it is not GD. calls balanceCheck
-    // if withdraw is greater
+    // withdraw method, charges account a fee if it is not GD. calls balanceCheck to update account status
+    // if withdraw is greater than what is in account, and there is no backup account, applies an overdraft fee
     @Override
     public void withdrawAmt(double amt) {
         System.out.println("Now withdrawing $" + amt + " from checking account " + this.getAccountNumber());
@@ -73,10 +71,9 @@ public class Checking extends Account
             numOfOverdrafts++;
             balance -= 20.0;
         }
-        
     }
 
-    // deposit method, charges account a fee if it is not GD. calls balanceCheck
+    // deposit method, charges account a fee if it is not GD. calls balanceCheck to update account status
     @Override
     public void depositAmt(double amt) {
         System.out.println("Depositing $" + amt + " into checking account " + this.getAccountNumber());
@@ -92,6 +89,7 @@ public class Checking extends Account
         super.creditAccount(amt);
         balanceCheck();
     }
+
     // debit account method, ignores transaction fee
     @Override
     public void debitAccount(double amt) {
@@ -115,15 +113,12 @@ public class Checking extends Account
         }
     }
 
+    // creates an atm card for this account
     public void createCard(){
-        // create an atm card for this account
         card = new ATMCard(accountCustID, 0, accountNumber, ("0" +accountNumber + accountCustID.substring(0,2)), accountCustID.substring(accountCustID.length()-4));
     }
 
-    public void addCheck(Check check){
-        checksList.add(check);
-    }
-
+    // getters
     public Date getDateCreated() {
         return dateCreated;
     }
@@ -143,6 +138,7 @@ public class Checking extends Account
         return goldDiamondAccount;
     }
 
+    // setters
     public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
@@ -161,7 +157,6 @@ public class Checking extends Account
     public void setBackupAccountNumber(int backupAccountNumber) {
         this.backupAccountNumber = backupAccountNumber;
         setHasBackupAccount(true);
-
     }
 
     @Override
@@ -171,4 +166,4 @@ public class Checking extends Account
         " Date Account Opened: " + dateCreated + " ATM card num: " + card.getCardNumber() + " ATM card PIN: " + card.getPinNum();
     }
 
-}
+} // end Checking

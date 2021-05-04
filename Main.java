@@ -4,15 +4,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/** This is the beginning of the program, it's going to check for database data
+ * and import it into the program, however, the presence of object files implies that
+ * newer data is available, and the program will prefer to import these files instead. 
+*/ 
 class Main{
-
     public static void main(String[] args) {
-
-        /** This is the beginning of the program, it's going to check for database data
-         * and import it into the program, however, the presence of object files implies that
-         * newer data is available, and the program will prefer to import these files instead. 
-        */ 
 
         // initialize csv file string lists
         List<List<String>> customers;
@@ -28,6 +25,8 @@ class Main{
         List<CD> cdList;
         List<Loans> loanList;
         List<Check> checkList;
+
+        // -------------- Begin reading in data --------------
 
         // check if no prior record for customers exists
         if(!(new File("customerObj.txt").exists())){
@@ -110,12 +109,14 @@ class Main{
             checkList = new ArrayList<>();
         }
         
-        IDandPass idAndPasswords = new IDandPass(customerList); // initialize id and passwords --- this can be replaced for simply acct numbers instead
-        //idAndPasswords.listUsers(); // debug
+        // initialize IDs and Passwords
+        IDandPass idAndPasswords = new IDandPass(customerList);
         
+        // initialize login page -- UI starts here
         LoginPage loginPage = new LoginPage(idAndPasswords.getLoginInfo(),customerList, checkingList, savingsList, cdList, loanList,checkList); // generate login page
 
-        // debug print log
+        /* 
+        //debug print log
         System.out.println("Printing customers");
         HelperFunc.printList(customerList);
         System.out.println("\nPrinting Checking Accounts");
@@ -126,11 +127,46 @@ class Main{
         HelperFunc.printList(cdList);
         System.out.println("\nPrinting loans");
         HelperFunc.printList(loanList);
-        System.out.println("\nPrinting Checks");
-        HelperFunc.printList(checkList);
+        */
+
+        /*
+        // credit card test
+        HelperFunc.chargeCreditCard(loanList, "2342", 5000);
+        HelperFunc.updateLoans(loanList);
         
-        //HelperFunc.createCheck(checkList, 16, 123, 50.00, "Checking");
+        HelperFunc.chargeCreditCard(loanList, "2342", 1000);
+        HelperFunc.updateLoans(loanList);
+        
+        HelperFunc.chargeCreditCard(loanList, "2342", 1000);
+        HelperFunc.updateLoans(loanList);
+        
+        HelperFunc.chargeCreditCard(loanList, "2342", 5000);
+        HelperFunc.updateLoans(loanList);
+        
+        HelperFunc.chargeCreditCard(loanList, "2342", 3000);
+        HelperFunc.updateLoans(loanList);
+        
+        HelperFunc.chargeCreditCard(loanList, "2342", 3000);
+        HelperFunc.updateLoans(loanList);
+        
+        HelperFunc.chargeCreditCard(loanList, "2342", 3000);
+        HelperFunc.updateLoans(loanList);
+        
+        System.out.println("\nPrinting loans");
+        HelperFunc.printList(loanList);
+        
+        HelperFunc.printPurchaseHistory(loanList, "2342");
+        
+        // check demo
+        // check test here
+        //HelperFunc.createCheck(checkList, accountNum, checkNum, checkAmount, workingAcountType);
         System.out.println("\nPrinting Checks");
         HelperFunc.printList(checkList);
+
+        HelperFunc.createCheck(checkList, 16, 123, 50.00, "Checking");
+        System.out.println("\nPrinting Checks");
+        HelperFunc.printList(checkList);
+        */
+        System.out.println("hello");
     } // end main method
 } // end Main class

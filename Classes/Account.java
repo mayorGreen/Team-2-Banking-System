@@ -2,10 +2,9 @@ package Classes;
 
 import java.io.Serializable;
 
-// parent class for bank accounts. Bare accounts cannot be instantiated, therefore
-// the class is declared as abstract
+// parent class for bank accounts. Bare accounts cannot be instantiated, therefore, the class is declared as abstract
 public abstract class Account implements Serializable{
-    int accountNumber;
+    int accountNumber; // unique account number
     String accountCustID; // ssn of associated customer
     double balance; // current balance of account
     boolean paymentIsCurrent; // for loans/credit cards, flag for if they're up to date on payments
@@ -19,27 +18,7 @@ public abstract class Account implements Serializable{
         loanPenalty = false;
     }
 
-    // setters
-    void setBalance(double balance){
-        this.balance = balance;
-    }
-
-    void setAccountNumber(int x){
-        accountNumber = x;
-    }
-
-    void setAccountCustID(String accountCustID) {
-        this.accountCustID = accountCustID;
-    }
-
-    void setPaymentIsCurrent(boolean bool) {
-        paymentIsCurrent = bool;
-    }
-
-    void setLoanPenalty(boolean bool) {
-        loanPenalty = bool;
-    }
-
+    
     // getters
     public int getAccountNumber() {
         return accountNumber;
@@ -49,6 +28,23 @@ public abstract class Account implements Serializable{
     }
     public String getAccountCustID() {
         return accountCustID;
+    }
+    
+    // setters
+    void setBalance(double balance){
+        this.balance = balance;
+    }
+    void setAccountNumber(int x){
+        accountNumber = x;
+    }
+    void setAccountCustID(String accountCustID) {
+        this.accountCustID = accountCustID;
+    }
+    void setPaymentIsCurrent(boolean bool) {
+        paymentIsCurrent = bool;
+    }
+    void setLoanPenalty(boolean bool) {
+        loanPenalty = bool;
     }
 
     // account functions
@@ -60,10 +56,8 @@ public abstract class Account implements Serializable{
         balance -= Math.abs(amt);
     }
 
-    // withdrawing and depositing to different types of accounts
-    // has different effects
+    // withdrawing and depositing to different types of accounts differ based on account type
     abstract void withdrawAmt(double amt);
-
     abstract void depositAmt(double amt);
 
 } // End Account
