@@ -304,6 +304,21 @@ public class ManagerPage extends JFrame implements ActionListener {
 
 	// constructor
 	ManagerPage(String userID, List<Customer> customerList, List<Checking> checkingList, List<SavingsAccount> savingsList, List<CD> cdList, List<Loans> loanList, List<Check> checkList){
+
+		// save all data on window close
+		mainFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                HelperFunc.updateChecking(checkingList);
+                HelperFunc.updateSavings(savingsList);
+                HelperFunc.updateCD(cdList);
+                HelperFunc.updateCustomers(customerList);
+                HelperFunc.updateChecks(checkList);
+                HelperFunc.updateLoans(loanList);
+                System.out.println("Closing");
+                e.getWindow().dispose();
+            }
+        });
 			
 		this.customerList = customerList;
 		this.checkingList = checkingList;
@@ -615,7 +630,6 @@ public class ManagerPage extends JFrame implements ActionListener {
 			}
 			@Override
 			public void focusLost(FocusEvent e) {
-				// TODO Auto-generated method stub
 				return;
 			}
 		});
@@ -942,6 +956,8 @@ public class ManagerPage extends JFrame implements ActionListener {
 				HelperFunc.processChecks(checkList, checkingList, savingsList);
 				checkList.clear(); // remove checks from list
 				HelperFunc.updateChecks(checkList); // save changes
+				HelperFunc.updateChecking(checkingList); // save changes
+				HelperFunc.updateSavings(savingsList); // save changes
 				JOptionPane.showMessageDialog(null, "Checks successfully processed.", "Alert", JOptionPane.INFORMATION_MESSAGE);
 			} else{
 				JOptionPane.showMessageDialog(null, "No checks to process right now.", "Alert", JOptionPane.INFORMATION_MESSAGE);
@@ -1199,7 +1215,6 @@ public class ManagerPage extends JFrame implements ActionListener {
 				}
 				@Override
 				public void focusLost(FocusEvent e) {
-					// TODO Auto-generated method stub
 					return;
 				}
 			});

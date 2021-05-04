@@ -8,8 +8,8 @@ import java.awt.CardLayout;
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.Rectangle;
-// TODO add radio button to select from checking/savings account when inputting account number
 
+// This is the teller page, the teller can manage basic customer account functions like credit/debit, check deposit, stop checks
 public class TellerPage extends JFrame implements ActionListener {
 	
 	private List<Customer> customerList; // customer data
@@ -175,6 +175,21 @@ public class TellerPage extends JFrame implements ActionListener {
 	// constructor
     TellerPage(String userID, List<Customer> customerList, List<Checking> checkingList, List<SavingsAccount> savingsList, List<CD> cdList, List<Loans> loanList, List<Check> checkList){
 
+		// save all data on window close
+		mainFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                HelperFunc.updateChecking(checkingList);
+                HelperFunc.updateSavings(savingsList);
+                HelperFunc.updateCD(cdList);
+                HelperFunc.updateCustomers(customerList);
+                HelperFunc.updateChecks(checkList);
+                HelperFunc.updateLoans(loanList);
+                System.out.println("Closing");
+                e.getWindow().dispose();
+            }
+        });
+
 		this.customerList = customerList;
         this.checkingList = checkingList;
         this.savingsList = savingsList;
@@ -241,7 +256,6 @@ public class TellerPage extends JFrame implements ActionListener {
 			}
 			@Override
 			public void focusLost(FocusEvent e) {
-				// TODO Auto-generated method stub
 				return;
 			}
 		});

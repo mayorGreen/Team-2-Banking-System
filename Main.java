@@ -156,17 +156,16 @@ class Main{
         HelperFunc.printList(loanList);
         
         HelperFunc.printPurchaseHistory(loanList, "2342");
-        
-        // check demo
-        // check test here
-        //HelperFunc.createCheck(checkList, accountNum, checkNum, checkAmount, workingAcountType);
-        System.out.println("\nPrinting Checks");
-        HelperFunc.printList(checkList);
-
-        HelperFunc.createCheck(checkList, 16, 123, 50.00, "Checking");
-        System.out.println("\nPrinting Checks");
-        HelperFunc.printList(checkList);
         */
-        System.out.println("hello");
+             
+        // check demo
+        // Simulate Customer Ronald Jones writing checks
+        //HelperFunc.createCheck(checkList, 1, 1, 50.00, "Checking");
+        //HelperFunc.createCheck(checkList, 1, 2, 80.00, "Checking");
+        //HelperFunc.createCheck(checkList, 1, 3, 100.00, "Checking");
+
+        //System.out.println("\nPrinting Checks");
+        //HelperFunc.printList(checkList);
+
     } // end main method
 } // end Main class

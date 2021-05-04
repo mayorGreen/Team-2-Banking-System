@@ -42,6 +42,21 @@ public class LoginPage extends JFrame implements ActionListener{
     // constructor accepts data read in from main method
     public LoginPage(List<HashMap<String, String>> list, List<Customer> customerList, List<Checking> checkingList, List<SavingsAccount> savingsList, List<CD> cdList, List<Loans> loanList, List<Check> checkList) {
 
+        // save all data on window close
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                HelperFunc.updateChecking(checkingList);
+                HelperFunc.updateSavings(savingsList);
+                HelperFunc.updateCD(cdList);
+                HelperFunc.updateCustomers(customerList);
+                HelperFunc.updateChecks(checkList);
+                HelperFunc.updateLoans(loanList);
+                System.out.println("Closing");
+                e.getWindow().dispose();
+            }
+        });
+
         // Update today's date for checking and savings accounts
         HelperFunc.updateDate(checkingList, savingsList);
 

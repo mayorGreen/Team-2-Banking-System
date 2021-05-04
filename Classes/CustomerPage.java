@@ -122,6 +122,21 @@ public class CustomerPage extends JFrame implements ActionListener {
     // constructor
     CustomerPage(List<Customer> customerList, List<Checking> checkingList, List<SavingsAccount> savingsList, List<CD> cdList, List<Loans> loanList, List<Check> checkList){
 
+        // save all data on window close
+		mainFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                HelperFunc.updateChecking(checkingList);
+                HelperFunc.updateSavings(savingsList);
+                HelperFunc.updateCD(cdList);
+                HelperFunc.updateCustomers(customerList);
+                HelperFunc.updateChecks(checkList);
+                HelperFunc.updateLoans(loanList);
+                System.out.println("Closing");
+                e.getWindow().dispose();
+            }
+        });
+
         this.customerList = customerList;
         this.checkingList = checkingList;
         this.savingsList = savingsList;

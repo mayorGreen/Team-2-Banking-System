@@ -33,12 +33,6 @@ public class IDandPass {
         // set manager login info
         managerLoginInfo.put(m1.getUsername(), m1.getPassword());
 
-        // easy login for debugging
-        // TODO: remove this before final deploy
-        customerLoginInfo.put("a", "a");
-        tellerLoginInfo.put("a", "a");
-        managerLoginInfo.put("a", "a");
-
         // add login information to master ArrayList
         loginInfo.add(customerLoginInfo);
         loginInfo.add(tellerLoginInfo);

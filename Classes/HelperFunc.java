@@ -245,7 +245,6 @@ public class HelperFunc {
                 if(checkingList.get(i).getAccountNumber() == accountNum) acct = checkingList.get(i);
             }
         } catch (Exception e) {
-            //TODO: handle exception
             System.out.println("ERROR in getCheckingObj, account not found");
             e.printStackTrace();
         }
@@ -358,8 +357,6 @@ public class HelperFunc {
             System.out.println("Withdrawals today: " + savingsList.get(savingsIndex).getWithdrawalsToday());
             savingsList.get(savingsIndex).setWithdrawalsToday(0);
         }
-        // TODO: MOVE THIS TO CHECKING TOO
-        // TODO: Checking accounts must have daily limit too?
         // check if at max withdrawals today
         if(savingsList.get(savingsIndex).getWithdrawalsToday() == 2){
             System.out.println("Maximum amount of withdrawals today");
@@ -378,7 +375,6 @@ public class HelperFunc {
 
     // this method withdraws an amount from a checking account and does multiple checks for backup accounts and overdraft protection
     public static void withdrawCheckingWithSafety(List<Checking> checkingList, List<SavingsAccount> savingsList, int accountNum, double withdrawAmt){
-        // TODO: ADD WITHDRAWAL CHECK
         double amountToWithdraw = withdrawAmt; // amount remaining to be withdrawn
         int accountIndex = getChecking(checkingList, accountNum); // index of account in list
         int savingsIndex = -1;

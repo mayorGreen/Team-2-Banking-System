@@ -71,7 +71,6 @@ public class CD extends SavingsAccount
 
     @Override
     public String toString() {
-        // TODO complete tostring method
         return "AccountID: "+accountNumber+" CustID: "+accountCustID+" Account Balance: "+balance+" Interest Rate: "+interestRate+
         " Account Opened: "+dateCreated+" Due Date: "+ dueDate + " Early Withdrawal? " + earlyWithdrawPenalty;
     }
