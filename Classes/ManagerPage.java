@@ -59,6 +59,8 @@ public class ManagerPage extends JFrame implements ActionListener {
 	JPanel newCheckingPanel = new JPanel(); // create new checking account panel
 	JPanel newSavingsPanel = new JPanel(); // create new savings account panel
 	JPanel newCDPanel = new JPanel(); // create new CD account panel
+	JPanel accountViewPanel = new JPanel(); // view all checking/savings/cd account info
+	JPanel loansViewPanel = new JPanel(); // view all short term/long term/credit card accounts info
 	JPanel panel1 = new JPanel(); // Teller landing page. enter acct number lookup here.
 	JPanel panel2 = new JPanel(); // Account Lookup Successful
 	JPanel panel3 = new JPanel(); // stop payment page
@@ -74,7 +76,7 @@ public class ManagerPage extends JFrame implements ActionListener {
     JPanel panel13 = new JPanel(); // loan payment page
 
 	JPanel[] panels = {panel1,panel2,panel3,panel4,panel5,panel6,panel7,panel8,panel9,panel10,panel11,panel12,panel13,
-						lookupPanel,accountSelectPanel,newCustomerPanel,newAccountPanel,newCCPanel,newCheckingPanel,newSavingsPanel,newCDPanel};
+						lookupPanel,accountSelectPanel,newCustomerPanel,newAccountPanel,newCCPanel,newCheckingPanel,newSavingsPanel,newCDPanel,accountViewPanel,loansViewPanel};
 
 	JLabel bankNameLabel = new JLabel("My Bank");
 	JButton backButton = new JButton("Back"); // sends manager back to option panel 2
@@ -91,6 +93,18 @@ public class ManagerPage extends JFrame implements ActionListener {
 	JButton createCustomerButton = new JButton("New Customer");	// create new cust
 	JButton createAccountButton = new JButton("New Account");// create new acct
 	JButton processChecksButton = new JButton("Process Checks");// process checks
+	JButton accountViewButton = new JButton("Accounts View"); // view accounts
+	JButton loansViewButton = new JButton("Loans View"); // view Loans
+
+	// accountViewPanel elements
+	JList<String> accountReportData = new JList<>();
+	JScrollPane accountReport = new JScrollPane(accountReportData,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
+	ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+	// loansViewPanel elements
+	JList<String> loansReportData = new JList<>();
+	JScrollPane loansReport = new JScrollPane(loansReportData,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
+	ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	
 	// newAccountPanel elements
 	JButton shortTermLoanButton = new JButton("Short Term Loan");
@@ -296,7 +310,7 @@ public class ManagerPage extends JFrame implements ActionListener {
 		creditCardButton,newCheckingSubmitButton,
 		newSavingsSubmitButton,newCDSubmitButton,
 		checkingButton,savingsButton,
-		cdButton};
+		cdButton,accountViewButton,loansViewButton};
 		
 	CardLayout cl = new CardLayout();
 	Font labelFont = new Font("Arial", Font.PLAIN, 28); // default label font
@@ -363,14 +377,16 @@ public class ManagerPage extends JFrame implements ActionListener {
 		lookupReturnButton.setBounds(bottomLeft);
 		
 		// define lookuppanel
-		custIDLabel.setBounds(585,175,250,80);
+		custIDLabel.setBounds(585,215,250,80);
 		custIDLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		custIDLabel.setFont(labelFont);
-		custIdField.setBounds(585,275,250,80);
+		custIdField.setBounds(585,300,250,80);
 		custIDSubmitButton.setBounds(585,425,250,80);
 		processChecksButton.setBounds(150,205,250,80);
 		createCustomerButton.setBounds(150,315,250,80);
 		createAccountButton.setBounds(150,425,250,80);
+		accountViewButton.setBounds(150,95,250,80);
+		loansViewButton.setBounds(585,95,250,80);
 		
 		// add elements to lookuppanel
 		lookupPanel.add(processChecksButton);
@@ -379,7 +395,20 @@ public class ManagerPage extends JFrame implements ActionListener {
 		lookupPanel.add(custIDSubmitButton);
 		lookupPanel.add(createCustomerButton);
 		lookupPanel.add(createAccountButton);
-		
+		lookupPanel.add(accountViewButton);
+		lookupPanel.add(loansViewButton);
+
+		// define account report elements
+		accountReport.setBounds(100,100,800,400);
+		// add elements to account report panel
+		accountViewPanel.add(accountReport);
+
+		// define loan report elements
+		loansReport.setBounds(100,100,800,400);
+		// add elements to loan report panel
+		loansViewPanel.add(loansReport);
+
+
 		// define new customer panel elements
 		ssnField.setBounds(450,50,250,50);
 		streetAddressField.setBounds(450,115,250,50);
@@ -948,6 +977,30 @@ public class ManagerPage extends JFrame implements ActionListener {
 		if(e.getSource() == lookupReturnButton){
 			custIdField.setText("");
 			cl.show(panelContainer, "14");
+		}
+
+		// account view button
+		if(e.getSource() == accountViewButton){
+			List<String> accountReportList = HelperFunc.accountsReport(checkingList, savingsList, cdList);
+			String[] accountReportArray = new String[accountReportList.size()];
+			for(int i=0; i<accountReportList.size(); i++){
+				accountReportArray[i] = accountReportList.get(i);
+			}
+			accountReportData.setListData(accountReportArray);
+			accountViewPanel.add(lookupReturnButton);
+			cl.show(panelContainer, "22");
+		}
+
+		// loan view button
+		if(e.getSource() == loansViewButton){
+			List<String> loansReportList = HelperFunc.loansReport(loanList);
+			String[] loansReportArray = new String[loansReportList.size()];
+			for(int i=0; i<loansReportList.size(); i++){
+				loansReportArray[i] = loansReportList.get(i);
+			}
+			loansReportData.setListData(loansReportArray);
+			loansViewPanel.add(lookupReturnButton);
+			cl.show(panelContainer, "23");
 		}
 
 		// process checks in queue

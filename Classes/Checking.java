@@ -161,7 +161,7 @@ public class Checking extends Account
 
     @Override
     public String toString(){
-        return "Account Number: " + accountNumber + " CustID: " + accountCustID + " Balance: " 
+        return "[Checking Acount] " + "Account Number: " + accountNumber + " CustID: " + accountCustID + " Balance: " 
         + balance + " Current Interest Rate: " + interestRate + " Number of Overdrafts: " + numOfOverdrafts + 
         " Date Account Opened: " + dateCreated + " ATM card num: " + card.getCardNumber() + " ATM card PIN: " + card.getPinNum();
     }

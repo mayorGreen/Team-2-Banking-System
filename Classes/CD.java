@@ -72,7 +72,7 @@ public class CD extends SavingsAccount
 
     @Override
     public String toString() {
-        return "AccountID: "+accountNumber+" CustID: "+accountCustID+" Account Balance: "+balance+" Interest Rate: "+interestRate+
+        return "[CD] " + "Account Number: "+accountNumber+" CustID: "+accountCustID+" Account Balance: "+balance+" Interest Rate: "+interestRate+
         " Account Opened: "+dateCreated+" Due Date: "+ dueDate + " Early Withdrawal? " + earlyWithdrawPenalty;
     }
 
